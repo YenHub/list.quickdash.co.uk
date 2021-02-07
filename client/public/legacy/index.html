@@ -41,9 +41,38 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
 
+    <style>
+        .beta {
+            position: fixed;
+            right: 3%;
+            bottom: 2%;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 0.6em 1.2em;
+        }
+        .beta:hover {
+            background-color: #007bff;
+        }
+        .beta-link {
+            text-decoration: none;
+        }
+        .beta-link:hover {
+            color: white;
+        }
+    </style>
+
 </head>
 
 <body>
+
+    <a class="beta-link" href='/'>
+        <span class="beta">
+            NEW: QuickList Beta
+            <i class="fas fa-external-link-alt fa-xs fa-pull-right"></i>
+        </span>
+    </a>
 
     <div class="jumbotron text-center" style="margin-bottom:0">
         <h1 class="text-primary">
@@ -73,6 +102,15 @@
     <!-- Custom JS -->
     <script src="./scripts/magic.js"></script>
     <script src="./scripts/DragDropTouch.js"></script>
+
+    <script>
+        window.onload = () => {
+            $('.beta').addClass('shake');
+            setTimeout(function () {
+                $('.beta-link').removeClass('shake');
+            }, 850);
+        }
+    </script>
 
 
 </body>

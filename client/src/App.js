@@ -27,6 +27,7 @@ const App = () => (
             <ul>
                 <RenderLegacyNotes />
             </ul>
+            <a href='/legacy'>Back To Legacy Site</a>
         </header>
     </div>
 );
