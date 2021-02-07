@@ -1,25 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import LegacyNotes from './Services/LegacyNotes';
+import { useState, useEffect } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const RenderLegacyNotes = () => {
+
+    const [ legacyNotes, setLegacyNotes ] = useState(null);
+
+    useEffect( () => {
+        setLegacyNotes([...LegacyNotes.get()]);
+        // TODO: Enable this to clear old legacy notes
+        // LegacyNotes.clear();
+    }, [])
+
+    if (legacyNotes?.length > 0) {
+        return legacyNotes.map((note, ind) => <li key={`note-${ind}`}>{note}</li>);
+    }
+
+    return (
+        <div> No Notes </div>
+    );
 }
+
+const App = () => (
+    <div className="App">
+        <header className="App-header">
+            <ul>
+                <RenderLegacyNotes />
+            </ul>
+        </header>
+    </div>
+);
 
 export default App;
