@@ -17,7 +17,7 @@ services:
      MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
      MYSQL_DATABASE:       ${DB_DATABASE}
      MYSQL_USER:           ${DB_SERVICE_USER}
-     MYSQL_PASSWORD:       ${DB_PASSWORD}
+     MYSQL_PASSWORD:       ${DB_SERVICE_USER_PASSWORD}
    networks:
      - server-network
    volumes:
@@ -58,7 +58,7 @@ services:
       - NODE_ENV=development
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_SERVICE_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PASSWORD=${DB_SERVICE_USER_PASSWORD}
     volumes:
       - ./server:/app
       - /app/node_modules
