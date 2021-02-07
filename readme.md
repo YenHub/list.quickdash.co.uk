@@ -53,16 +53,20 @@ No mucking around! 🎉
 
 ### Create a .env config
 
-Create a file at `./api/.env` and populate the contents like so, setting a password of your choosing:-
+Create a file at `./.env` and populate the contents like below, setting a password of your choosing.
+
+Copy this file also to `./server/.env`
 
 _This file is .gitignored_
 
 ```.env
 DB_PORT=3306
 DB_USERNAME=root
-DB_PASSWORD=some_wi1d-pa$$word
+DB_SERVICE_USER=NodeUser
+DB_PASSWORD=NodeUserPassword
 DB_DATABASE=nodeDB
 DB_HOST=node-mysql
+DB_TEST=testDB
 ```
 
 ### Run the solution using Docker 🐳
@@ -87,16 +91,29 @@ Once you have the solution up and running, simply visit http://localhost/TestAPI
 
 ## Development Info
 
+## NOTE: Prerequisites
+
+You will need to alter the permissions of the database user, or alternatively just use root 🙄
+
+http://localhost:8080
+
+Find the user declared in your .env files and change the permissions
+
 ### Running FE standalone
 
 The React front end is happy to run standalone from it's root `./client`.
 
 ```bash
+# From the root of the project
+docker-compose up client-app
+
 # From the root of ./client
 npm start
 ```
 
-**NOTE:** The project will be available at http://localhost:3000/ when running standalone
+Access the front end at http://localhost
+
+**NOTE:** The project will be available at http://localhost:3000/ when running standalone via `npm`
 
 ### Running API standalone
 
@@ -119,7 +136,7 @@ You can now access the API on http://localhost:9000
 cd client && npm start
 
 # Start Back End Dev Server Only
-cd api && npm run dev
+cd server && npm run dev
 ```
 
 ### Docker: Running the full solution
@@ -162,8 +179,8 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
     - In progress... forever™
 - [x] Dockerize Solution
     - [x] Isolate Networks
-        - api-network
-        - app-network
+        - server-network
+        - client-network
     - [x] Front End
         - [x] React
             - http://localhost

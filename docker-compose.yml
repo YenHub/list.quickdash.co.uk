@@ -16,14 +16,12 @@ services:
      MYSQL_HOST:           localhost
      MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
      MYSQL_DATABASE:       ${DB_DATABASE}
-     MYSQL_USER:           ${DB_USERNAME}
+     MYSQL_USER:           ${DB_SERVICE_USER}
      MYSQL_PASSWORD:       ${DB_PASSWORD}
    networks:
      - server-network
    volumes:
      - ${MYSQL_HOST_VOLUME:-./docker_volumes/var/lib/mysql}:/var/lib/mysql
-   env_file:
-     - ./server/.env
    cap_add:
      - SYS_NICE  # CAP_SYS_NICE
 
@@ -58,9 +56,9 @@ services:
         - .env
     environment:
       - NODE_ENV=development
-      - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_USERNAME}
+      - DB_USERNAME=${DB_SERVICE_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
       - ./server:/app
       - /app/node_modules
@@ -84,7 +82,7 @@ services:
     networks:
       - server-network
     env_file:
-      - ./server/.env
+      - .env
 
 networks:
   client-network:
