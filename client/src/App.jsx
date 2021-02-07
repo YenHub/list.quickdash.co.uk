@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 
 const RenderLegacyNotes = () => {
 
-    const [ legacyNotes, setLegacyNotes ] = useState(null);
+    const [legacyNotes, setLegacyNotes] = useState(null);
 
-    useEffect( () => {
+    useEffect(() => {
         setLegacyNotes([...LegacyNotes.get()]);
         // TODO: Enable this to clear old legacy notes
         // LegacyNotes.clear();
@@ -19,7 +19,7 @@ const RenderLegacyNotes = () => {
     return (
         <div> No Notes </div>
     );
-}
+};
 
 const App = () => (
     <div className="App">
