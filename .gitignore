@@ -1,0 +1,12 @@
+# Docker Volume
+docker_volumes
+
+# Dependency directories
+node_modules/
+
+
+# dotenv environment variables file
+/.env
+/api/.env
+.env.test
+.env.prod
