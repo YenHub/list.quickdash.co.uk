@@ -1,5 +1,6 @@
 import LegacyNotes from '../Services/LegacyNotes';
 import { useState, useEffect } from 'react';
+import NotesList from './NotesList'
 
 const RenderLegacyNotes = () => {
 
@@ -23,7 +24,8 @@ const RenderLegacyNotes = () => {
 const Checklist = () => (
     <div className="App">
         <header className="App-header">
-            <RenderLegacyNotes />
+            {/* <RenderLegacyNotes /> */}
+            <NotesList /> <br />
             <br />
             <a href='/legacy'>Back To Legacy Site</a>
         </header>
