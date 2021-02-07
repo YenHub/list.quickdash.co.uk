@@ -27,7 +27,6 @@ services:
    cap_add:
      - SYS_NICE  # CAP_SYS_NICE
 
-
  client-app:
     container_name:        client-app
     build:
