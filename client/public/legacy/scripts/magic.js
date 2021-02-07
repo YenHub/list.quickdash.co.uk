@@ -93,14 +93,14 @@ function drop(ev) {
     var listConfig = localStorage.getItem('listConfig') > '' ? JSON.parse(localStorage.getItem('listConfig')) : {};
     localStorage.clear();
     $.each(listConfig, function (a, i) {
-        entrySubmit(i);
+        entrySubmit(i, false);
     });
 
     function logMsg(message, group) {
         return (group) ? console.groupCollapsed('%c' + message, greenResult) : console.log(message);
     }
 
-    function entrySubmit(_string) {
+    function entrySubmit(_string, _shake) {
         var $ent = _string.trim() || $('#entryField').val().toString();
 
         if(!$ent) {
@@ -114,7 +114,9 @@ function drop(ev) {
 
         $('.container').append(elem);
 
-        animations.shake('#note' + noteId, 850);
+        if(_shake !== false) {
+            animations.shake('#note' + noteId, 850);
+        }
 
         pageActions.storeConfig();
 

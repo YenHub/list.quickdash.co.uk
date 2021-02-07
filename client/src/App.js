@@ -13,7 +13,7 @@ const RenderLegacyNotes = () => {
     }, [])
 
     if (legacyNotes?.length > 0) {
-        return legacyNotes.map((note, ind) => <li key={`note-${ind}`}>{note}</li>);
+        return legacyNotes.map((note, ind) => <span key={`note-${ind}`}>{note}</span>);
     }
 
     return (
@@ -24,9 +24,7 @@ const RenderLegacyNotes = () => {
 const App = () => (
     <div className="App">
         <header className="App-header">
-            <ul>
-                <RenderLegacyNotes />
-            </ul>
+            <RenderLegacyNotes /> <br />
             <a href='/legacy'>Back To Legacy Site</a>
         </header>
     </div>
