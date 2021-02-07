@@ -1,33 +1,44 @@
-import './App.css';
-import LegacyNotes from './Services/LegacyNotes';
-import { useState, useEffect } from 'react';
+import 'typeface-roboto';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import './RootCSS.css';
+import Notes from './Components/Notes'
 
-const RenderLegacyNotes = () => {
-
-    const [legacyNotes, setLegacyNotes] = useState(null);
-
-    useEffect(() => {
-        setLegacyNotes([...LegacyNotes.get()]);
-        // TODO: Enable this to clear old legacy notes
-        // LegacyNotes.clear();
-    }, [])
-
-    if (legacyNotes?.length > 0) {
-        return legacyNotes.map((note, ind) => <span key={`note-${ind}`}>{note}</span>);
+const useStyles = makeStyles((theme) => ({
+    root: {
+        // display: 'flex'
     }
+}));
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#ffffff',
+        },
+    },
+    typography: {
+        fontSize: 13,
+        fontFamily: [
+            'Roboto',
+            'serif',
+        ].join(','),
+    },
+});
+
+
+const App = () => {
+
+    const classes = useStyles();
 
     return (
-        <div> No Notes </div>
+        <div className={classes.root}>
+            <MuiThemeProvider theme={theme}>
+                <CssBaseline />
+                <Notes /> <br />
+                <a href='/legacy'>Back To Legacy Site</a>
+            </MuiThemeProvider>
+        </div>
     );
 };
-
-const App = () => (
-    <div className="App">
-        <header className="App-header">
-            <RenderLegacyNotes /> <br />
-            <a href='/legacy'>Back To Legacy Site</a>
-        </header>
-    </div>
-);
 
 export default App;
