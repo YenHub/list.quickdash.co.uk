@@ -1,0 +1,27 @@
+# --- Build Express API ---
+FROM node:12.0.0 as builder
+
+# Create working directory
+RUN mkdir /app
+WORKDIR /app
+
+# Copy our package.json
+COPY package.json ./
+
+# Install the modules
+RUN npm i
+
+# Copt the app across
+COPY . ./
+
+# Default port exposure
+EXPOSE 9000
+
+# Run the app
+CMD ["npm", "run", "dev"]
+
+# docker build -t web-app .
+# WINDOWS (See this: https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10)
+# docker run --name web-app -it --rm -p 3000:3000 --mount source="$(pwd)",target=/app web-app
+# Or just
+# docker run -e CHOKIDAR_USEPOLLING=true --name web-app -it --rm -p 3000:3000 web-app
