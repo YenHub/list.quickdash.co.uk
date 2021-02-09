@@ -11,17 +11,25 @@ import {
 } from "@material-ui/core";
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import InboxIcon from "@material-ui/icons/Inbox";
+import NotesIcon from '@material-ui/icons/Notes';
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+
+import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '80%'
+        width: isMobile ? '100%' : '80%',
+        maxWidth: '1250px',
+        margin: 'auto auto'
+    },
+    secondaryAction: {
+        paddingRight: '0 !important',
     }
 }));
 
-// fake data generator
-const getItems = () => LegacyNotes.get().map( (note, ind) => ({
+// Legacy data generator
+const getItems = () => LegacyNotes.get().map((note, ind) => ({
     id: `item-${ind}`,
     primary: note,
     secondary: ind % 2 === 0 ? `Whatever for ${ind}` : undefined
@@ -55,7 +63,7 @@ const NotesList = (props) => {
 
     useEffect(() => {
 
-        const myObj = JSON.stringify(Object.assign({}, [...itemsState.map( it => it.primary )]));
+        const myObj = JSON.stringify(Object.assign({}, [...itemsState.map(it => it.primary)]));
 
         window.localStorage.setItem('listConfig', myObj);
 
@@ -91,6 +99,7 @@ const NotesList = (props) => {
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => (
                                             <ListItem
+                                                className={classes.secondaryAction}
                                                 ContainerComponent="li"
                                                 ContainerProps={{ ref: provided.innerRef }}
                                                 {...provided.draggableProps}
@@ -101,17 +110,23 @@ const NotesList = (props) => {
                                                 )}
                                             >
                                                 <ListItemIcon>
-                                                    <InboxIcon />
+                                                    <NotesIcon />
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={item.primary}
                                                     secondary={item.secondary}
                                                 />
-                                                <ListItemSecondaryAction>
+                                                <ListItemIcon>
                                                     <IconButton>
                                                         <EditIcon />
                                                     </IconButton>
-                                                </ListItemSecondaryAction>
+                                                </ListItemIcon>
+                                                <ListItemIcon>
+                                                    <IconButton color="secondary">
+                                                        <DeleteForeverIcon />
+                                                    </IconButton>
+                                                </ListItemIcon>
+                                                <ListItemSecondaryAction />
                                             </ListItem>
                                         )}
                                     </Draggable>
