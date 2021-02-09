@@ -2,7 +2,7 @@ import 'typeface-roboto';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import './RootCSS.css';
-import Notes from './Components/Notes'
+import Main from './Components/Main'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -11,11 +11,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const theme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#ffffff',
-        },
-    },
+    // palette: {
+    //     primary: {
+    //         main: '#ffffff',
+    //     },
+    // },
     typography: {
         fontSize: 13,
         fontFamily: [
@@ -34,8 +34,7 @@ const App = () => {
         <div className={classes.root}>
             <MuiThemeProvider theme={theme}>
                 <CssBaseline />
-                <Notes /> <br />
-                <a href='/legacy'>Back To Legacy Site</a>
+                <Main /> <br />
             </MuiThemeProvider>
         </div>
     );
