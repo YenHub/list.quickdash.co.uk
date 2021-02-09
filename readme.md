@@ -34,14 +34,19 @@ No mucking around! 🎉
 - [What is it?](#what-is-it)
 - [What does it do?](#what-does-it-do)
 - [Quick Start Usage](#quick-start-usage)
+    - [Prerequisites](#prerequisites)
     - [Create a .env config](#create-a-env-config)
-    - [Run the solution using Docker 🐳](#run-the-solution-using-docker-)
+    - [Run the solution using Docker 🐳](#run-the-solution-using-docker)
     - [What now?](#what-now)
+    - [Where is everything?](#where-is-everything)
 - [Development Info](#development-info)
-    - [Running the solutions standalone](#running-the-front-or-back-end-standalone)
-    - [Running the entire system](#docker-running-the-full-solution)
+    - [Running the front end standalone](#running-fe-standalone)
+    - [Running the back end standalone](#running-api-standalone)
+    - [Running the entire system](#start-the-solution)
     - [Backing up your database](#backing-up-your-database)
-- [Project To Dos & Dones](#project-to-dos--dones)
+    - [Docker Tips & Commands](#docker-commands-you-can-use)
+- [Project To Do](#project-to-do)
+- [FAQs](#faqs)
 
 ## TLDR;
 
@@ -50,6 +55,16 @@ No mucking around! 🎉
 3. `docker-compose up --build -d && chrome http://localhost/TestAPI`
 
 ## Quick Start Usage
+
+### Prerequisites
+
+Top tip... Ensure you have Docker running 😁
+
+When running the solution for the first time, you will be required to alter the permissions of the database user.
+
+User information is declared in your `.env` files (see [here](#create-a-env-config)) and consumed by the `docker-compose.yml` where you can override the defaults.
+
+Or alternatively just use root 🙄
 
 ### Create a .env config
 
@@ -71,13 +86,19 @@ DB_TEST=testDB
 
 ### Run the solution using Docker 🐳
 
-Run this solution using Docker, WSL2 and your distro of preference.
+You can run this solution using Docker, WSL2 and any distro of preference.
+
+See the prerequisites [here](#prerequisites)
+
+#### Start the solution
 
 ```bash
-# Start the solution (-d for detached mode)
+# use -d for detached mode
 docker-compose up
+```
 
-# Stop the solution (Ctrl+C)
+#### Stop the solution (Ctrl+C)
+```bash
 docker-compose down
 ```
 
@@ -89,57 +110,61 @@ This can be customized via env variables, but those are the defaults.
 
 Once you have the solution up and running, simply visit http://localhost/TestAPI to check it's working correctly, and begin developing the API and Front End.
 
-## Development Info
+### Where is everything?
 
-## NOTE: Prerequisites
+#### ./client:
+http://localhost
 
-You will need to alter the permissions of the database user, or alternatively just use root 🙄
+#### ./server
+http://localhost:9000
 
+#### phpMyAdmin
 http://localhost:8080
 
-Find the user declared in your .env files and change the permissions
+## Development Info
 
 ### Running FE standalone
 
 The React front end is happy to run standalone from it's root `./client`.
 
+You have two options, the recommended approach is to use Docker, but you can always bail out if needed and simply call npm as you would usually for a React project.
+
+#### Using Docker
 ```bash
 # From the root of the project
 docker-compose up client-app
+```
+Access the front end at http://localhost
 
+#### Using NPM
+```bash
 # From the root of ./client
+# Make sure you have run `npm i`
 npm start
 ```
 
-Access the front end at http://localhost
+Access the front end at http://localhost:3000/
 
-**NOTE:** The project will be available at http://localhost:3000/ when running standalone via `npm`
+**NOTE:** When using `npm` the project runs as it would usually on port 3000
 
 ### Running API standalone
 
-**UPDATE**: Following the latest updates, you can now work on the API standalone
+Whether using Docker or npm, you can access the API on http://localhost:9000
 
+#### Using Docker
 ```bash
 # From the root of the project
 docker-compose up node-sql
+```
 
+#### Using NPM
+```bash
 # From the root of ./api
+# Make sure you have run `npm i`
 npm run dev
 ```
 
-You can now access the API on http://localhost:9000
-
-### Running the front or back end standalone:
-
-```bash
-# Start Front End Dev Server Only
-cd client && npm start
-
-# Start Back End Dev Server Only
-cd server && npm run dev
-```
-
-### Docker: Running the full solution
+### Docker: Commands you can use
 
 ```bash
 # Ensure you have docker installed & running
@@ -163,8 +188,9 @@ docker-compose up --build --force-recreate
 # We can then also do (due to docker-compose `container_name: node-mysql`)
 docker start node-mysql
 
-# Exec commands in the container:
-docker exec -it [container_name] mysql -uroot -p
+# Exec commands in the container (e.g. MySQL):
+# docker exec -it [container-name] mysql -uroot -p
+docker exec -it node-mysql mysql -uroot -p
 ```
 
 ### Backing up your database
@@ -173,7 +199,7 @@ The database is defined in `./docker-compose.yml`
 
 The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
 
-## Project To Dos & Dones
+## Project To Do
 
 - [ ] Make it better
     - In progress... forever™
