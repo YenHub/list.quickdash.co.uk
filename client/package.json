@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
+    "localforage": "^1.9.0",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-device-detect": "^1.15.0",

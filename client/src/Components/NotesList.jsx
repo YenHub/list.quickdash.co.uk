@@ -15,6 +15,8 @@ import NotesIcon from '@material-ui/icons/Notes';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import NoteStore from '../Services/NoteStore';
+
 import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,20 +30,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// Legacy data generator
 const getItems = () => LegacyNotes.get().map((note, ind) => ({
     id: `item-${ind}`,
     primary: note,
-    secondary: ind % 2 === 0 ? `Whatever for ${ind}` : undefined
+    secondary: ind % 2 === 0 ? `Whatever for ${ind}` : undefined,
 }));
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+const reorder = (noteState, startIndex, endIndex) => {
+    const [removed] = noteState.splice(startIndex, 1);
+    noteState.splice(endIndex, 0, removed);
 
-    return result;
+    return noteState;
 };
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -54,21 +53,27 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getListStyle = isDraggingOver => ({
-    //background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    background: isDraggingOver ? 'lightblue' : '',
 });
+
+const noteStore = new NoteStore();
 
 const NotesList = (props) => {
     const classes = useStyles();
-    const [itemsState, setItemsState] = useState(getItems(10));
+    const [noteState, setNoteState] = useState(getItems());
+
+    const updateLegacyStore = notes => {
+        const myObj = JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]));
+
+        window.localStorage.setItem('listConfig', myObj);
+    }
 
     useEffect(() => {
 
-        const myObj = JSON.stringify(Object.assign({}, [...itemsState.map(it => it.primary)]));
+        updateLegacyStore(noteState);
+        noteStore.setNotes(noteState);
 
-        window.localStorage.setItem('listConfig', myObj);
-
-        // console.log(myObj);
-    }, [itemsState]);
+    }, [noteState]);
 
     const onDragEnd = (result) => {
         // dropped outside the list
@@ -77,16 +82,17 @@ const NotesList = (props) => {
         }
 
         const items = reorder(
-            itemsState,
+            noteState,
             result.source.index,
             result.destination.index
         );
 
-        setItemsState([...items]);
+        setNoteState([...items]);
     }
 
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
+    const deleteNote = (item) => {
+        setNoteState([...noteState.filter( note => note.id !== item.id )]);
+    }
 
     return (
         <div className={classes.root}>
@@ -95,7 +101,7 @@ const NotesList = (props) => {
                     {(provided, snapshot) => (
                         <RootRef rootRef={provided.innerRef}>
                             <List style={getListStyle(snapshot.isDraggingOver)}>
-                                {itemsState.map((item, index) => (
+                                {noteState.map((item, index) => (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => (
                                             <ListItem
@@ -121,7 +127,7 @@ const NotesList = (props) => {
                                                         <EditIcon />
                                                     </IconButton>
                                                 </ListItemIcon>
-                                                <ListItemIcon>
+                                                <ListItemIcon onClick={ () => deleteNote(item) }>
                                                     <IconButton color="secondary">
                                                         <DeleteForeverIcon />
                                                     </IconButton>
