@@ -71,7 +71,7 @@ export default function Main({ darkMode, setDarkMode }) {
             flexShrink: 0,
         },
         drawerPaper: {
-            width: drawerWidth,
+            width: isMobile ? '100%' : drawerWidth,
         },
         drawerHeader: {
             display: 'flex',
