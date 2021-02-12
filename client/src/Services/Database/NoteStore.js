@@ -28,10 +28,10 @@ class NoteStore {
         }
     }
 
-    updateNote = async (note) => {
-        const notes = await this.store.getItem(noteStore);
-
-    }
+    // updateNote = async (note) => {
+    //     const notes = await this.store.getItem(noteStore);
+    //
+    // }
 
     createNote = async (note) => {
         const notes = await this.store.getItem(noteStore);

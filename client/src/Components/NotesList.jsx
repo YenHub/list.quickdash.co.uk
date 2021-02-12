@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import LegacyNotes from '../Services/LegacyNotes';
+
+
 import {
     List,
     ListItem,
@@ -15,7 +16,8 @@ import NotesIcon from '@material-ui/icons/Notes';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-import NoteStore from '../Services/NoteStore';
+import LegacyNotes from '../Services/Database/LegacyNotes';
+import NoteStore from '../Services/Database/NoteStore';
 
 import { isMobile } from 'react-device-detect';
 
@@ -76,7 +78,7 @@ const NotesList = (props) => {
     }, [noteState]);
 
     const onDragEnd = (result) => {
-        // dropped outside the list
+        // Drop zone is outside of the list
         if (!result.destination) {
             return;
         }

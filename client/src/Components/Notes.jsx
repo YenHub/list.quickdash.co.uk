@@ -1,4 +1,4 @@
-import LegacyNotes from '../Services/LegacyNotes';
+import LegacyNotes from '../Services/Database/LegacyNotes';
 import { useState, useEffect } from 'react';
 import NotesList from './NotesList'
 
