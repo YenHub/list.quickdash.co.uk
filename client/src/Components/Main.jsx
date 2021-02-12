@@ -54,7 +54,7 @@ export default function Main({ darkMode, setDarkMode }) {
         },
         title: {
             fontSize: '3em',
-            color: '#007bff',
+            color: darkMode ? '#08d2ff' : '#007bff',
             fontFamily: [
                 'Dosis',
                 'serif',
@@ -166,7 +166,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
                 <div className={classes.drawerHeader} />
 
-                <NotesList />
+                <NotesList {...darkModeProps}/>
 
             </main>
         </div>

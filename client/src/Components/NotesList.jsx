@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 import {
     List,
     ListItem,
@@ -10,11 +9,13 @@ import {
     IconButton,
     ListItemSecondaryAction
 } from "@material-ui/core";
+
 import RootRef from "@material-ui/core/RootRef";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import NotesIcon from '@material-ui/icons/Notes';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import LegacyNotes from '../Services/Database/LegacyNotes';
 import NoteStore from '../Services/Database/NoteStore';
@@ -54,14 +55,20 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     })
 });
 
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : '',
+const getListStyle = (isDraggingOver, darkMode) => ({
+    background: isDraggingOver ? darkMode ? '#303030' : '#fafafa' : '',
+});
+
+const getTextStyle = (isDraggingOver, darkMode) => ({
+    color: isDraggingOver ? 'black' : null,
 });
 
 const noteStore = new NoteStore();
 
-const NotesList = (props) => {
+const NotesList = ({ darkMode, setDarkMode }) => {
+
     const classes = useStyles();
+
     const [noteState, setNoteState] = useState(getItems());
 
     const updateLegacyStore = notes => {
@@ -93,7 +100,7 @@ const NotesList = (props) => {
     }
 
     const deleteNote = (item) => {
-        setNoteState([...noteState.filter( note => note.id !== item.id )]);
+        setNoteState([...noteState.filter(note => note.id !== item.id)]);
     }
 
     return (
@@ -102,7 +109,7 @@ const NotesList = (props) => {
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
                         <RootRef rootRef={provided.innerRef}>
-                            <List style={getListStyle(snapshot.isDraggingOver)}>
+                            <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
                                 {noteState.map((item, index) => (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => (
@@ -118,20 +125,22 @@ const NotesList = (props) => {
                                                 )}
                                             >
                                                 <ListItemIcon>
-                                                    <NotesIcon />
+                                                    <NotesIcon style={getTextStyle(snapshot.isDragging, darkMode)}/>
                                                 </ListItemIcon>
                                                 <ListItemText
+                                                    secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
+                                                    primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
                                                     primary={item.primary}
                                                     secondary={item.secondary}
                                                 />
                                                 <ListItemIcon>
                                                     <IconButton>
-                                                        <EditIcon />
+                                                        <EditIcon style={{color: darkMode ? '#08d2ff' : '#007bff'}}/>
                                                     </IconButton>
                                                 </ListItemIcon>
                                                 <ListItemIcon onClick={ () => deleteNote(item) }>
-                                                    <IconButton color="secondary">
-                                                        <DeleteForeverIcon />
+                                                    <IconButton>
+                                                        <DeleteForeverIcon style={{color: 'red'}}/>
                                                     </IconButton>
                                                 </ListItemIcon>
                                                 <ListItemSecondaryAction />
