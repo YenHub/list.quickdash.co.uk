@@ -53,6 +53,8 @@ export default function Main({ darkMode, setDarkMode }) {
             marginLeft: drawerWidth,
         },
         title: {
+            margin: 'auto',
+            paddingRight: '24px',
             fontSize: '3em',
             color: darkMode ? '#08d2ff' : '#007bff',
             fontFamily: [
