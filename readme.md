@@ -232,6 +232,18 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
             - [ ] Basic User management
                 - [ ] View
                 - [ ] Edit / Delete
+    - [ ] UI/UX
+        - [ ] List Items
+            - [ ] Add edit note functionality
+            - [ ] Add MD Ability for list item text secondary
+        - [ ] Menu Items
+            - [ ] Delete all notes button
+            - [ ] Add colour picker for UI
+        - [ ] DND
+            - [ ] Looks odd when dragging on mobile?
+                - Looked at this, but I think it was a migration issue that's now gone
+    - [ ] Logic
+        - [ ] Add HOC Error Boundary
 - [ ] Back End
     - [ ] Endpoints
         - [x] API Status Test

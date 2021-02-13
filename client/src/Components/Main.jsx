@@ -1,5 +1,5 @@
 import 'typeface-dosis';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,21 +18,21 @@ import {
 } from '@material-ui/core';
 
 import HistoryIcon from '@material-ui/icons/History';
-import MenuIcon from '@material-ui/icons/Menu';
+import SettingsIcon from '@material-ui/icons/Settings';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { isMobile } from 'react-device-detect';
 
 import NotesList from './NotesList';
 import DarkModeToggle from './Custom/DarkModeToggle';
+import NoteModalButton from './Custom/NoteModal/Modal'
+
+import NoteStore from '../Services/Database/NoteStore';
+const noteStore = new NoteStore();
+
+const drawerWidth = 240;
 
 export default function Main({ darkMode, setDarkMode }) {
-
-    const darkModeProps = { darkMode, setDarkMode };
-
-    const [open, setOpen] = React.useState(false);
-
-    const drawerWidth = 240;
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -53,8 +53,8 @@ export default function Main({ darkMode, setDarkMode }) {
             marginLeft: drawerWidth,
         },
         title: {
-            margin: 'auto',
-            paddingRight: '24px',
+            margin: 'auto', // Center Logo
+            // paddingRight: '24px', // Offset for Menu Icon
             fontSize: '3em',
             color: darkMode ? '#08d2ff' : '#007bff',
             fontFamily: [
@@ -101,19 +101,51 @@ export default function Main({ darkMode, setDarkMode }) {
         },
     }));
 
+
     const classes = useStyles();
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+    const [open, setOpen] = useState(false);
+    const [noteState, setNoteState] = useState(null);
+    const noteProps = { darkMode, noteState, setNoteState };
+    const toggleProps = {...noteProps, setDarkMode};
+    const [modalOpen, setModalOpen] = useState(false);
+    const modalProps = { ...noteProps, modalOpen, setModalOpen, setDarkMode };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const getItems = async () => setNoteState(await noteStore.getNotes());
+
+    useEffect( () => {
+        if(!noteState) {
+            getItems();
+        }
+    }, []);
+
+    // TODO: Move this into NoteStore
+    const updateLegacyStore = notes => {
+        const myObj = JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]));
+        window.localStorage.setItem('listConfig', myObj);
+    }
+
+    useEffect(() => {
+
+        if(noteState) {
+            updateLegacyStore(noteState);
+            noteStore.setNotes(noteState);
+        }
+
+    }, [noteState]);
+
+    const AppHeaderLogo = () => (
+        <Typography variant="h1" noWrap className={classes.title}>
+            QuickList
+        </Typography>
+    );
+
+    const handleDrawerState = () => {
+        setOpen( open => !open);
+    }
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
@@ -124,15 +156,15 @@ export default function Main({ darkMode, setDarkMode }) {
                     <IconButton
                         aria-label="open drawer"
                         edge="start"
-                        onClick={handleDrawerOpen}
+                        onClick={handleDrawerState}
                         className={clsx(open && classes.hide)}
                     >
-                        <MenuIcon />
+                        <SettingsIcon fontSize="large"/>
                     </IconButton>
-                    <Typography variant="h1" noWrap className={classes.title}>
-                        QuickList
-                    </Typography>
-                    {/* <span className={classes.title}>QuickList</span> */}
+
+                    <AppHeaderLogo />
+
+                    <NoteModalButton {...modalProps}/>
                 </Toolbar>
             </AppBar>
 
@@ -146,7 +178,7 @@ export default function Main({ darkMode, setDarkMode }) {
                 }}
             >
                 <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={handleDrawerState}>
                         <ChevronLeftIcon />
                     </IconButton>
                 </div>
@@ -159,7 +191,7 @@ export default function Main({ darkMode, setDarkMode }) {
                         <ListItemText primary="Legacy Site" />
                     </ListItem>
                     <ListItem>
-                        <DarkModeToggle {...darkModeProps}/>
+                        <DarkModeToggle {...toggleProps}/>
                     </ListItem>
                 </List>
             </Drawer>
@@ -168,7 +200,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
                 <div className={classes.drawerHeader} />
 
-                <NotesList {...darkModeProps}/>
+                <NotesList {...noteProps}/>
 
             </main>
         </div>

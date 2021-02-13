@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -17,9 +16,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-import LegacyNotes from '../Services/Database/LegacyNotes';
-import NoteStore from '../Services/Database/NoteStore';
-
 import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +27,6 @@ const useStyles = makeStyles((theme) => ({
     secondaryAction: {
         paddingRight: '0 !important',
     }
-}));
-
-const getItems = () => LegacyNotes.get().map((note, ind) => ({
-    id: `item-${ind}`,
-    primary: note,
-    secondary: ind % 2 === 0 ? `Whatever for ${ind}` : undefined,
 }));
 
 const reorder = (noteState, startIndex, endIndex) => {
@@ -63,26 +53,9 @@ const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
 
-const noteStore = new NoteStore();
-
-const NotesList = ({ darkMode, setDarkMode }) => {
+const NotesList = ({ darkMode, noteState, setNoteState }) => {
 
     const classes = useStyles();
-
-    const [noteState, setNoteState] = useState(getItems());
-
-    const updateLegacyStore = notes => {
-        const myObj = JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]));
-
-        window.localStorage.setItem('listConfig', myObj);
-    }
-
-    useEffect(() => {
-
-        updateLegacyStore(noteState);
-        noteStore.setNotes(noteState);
-
-    }, [noteState]);
 
     const onDragEnd = (result) => {
         // Drop zone is outside of the list
@@ -103,59 +76,64 @@ const NotesList = ({ darkMode, setDarkMode }) => {
         setNoteState([...noteState.filter(note => note.id !== item.id)]);
     }
 
-    return (
-        <div className={classes.root}>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <RootRef rootRef={provided.innerRef}>
-                            <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
-                                {noteState.map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                                        {(provided, snapshot) => (
-                                            <ListItem
-                                                className={classes.secondaryAction}
-                                                ContainerComponent="li"
-                                                ContainerProps={{ ref: provided.innerRef }}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}
-                                            >
-                                                <ListItemIcon>
-                                                    <NotesIcon style={getTextStyle(snapshot.isDragging, darkMode)}/>
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
-                                                    primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
-                                                    primary={item.primary}
-                                                    secondary={item.secondary}
-                                                />
-                                                <ListItemIcon>
-                                                    <IconButton>
-                                                        <EditIcon style={{color: darkMode ? '#08d2ff' : '#007bff'}}/>
-                                                    </IconButton>
-                                                </ListItemIcon>
-                                                <ListItemIcon onClick={ () => deleteNote(item) }>
-                                                    <IconButton>
-                                                        <DeleteForeverIcon style={{color: 'red'}}/>
-                                                    </IconButton>
-                                                </ListItemIcon>
-                                                <ListItemSecondaryAction />
-                                            </ListItem>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </List>
-                        </RootRef>
-                    )}
-                </Droppable>
-            </DragDropContext>
-        </div>
-    );
+    if(noteState === null) {
+        return null;
+    } else {
+
+        return (
+            <div className={classes.root}>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="droppable">
+                        {(provided, snapshot) => (
+                            <RootRef rootRef={provided.innerRef}>
+                                <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
+                                    {noteState.map((item, index) => (
+                                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            {(provided, snapshot) => (
+                                                <ListItem
+                                                    className={classes.secondaryAction}
+                                                    ContainerComponent="li"
+                                                    ContainerProps={{ ref: provided.innerRef }}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )}
+                                                >
+                                                    <ListItemIcon>
+                                                        <NotesIcon style={getTextStyle(snapshot.isDragging, darkMode)}/>
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary={item.primary}
+                                                        primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
+                                                        secondary={item.secondary}
+                                                        secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
+                                                    />
+                                                    <ListItemIcon>
+                                                        <IconButton>
+                                                            <EditIcon color="primary"/>
+                                                        </IconButton>
+                                                    </ListItemIcon>
+                                                    <ListItemIcon onClick={ () => deleteNote(item) }>
+                                                        <IconButton>
+                                                            <DeleteForeverIcon color="error"/>
+                                                        </IconButton>
+                                                    </ListItemIcon>
+                                                    <ListItemSecondaryAction />
+                                                </ListItem>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </List>
+                            </RootRef>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+        );
+    };
 }
 
 export default NotesList;

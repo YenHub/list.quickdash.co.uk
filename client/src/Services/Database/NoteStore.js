@@ -9,11 +9,15 @@ const noteStore = 'notes';
 class NoteStore {
 
     createNote = async (note) => {
-        const notes = await Store.getItem(noteStore);
-        if(notes) {
-            Store.setItem(noteStore, [...notes, note]);
-        } else {
-            Store.setItem(noteStore, [note]);
+        if(note) {
+            const notes = await Store.getItem(noteStore);
+            if(notes) {
+                note.id = `note-${++notes.length}`;
+                Store.setItem(noteStore, [...notes, note]);
+            } else {
+                note.id = `note-0`;
+                Store.setItem(noteStore, [note]);
+            }
         }
     };
 
@@ -28,11 +32,12 @@ class NoteStore {
 // const myStore = new NoteStore();
 
 // myStore.createNote('New Note').then( () => myStore.getNotes().then( notes => (console.log(notes), myStore.deleteNotes())) );
-
-// myStore.createNote({primary: 'Do this thing', secondary: 'This is not overly important but should get to it soon'});
+// Store.clear();
+//
+// myStore.createNote({id: 'note-0', primary: 'Do this thing', secondary: 'This is not overly important but should get to it soon'}).then( () =>
+//     myStore.createNote({id: 'note-1', primary: 'Do this thing', secondary: 'This is not overly important but should get to it soon'})
+// );
 
 // myStore.createNote('One Final Things');
-
-// Store.clear();
 
 export default NoteStore;
