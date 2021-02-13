@@ -1,0 +1,90 @@
+version:                   '3.1'
+
+services:
+ node-mysql:
+   container_name:         node-mysql
+   image:                  mysql:latest
+   command:                --default-authentication-plugin=mysql_native_password
+   restart:                unless-stopped
+   ports:
+     - 3389:3306
+   expose:
+     - 3306
+   env_file:
+     - .env
+   environment:
+     MYSQL_HOST:           localhost
+     MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
+     MYSQL_DATABASE:       ${DB_DATABASE}
+     MYSQL_USER:           ${DB_SERVICE_USER}
+     MYSQL_PASSWORD:       ${DB_SERVICE_USER_PASSWORD}
+   networks:
+     - server-network
+   volumes:
+     - ${MYSQL_HOST_VOLUME:-./docker_volumes/var/lib/mysql}:/var/lib/mysql
+   cap_add:
+     - SYS_NICE  # CAP_SYS_NICE
+
+ client-app:
+    container_name:        client-app
+    build:
+        context:           ./client
+    ports:
+      - 80:3000
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command:               "npm start"
+    stdin_open:            true
+    networks:
+      - client-network
+
+ server-app:
+    depends_on:
+     - node-mysql
+    container_name:        server-app
+    build:
+        context:           ./server
+    ports:
+      - 9000:9000
+    expose:
+      - 9000
+    env_file:
+        - .env
+    environment:
+      - NODE_ENV=development
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_SERVICE_USER}
+      - DB_PASSWORD=${DB_SERVICE_USER_PASSWORD}
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - server-network
+      - client-network
+
+ phpmyadmin:
+    image:                 phpmyadmin
+    container_name:        phpmyadmin
+    environment:
+      PMA_ARBITRARY:       1
+      PMA_HOST:            node-mysql
+      PMA_USER:            ${DB_USERNAME}
+      PMA_PASSWORD:        ${DB_PASSWORD}
+    restart:               unless-stopped
+    ports:
+     - 8080:80
+    volumes:
+      - /sessions
+    networks:
+      - server-network
+    env_file:
+      - .env
+
+networks:
+  client-network:
+  server-network:
+    driver:                bridge

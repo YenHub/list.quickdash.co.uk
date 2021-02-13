@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <META charset="utf-8">
+    <META http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Responsive Viewport -->
+    <META name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Meta Info -->
+    <META name="description" content="QuickList - A Quick Simple & Convenient List Maker">
+    <META name="author" content="Ian Gilkes | Wrangling with 0s & 1s Since The Eighties">
+
+    <title>QuickList | A Quick Simple List Maker</title>
+
+    <!-- Font Awesome ![defer] -->
+    <!-- <script src="./scripts/fa.js"></script> -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <!-- Bootstrap 4 Config -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./scripts/main.css">
+
+    <!-- Favicon Directory -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+
+    <style>
+        .beta {
+            position: fixed;
+            right: 3%;
+            bottom: 2%;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 0.6em 1.2em;
+        }
+        .beta:hover {
+            background-color: #007bff;
+        }
+        .beta-link {
+            text-decoration: none;
+        }
+        .beta-link:hover {
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <a class="beta-link" href='/'>
+        <span class="beta">
+            NEW: QuickList Beta
+            <i class="fas fa-external-link-alt fa-xs fa-pull-right"></i>
+        </span>
+    </a>
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h1 class="text-primary">
+            QuickList | A Cheeky Little List Maker
+        </h1>
+        <p>Create your own personal list below 😎</p>
+    </div>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top ">
+
+        <form id="entrySubmit" class="mx-auto my-2 d-inline w-75" action="" method="" onSubmit="return false;">
+            <div class="input-group">
+                <input id="entryField" class="form-control" type="text" placeholder="Add a new item...">
+                <span class="input-group-append">
+                    <button class="button expand btn btn-outline-primary" type="submit">
+                        <span>+</span>
+                        <span>+</span>
+                    </button>
+                </span>
+            </div>
+        </form>
+
+    </nav>
+
+    <div class="container my-3" id="noDrop" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+    <!-- Custom JS -->
+    <script src="./scripts/magic.js"></script>
+    <script src="./scripts/DragDropTouch.js"></script>
+
+    <script>
+        window.onload = () => {
+            $('.beta').addClass('shake');
+            setTimeout(function () {
+                $('.beta-link').removeClass('shake');
+            }, 850);
+        }
+    </script>
+
+
+</body>
+
+</html>

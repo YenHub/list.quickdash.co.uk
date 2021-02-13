@@ -10,3 +10,4 @@ node_modules/
 /api/.env
 .env.test
 .env.prod
+.env
