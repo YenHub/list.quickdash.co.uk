@@ -4,49 +4,24 @@ const Store = localForage.createInstance({
     name: "toDos"
 });
 
-const Logger = msg => {
-    console.log(`%c
-
-    ${msg}
-
-        `, 'color: lightblue;font-weight: bold; font-size: 15px');
-}
-
 const noteStore = 'notes';
 
 class NoteStore {
 
-    storeName = 'notes';
-
-    constructor() {
-        this.store = Store;
-    }
-
-    init = async () => {
-        if(!this.store.length()) {
-
-        }
-    }
-
-    // updateNote = async (note) => {
-    //     const notes = await this.store.getItem(noteStore);
-    //
-    // }
-
     createNote = async (note) => {
-        const notes = await this.store.getItem(noteStore);
+        const notes = await Store.getItem(noteStore);
         if(notes) {
-            this.store.setItem(noteStore, [...notes, note]);
+            Store.setItem(noteStore, [...notes, note]);
         } else {
-            this.store.setItem(noteStore, [note]);
+            Store.setItem(noteStore, [note]);
         }
     };
 
-    getNotes = () => this.store.getItem(noteStore);
+    getNotes = () => Store.getItem(noteStore);
 
-    setNotes = (notes) => this.store.setItem(noteStore, notes);
+    setNotes = (notes) => Store.setItem(noteStore, notes);
 
-    deleteNotes = () => this.store.clear();
+    deleteNotes = () => Store.clear();
 
 };
 

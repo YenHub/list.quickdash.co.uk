@@ -19,7 +19,6 @@ const App = () => {
     const [darkMode, setDarkMode] = useState(getDarkMode());
 
     useEffect( () => {
-        console.log(darkMode);
         window.localStorage.setItem('darkMode', darkMode);
     }, [darkMode])
 
