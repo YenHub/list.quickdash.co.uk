@@ -27,6 +27,10 @@ class NoteStore {
 
     deleteNotes = () => Store.clear();
 
+    setLegacyNotes = notes => {
+        window.localStorage.setItem('listConfig', JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)])));
+    };
+
 };
 
 // const myStore = new NoteStore();

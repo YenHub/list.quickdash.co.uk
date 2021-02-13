@@ -53,7 +53,7 @@ const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
 
-const NotesList = ({ darkMode, noteState, setNoteState }) => {
+const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId }) => {
 
     const classes = useStyles();
 
@@ -110,7 +110,7 @@ const NotesList = ({ darkMode, noteState, setNoteState }) => {
                                                         secondary={item.secondary}
                                                         secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
                                                     />
-                                                    <ListItemIcon>
+                                                    <ListItemIcon onClick={() => setEditNoteId(item.id)}>
                                                         <IconButton>
                                                             <EditIcon color="primary"/>
                                                         </IconButton>

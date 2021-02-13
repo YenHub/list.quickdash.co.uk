@@ -11,7 +11,12 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { isMobile } from 'react-device-detect';
 
-const DescInput = ({noteDesc, setNoteDesc}) => {
+const DescInput = ({ noteState, editNoteId, noteDesc, setNoteDesc }) => {
+
+    let value = '';
+    if (editNoteId) {
+        value = noteState.filter(note => note.id === editNoteId)[0]['secondary'];
+    }
 
     const handleDescChange = (evt) => {
         setNoteDesc(evt.target.value);
@@ -25,11 +30,17 @@ const DescInput = ({noteDesc, setNoteDesc}) => {
             onChange={handleDescChange}
             multiline
             rows={6}
+            defaultValue={value}
         />
     );
 }
 
-const TitleInput = ({noteTitle, setNoteTitle}) => {
+const TitleInput = ({ noteState, editNoteId, noteTitle, setNoteTitle }) => {
+
+    let value = '';
+    if (editNoteId) {
+        value = noteState.filter(note => note.id === editNoteId)[0]['primary'];
+    }
 
     const handleTitleChange = (evt) => {
         setNoteTitle(evt.target.value);
@@ -41,12 +52,13 @@ const TitleInput = ({noteTitle, setNoteTitle}) => {
             fullWidth
             label="Note Title"
             variant="outlined"
+            defaultValue={value}
             onChange={handleTitleChange}
         />
     );
 };
 
-const SubmitButton = ({createNote, noteTitle}) => (
+const SubmitButton = ({ noteState, editNoteId, createNote, noteTitle }) => (
     <Button
         aria-label="Create Note"
         edge="end"
@@ -54,13 +66,28 @@ const SubmitButton = ({createNote, noteTitle}) => (
         variant="outlined"
         color="primary"
         fullWidth
-        disabled={!noteTitle.length}
+        disabled={noteTitle.length === 0}
     >
         CREATE NOTE
     </Button>
 );
 
-const NoteModal = ({ darkMode, noteState, setNoteState, modalOpen, setModalOpen }) => {
+const NoteModal = ({
+    darkMode,
+    noteState,
+    setNoteState,
+    modalOpen,
+    setModalOpen,
+    editNoteId,
+    setEditNoteId,
+}) => {
+
+    let editingNote, editingNoteIndex;
+
+    if (editNoteId) {
+        editingNoteIndex = noteState.findIndex(note => note.id === editNoteId);
+        editingNote = noteState[editingNoteIndex];
+    }
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -85,31 +112,38 @@ const NoteModal = ({ darkMode, noteState, setNoteState, modalOpen, setModalOpen 
 
     const classes = useStyles();
 
-    const [noteDesc, setNoteDesc] = useState('');
-    const descProps = {noteDesc, setNoteDesc};
+    const noteProps = { noteState, editNoteId };
 
-    const [noteTitle, setNoteTitle] = useState('');
-    const titleProps = {noteTitle, setNoteTitle};
+    const [noteDesc, setNoteDesc] = useState(editingNote?.secondary || '');
+    const descProps = { ...noteProps, noteDesc, setNoteDesc };
+
+    const [noteTitle, setNoteTitle] = useState(editingNote?.primary || '');
+    const titleProps = { ...noteProps, noteTitle, setNoteTitle };
 
     const handleOpen = () => {
         setModalOpen(true);
     };
 
     const handleClose = () => {
+        setEditNoteId(false);
         setModalOpen(false);
     };
 
     const createNote = (evt) => {
         evt.preventDefault();
-        if(!noteTitle.length) {
+        if (!noteTitle.length) {
             handleClose();
             return false;
         }
-        if(noteState?.length) {
+        if (editNoteId) {
+            let indOfNote = noteState.findIndex(note => note.id === editNoteId);
+            noteState[indOfNote] = { id: editNoteId, primary: noteTitle, secondary: `${noteDesc}` };
+            setNoteState([...noteState]);
+        } else if (noteState?.length) {
             const id = `note-${noteState.length}`;
-            setNoteState([...noteState, {id, primary: noteTitle, secondary: `${noteDesc}`}]);
+            setNoteState([...noteState, { id, primary: noteTitle, secondary: `${noteDesc}` }]);
         } else {
-            setNoteState([{id: 'note-0', primary: noteTitle, secondary: `${noteDesc}`}]);
+            setNoteState([{ id: 'note-0', primary: noteTitle, secondary: `${noteDesc}` }]);
         }
         handleClose();
     }
@@ -142,7 +176,7 @@ const NoteModal = ({ darkMode, noteState, setNoteState, modalOpen, setModalOpen 
                 />
             </IconButton>
             <Modal
-                open={modalOpen}
+                open={!!editNoteId || modalOpen}
                 onClose={handleClose}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"

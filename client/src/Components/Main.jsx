@@ -2,7 +2,6 @@ import 'typeface-dosis';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 import {
     Drawer,
@@ -105,47 +104,43 @@ export default function Main({ darkMode, setDarkMode }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
+
     const [noteState, setNoteState] = useState(null);
     const noteProps = { darkMode, noteState, setNoteState };
-    const toggleProps = {...noteProps, setDarkMode};
+    const toggleProps = { ...noteProps, setDarkMode };
+
     const [modalOpen, setModalOpen] = useState(false);
-    const modalProps = { ...noteProps, modalOpen, setModalOpen, setDarkMode };
+    const [editNoteId, setEditNoteId] = useState(false);
+    const modalProps = { ...noteProps, modalOpen, setModalOpen, setDarkMode, editNoteId, setEditNoteId };
 
     const getItems = async () => setNoteState(await noteStore.getNotes());
 
-    useEffect( () => {
-        if(!noteState) {
+    const handleDrawerState = () => setOpen(open => !open);
+
+    useEffect(() => {
+        if (!noteState) {
             getItems();
         }
     }, []);
 
-    // TODO: Move this into NoteStore
-    const updateLegacyStore = notes => {
-        const myObj = JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]));
-        window.localStorage.setItem('listConfig', myObj);
-    }
-
     useEffect(() => {
 
-        if(noteState) {
-            updateLegacyStore(noteState);
+        if (noteState) {
+            noteStore.setLegacyNotes(noteState);
             noteStore.setNotes(noteState);
         }
 
     }, [noteState]);
 
-    const AppHeaderLogo = () => (
-        <Typography variant="h1" noWrap className={classes.title}>
-            QuickList
-        </Typography>
-    );
+    const AppHeader = () => {
 
-    const handleDrawerState = () => {
-        setOpen( open => !open);
-    }
+        const AppHeaderLogo = () => (
+            <Typography variant="h1" noWrap className={classes.title}>
+                QuickList
+            </Typography>
+        );
 
-    return (
-        <div className={classes.root}>
+        return (
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
@@ -167,7 +162,35 @@ export default function Main({ darkMode, setDarkMode }) {
                     <NoteModalButton {...modalProps}/>
                 </Toolbar>
             </AppBar>
+        );
 
+    };
+
+    const AppMenuDrawer = () => {
+
+        const DrawerHeader = () => (
+            <div className={classes.drawerHeader}>
+                <IconButton onClick={handleDrawerState}>
+                    <ChevronLeftIcon />
+                </IconButton>
+            </div>
+        );
+
+        const MenuItems = () => (
+            <List>
+                <ListItem button component="a" href="/legacy">
+                    <ListItemIcon>
+                        <HistoryIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Legacy Site" />
+                </ListItem>
+                <ListItem>
+                    <DarkModeToggle {...toggleProps}/>
+                </ListItem>
+            </List>
+        );
+
+        return (
             <Drawer
                 className={classes.drawer}
                 variant="persistent"
@@ -177,32 +200,25 @@ export default function Main({ darkMode, setDarkMode }) {
                     paper: classes.drawerPaper,
                 }}
             >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerState}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
+                <DrawerHeader />
                 <Divider />
-                <List>
-                    <ListItem button component="a" href="/legacy">
-                        <ListItemIcon>
-                            <HistoryIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Legacy Site" />
-                    </ListItem>
-                    <ListItem>
-                        <DarkModeToggle {...toggleProps}/>
-                    </ListItem>
-                </List>
+                <MenuItems />
             </Drawer>
+        );
+    };
 
-            <main className={clsx(classes.content, { [classes.contentShift]: open, })} >
+    const MainContentWindow = () => (
+        <main className={clsx(classes.content, { [classes.contentShift]: open, })} >
+            <div className={classes.drawerHeader} />
+            <NotesList setEditNoteId={setEditNoteId} {...noteProps}/>
+        </main>
+    );
 
-                <div className={classes.drawerHeader} />
-
-                <NotesList {...noteProps}/>
-
-            </main>
+    return (
+        <div className={classes.root}>
+            <AppHeader />
+            <AppMenuDrawer />
+            <MainContentWindow />
         </div>
     );
 }
