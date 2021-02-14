@@ -6,11 +6,11 @@
 
 ## What is it?
 
+[![demoImage]](https://list.quickdash.co.uk)
+
 The original QuickList was written around 2013 utilising the then recently released and extremely popular [Bootstrap 3.0] library.
 
 [Here is a live demo] of the original app released in 2014
-
-[![demoImage]](https://list.quickdash.co.uk)
 
 ## Why QuickList?
 
@@ -110,7 +110,7 @@ _This file is .gitignored_
 
 ```.env
 DB_PORT=3306
-DB_USERNAME=root
+DB_USERNAME=root    
 DB_SERVICE_USER=NodeUser
 DB_PASSWORD=NodeUserPassword
 DB_DATABASE=nodeDB
@@ -227,12 +227,6 @@ docker start node-mysql
 docker exec -it node-mysql mysql -uroot -p
 ```
 
-### Backing up your database
-
-The database is defined in `./docker-compose.yml`
-
-The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
-
 ## Project To Do
 
 - [ ] Make it better
@@ -310,3 +304,9 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
 ### Localhost keeps redirecting to https://
 
 This can be annoying, simply visit chrome://net-internals#hsts and delete "localhost" by entering it into the delete field at the bottom
+
+### Backing up your database
+
+The database is defined in `./docker-compose.yml`
+
+The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
