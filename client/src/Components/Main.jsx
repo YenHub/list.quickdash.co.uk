@@ -24,7 +24,7 @@ import { isMobile } from 'react-device-detect';
 
 import NotesList from './NotesList';
 import DarkModeToggle from './Custom/DarkModeToggle';
-import NoteModalButton from './Custom/NoteModal/Modal'
+import NoteModal from './Custom/NoteModal/Modal'
 
 import NoteStore from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
@@ -111,7 +111,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editNoteId, setEditNoteId] = useState(false);
-    const modalProps = { ...noteProps, modalOpen, setModalOpen, setDarkMode, editNoteId, setEditNoteId };
+    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const getItems = async () => setNoteState(await noteStore.getNotes());
 
@@ -159,7 +159,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
                     <AppHeaderLogo />
 
-                    <NoteModalButton {...modalProps}/>
+                    <NoteModal {...modalProps}/>
                 </Toolbar>
             </AppBar>
         );

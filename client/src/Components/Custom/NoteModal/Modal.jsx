@@ -1,79 +1,35 @@
 import { useState } from 'react';
 
-import {
-    Modal,
-    IconButton,
-    Button,
-    TextField,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-
 import { isMobile } from 'react-device-detect';
 
-const DescInput = ({ noteState, editNoteId, noteDesc, setNoteDesc }) => {
+import { makeStyles } from '@material-ui/core/styles';
+import { Modal, IconButton, } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-    let value = '';
-    if (editNoteId) {
-        value = noteState.filter(note => note.id === editNoteId)[0]['secondary'];
-    }
+import { TitleInput, DescInput, SubmitButton } from './Components/CustomInputs';
 
-    const handleDescChange = (evt) => {
-        setNoteDesc(evt.target.value);
-    };
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            marginBottom: theme.spacing(2),
+        },
+    },
+    paper: {
+        position: 'absolute',
+        width: isMobile ? '90%' : 675,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
+}));
 
-    return (
-        <TextField
-            fullWidth
-            label="Note Description (opt)"
-            variant="outlined"
-            onChange={handleDescChange}
-            multiline
-            rows={6}
-            defaultValue={value}
-        />
-    );
-}
-
-const TitleInput = ({ noteState, editNoteId, noteTitle, setNoteTitle }) => {
-
-    let value = '';
-    if (editNoteId) {
-        value = noteState.filter(note => note.id === editNoteId)[0]['primary'];
-    }
-
-    const handleTitleChange = (evt) => {
-        setNoteTitle(evt.target.value);
-    };
-
-    return (
-        <TextField
-            autoFocus
-            fullWidth
-            label="Note Title"
-            variant="outlined"
-            defaultValue={value}
-            onChange={handleTitleChange}
-        />
-    );
+const modalStyle = {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
 };
 
-const SubmitButton = ({ noteState, editNoteId, createNote, noteTitle }) => (
-    <Button
-        aria-label="Create Note"
-        edge="end"
-        onClick={createNote}
-        variant="outlined"
-        color="primary"
-        fullWidth
-        disabled={noteTitle.length === 0}
-    >
-        CREATE NOTE
-    </Button>
-);
-
 const NoteModal = ({
-    darkMode,
     noteState,
     setNoteState,
     modalOpen,
@@ -82,106 +38,97 @@ const NoteModal = ({
     setEditNoteId,
 }) => {
 
-    let editingNote, editingNoteIndex;
-
-    if (editNoteId) {
-        editingNoteIndex = noteState.findIndex(note => note.id === editNoteId);
-        editingNote = noteState[editingNoteIndex];
-    }
-
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            '& > *': {
-                marginBottom: theme.spacing(2),
-            },
-        },
-        paper: {
-            position: 'absolute',
-            width: isMobile ? '90%' : 675,
-            backgroundColor: theme.palette.background.paper,
-            boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
-        },
-    }));
-
-    const modalStyle = {
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-    };
-
     const classes = useStyles();
 
-    const noteProps = { noteState, editNoteId };
+    const getNoteDetail = detail => {
+        let editingNote, editingNoteIndex;
 
-    const [noteDesc, setNoteDesc] = useState(editingNote?.secondary || '');
-    const descProps = { ...noteProps, noteDesc, setNoteDesc };
-
-    const [noteTitle, setNoteTitle] = useState(editingNote?.primary || '');
-    const titleProps = { ...noteProps, noteTitle, setNoteTitle };
-
-    const handleOpen = () => {
-        setModalOpen(true);
+        if (editNoteId) {
+            editingNoteIndex = noteState.findIndex(note => note.id === editNoteId);
+            editingNote = noteState[editingNoteIndex];
+        }
+        return editingNote?.[detail] || ''
     };
 
+    const [noteDesc, setNoteDesc] = useState(getNoteDetail('secondary'));
+    const descProps = { noteDesc, setNoteDesc };
+
+    const [noteTitle, setNoteTitle] = useState(getNoteDetail('primary'));
+    const titleProps = { noteTitle, setNoteTitle };
+
+    const handleOpen = () => setModalOpen(true);
+
     const handleClose = () => {
-        setEditNoteId(false);
         setModalOpen(false);
+        setEditNoteId(false);
+    };
+
+    const editExistingNote = editNoteId => {
+        let indOfNote = noteState.findIndex(note => note.id === editNoteId);
+        let newNotes = [...noteState];
+        newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: `${noteDesc}` };
+        setNoteState([...newNotes]);
     };
 
     const createNote = (evt) => {
-        evt.preventDefault();
-        if (!noteTitle.length) {
-            handleClose();
-            return false;
-        }
-        if (editNoteId) {
-            let indOfNote = noteState.findIndex(note => note.id === editNoteId);
-            noteState[indOfNote] = { id: editNoteId, primary: noteTitle, secondary: `${noteDesc}` };
-            setNoteState([...noteState]);
-        } else if (noteState?.length) {
-            const id = `note-${noteState.length}`;
-            setNoteState([...noteState, { id, primary: noteTitle, secondary: `${noteDesc}` }]);
-        } else {
-            setNoteState([{ id: 'note-0', primary: noteTitle, secondary: `${noteDesc}` }]);
-        }
         handleClose();
-    }
+        evt.preventDefault();
+        switch (true) {
+            case !noteTitle.length:
+                return handleClose();
+            case !!editNoteId:
+                return editExistingNote(editNoteId);
+            case !!noteState?.length:
+                // HAS NOTES: APPEND NEW NOTE
+                const id = `note-${noteState.length}`;
+                setNoteState([...noteState, { id, primary: noteTitle, secondary: `${noteDesc}` }]);
+                break;
+            default:
+                setNoteState([{ id: 'note-0', primary: noteTitle, secondary: `${noteDesc}` }]);
+        }
+    };
 
-    const submitButtonProps = {
-        noteTitle,
-        createNote,
-    }
+    const submitButtonProps = { noteTitle, createNote };
 
-    const body = (
+    const CreateNoteButton = () => (
+        <IconButton
+            aria-label='Create New Note'
+            edge="end"
+            onClick={handleOpen}
+        >
+            <AddCircleOutlineIcon
+                color="primary"
+                fontSize="large"
+            />
+        </IconButton>
+    );
+
+    const ModalBody = () => (
         <div style={modalStyle} className={classes.paper}>
             <form style={{marginTop: '1em'}} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
                 <TitleInput {...titleProps} />
                 <DescInput {...descProps} />
                 <SubmitButton {...submitButtonProps} />
             </form>
+            <span id="new-note-modal" style={{display: 'none'}} aria-hidden="true">
+                New Note modal
+             </span>
+            <span id="new-note-modal-description" style={{display: 'none'}} aria-hidden="true">
+                Here you can set the Title and Description of your new note
+             </span>
         </div>
     );
 
     return (
         <div>
-            <IconButton
-                aria-label="Create Note"
-                edge="end"
-                onClick={handleOpen}
-            >
-                <AddCircleOutlineIcon
-                    color="primary"
-                    fontSize="large"
-                />
-            </IconButton>
+            <CreateNoteButton />
             <Modal
                 open={!!editNoteId || modalOpen}
                 onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
+                aria-labelledby="new-note-modal"
+                aria-describedby="new-note-modal-desc-description"
             >
-                {body}
+                {ModalBody()}
             </Modal>
         </div>
     );
