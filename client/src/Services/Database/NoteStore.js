@@ -21,11 +21,25 @@ class NoteStore {
         }
     };
 
-    getNotes = () => Store.getItem(noteStore);
+    getNotes = () => this.importLegacyNotes();
 
     setNotes = (notes) => Store.setItem(noteStore, notes);
 
     deleteNotes = () => Store.clear();
+
+    importLegacyNotes = async () => {
+        const notes = await Store.getItem(noteStore);
+        if(notes) {
+            return notes;
+        }
+        if(window.localStorage.getItem('listConfig') !== null) {
+            const legacyNotes = Object.values(JSON.parse(window.localStorage.getItem('listConfig')));
+            const mappedNotes = legacyNotes.map((note, id) => ({ id: `note-${id}`, primary: note, secondary: '' }));
+            await this.setNotes(mappedNotes);
+            return mappedNotes;
+        }
+        return [];
+    }
 
     setLegacyNotes = notes => {
         window.localStorage.setItem('listConfig', JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)])));
@@ -34,6 +48,8 @@ class NoteStore {
 };
 
 // const myStore = new NoteStore();
+//
+// myStore.importLegacyNotes();
 
 // myStore.createNote('New Note').then( () => myStore.getNotes().then( notes => (console.log(notes), myStore.deleteNotes())) );
 // Store.clear();
