@@ -10,10 +10,13 @@ In the project directory, you can run:
 
 ```bash
 # Launch docker container
+docker-compose up
+
+# (Optionally): Detached Mode
 docker-compose up -d
 
-# We can then also do (due to docker-componse `container_name: node-mysql`)
-docker start node-mysql
+# We can also run services individually (due to docker-compose `container_name: node-mysql`)
+docker start client-app
 
 # Exec commands in the container:
 docker exec -it [container_name] mysql -uroot -p

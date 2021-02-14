@@ -12,6 +12,16 @@ The original QuickList was written around 2013 utilising the then recently relea
 
 [![demoImage]](https://list.quickdash.co.uk)
 
+## Why QuickList?
+
+I love simple tools that help with organisation!
+
+The original goal of this app was to have a simple place to manage tasks at a high level without all the overhead and clutter that fantastic tools like Trello, Jira, Monday and many others have in common.
+
+In fact, this tool is designed to augment those services, and is intended to be used alongside them as a general organiser for all that chaos!
+
+There is nothing more powerful and easy to use than a good old fashioned checklist!
+
 ## Current Development
 
 This project was picked up again in January 2021 during National COVID lockdown as a cabin fever relief project.. 😜
@@ -20,7 +30,30 @@ The project is powered by Docker, ReactJS, ExpressJS & MySQL.
 
 The latest build uses ReactJS and Material-UI for the front end.
 
+The Front End is now fully React based, has a Dark Mode by default and uses localForage for simple client side storage.
+
 There is also a pre-configured phpMyAdmin instance to compliment the setup, all running in an isolated environment in the root of the project!
+
+## Future Development
+
+Long term I plan to add lots of new functionality, including:-
+
+- Server Side Features
+    - Ability to share lists via URL
+    - Share & collaborate live on a list
+    - Ability to embed a list as a html plugin
+- Front End Features
+    - Custom UI Colour Scheme
+    - List Item Colour Schemes
+    - List Item Dates
+        - Expires
+        - Due Date (inc Countdown)
+
+Just to mention a few... 😄
+
+Please share anything you think would be an awesome addition!
+
+The idea here though is to Keep It Simple, the intention here is to never grow beyond a simple interface!
 
 ## What does it do?
 
@@ -32,6 +65,7 @@ No mucking around! 🎉
 
 - [TLDR](#tldr)
 - [What is it?](#what-is-it)
+- [Why QuickList?](#why-quicklist)
 - [What does it do?](#what-does-it-do)
 - [Quick Start Usage](#quick-start-usage)
     - [Prerequisites](#prerequisites)
@@ -154,7 +188,7 @@ Whether using Docker or npm, you can access the API on http://localhost:9000
 #### Using Docker
 ```bash
 # From the root of the project
-docker-compose up node-sql
+docker-compose up node-sql -d && docker-compose up server-app
 ```
 
 #### Using NPM
@@ -269,7 +303,7 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
 
 [demoImage]: ./web-app.png
 [Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
-[Here is a live demo]: https://list.quickdash.co.uk
+[Here is a live demo]: https://list.quickdash.co.uk/legacy
 
 ## FAQs
 
