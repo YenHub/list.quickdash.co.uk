@@ -88,7 +88,7 @@ const NoteModal = ({
         }
     };
 
-    const submitButtonProps = { noteTitle, createNote };
+    const submitButtonProps = { noteTitle, createNote, editNoteId};
 
     const CreateNoteButton = () => (
         <IconButton

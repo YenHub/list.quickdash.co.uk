@@ -39,16 +39,19 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
     );
 };
 
-export const SubmitButton = ({ createNote, noteTitle }) => (
-    <Button
-        aria-label="Create Note"
-        edge="end"
-        onClick={createNote}
-        variant="outlined"
-        color="primary"
-        fullWidth
-        disabled={noteTitle.length === 0}
-    >
-        CREATE NOTE
-    </Button>
-);
+export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
+    const noteLabel = `${editNoteId ? 'Update' : 'Create'} Note`;
+    return (
+        <Button
+            aria-label={noteLabel}
+            edge="end"
+            onClick={createNote}
+            variant="outlined"
+            color="primary"
+            fullWidth
+            disabled={noteTitle.length === 0}
+        >
+            {noteLabel}
+        </Button>
+    );
+};
