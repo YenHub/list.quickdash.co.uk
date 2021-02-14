@@ -28,6 +28,15 @@ var pageActions = {
         $('.container button').each(function (i) {
             listConfig[i] = $(this).text();
         });
+        let legacyVal = window.localStorage.getItem('legacyMigrated');
+        if(legacyVal === null && legacyVal !== '1') {
+            window.localStorage.setItem('legacyMigrated', '1');
+            const message = 'NOTE\n\n' +
+                '⚠ Further changes to this list can not be migrated back ⚠';
+            alert(message);
+        } else {
+            window.localStorage.setItem('legacyMigrated', '0');
+        }
         return localStorage.setItem('listConfig', JSON.stringify(listConfig));
     }
 };

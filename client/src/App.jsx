@@ -26,11 +26,14 @@ const App = () => {
         palette: {
             type: darkMode ? 'dark' : 'light',
             primary: {
-                main: '#08d2ff',
+                main: darkMode ? '#08d2ff' : '#007bff',
             },
             secondary: {
                 main: '#66ffde',
             },
+            error: {
+                main: '#ff0000'
+            }
         },
         typography: {
             fontSize: 13,
