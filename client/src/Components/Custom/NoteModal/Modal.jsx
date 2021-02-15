@@ -78,7 +78,7 @@ const NoteModal = ({
         while (sanityCounter && hasDupes()) {
             id = uuid();
             sanityCounter--;
-            if(!sanityCounter === 1) alert('We did a boo boo... 😢\n\n');
+            if(sanityCounter === 1) alert('We did a boo boo... 😢');
         };
         return id;
     }
