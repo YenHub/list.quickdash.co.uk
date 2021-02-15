@@ -18,6 +18,7 @@
     "react-virtualized": "^9.22.3",
     "typeface-dosis": "^1.1.13",
     "typeface-roboto": "^1.1.13",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
