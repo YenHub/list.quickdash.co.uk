@@ -70,7 +70,7 @@ const NoteModal = ({
         setNoteState([...newNotes]);
     };
 
-    // Dupe IDs are implausable, not impossible...
+    // Dupe IDs are implausible, not impossible...
     const getUniqueId = () => {
         let id = uuid();
         const hasDupes = () => noteState.some(note => note.id === id);
