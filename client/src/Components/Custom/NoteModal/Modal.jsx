@@ -88,6 +88,7 @@ const NoteModal = ({
         evt.preventDefault();
         switch (true) {
             case !noteTitle.length:
+                // NO NOTE: Just close modal
                 return handleClose();
             case !!editNoteId:
                 return editExistingNote(editNoteId);
@@ -95,6 +96,7 @@ const NoteModal = ({
                 // HAS NOTES: APPEND NEW NOTE
                 return setNoteState([...noteState, { id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
             default:
+                // FIRST NOTE
                 return setNoteState([{ id: uuid(), primary: noteTitle, secondary: `${noteDesc}` }]);
         }
     };
