@@ -1,5 +1,5 @@
+import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
-
 import { isMobile } from 'react-device-detect';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -70,6 +70,19 @@ const NoteModal = ({
         setNoteState([...newNotes]);
     };
 
+    // Dupe IDs are implausable, not impossible...
+    const getUniqueId = () => {
+        let id = uuid();
+        const hasDupes = () => noteState.some(note => note.id === id);
+        let sanityCounter = 5;
+        while (sanityCounter && hasDupes()) {
+            id = uuid();
+            sanityCounter--;
+            if(!sanityCounter === 1) alert('We did a boo boo... 😢\n\n');
+        };
+        return id;
+    }
+
     const createNote = (evt) => {
         handleClose();
         evt.preventDefault();
@@ -80,15 +93,13 @@ const NoteModal = ({
                 return editExistingNote(editNoteId);
             case !!noteState?.length:
                 // HAS NOTES: APPEND NEW NOTE
-                const id = `note-${noteState.length}`;
-                setNoteState([...noteState, { id, primary: noteTitle, secondary: `${noteDesc}` }]);
-                break;
+                return setNoteState([...noteState, { id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
             default:
-                setNoteState([{ id: 'note-0', primary: noteTitle, secondary: `${noteDesc}` }]);
+                return setNoteState([{ id: uuid(), primary: noteTitle, secondary: `${noteDesc}` }]);
         }
     };
 
-    const submitButtonProps = { noteTitle, createNote, editNoteId};
+    const submitButtonProps = { noteTitle, createNote, editNoteId };
 
     const CreateNoteButton = () => (
         <IconButton
