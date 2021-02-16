@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -7,6 +6,7 @@ import { Modal, IconButton, } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton } from './Components/CustomInputs';
+import { getUniqueId } from '../../../Services/UUID';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -70,19 +70,6 @@ const NoteModal = ({
         setNoteState([...newNotes]);
     };
 
-    // Dupe IDs are implausible, not impossible...
-    const getUniqueId = () => {
-        let id = uuid();
-        const hasDupes = () => noteState.some(note => note.id === id);
-        let sanityCounter = 5;
-        while (sanityCounter && hasDupes()) {
-            id = uuid();
-            sanityCounter--;
-            if(sanityCounter === 1) alert('We did a boo boo... 😢');
-        };
-        return id;
-    }
-
     const createNote = (evt) => {
         handleClose();
         evt.preventDefault();
@@ -94,10 +81,10 @@ const NoteModal = ({
                 return editExistingNote(editNoteId);
             case !!noteState?.length:
                 // HAS NOTES: APPEND NEW NOTE
-                return setNoteState([...noteState, { id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
+                return setNoteState([...noteState, { id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }]);
             default:
                 // FIRST NOTE
-                return setNoteState([{ id: uuid(), primary: noteTitle, secondary: `${noteDesc}` }]);
+                return setNoteState([{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
         }
     };
 

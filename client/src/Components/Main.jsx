@@ -24,6 +24,7 @@ import { isMobile } from 'react-device-detect';
 
 import NotesList from './NotesList';
 import DarkModeToggle from './Custom/DarkModeToggle';
+import { DeleteNotes } from './Custom/ExportButtons';
 import NoteModal from './Custom/NoteModal/Modal'
 
 import NoteStore from '../Services/Database/NoteStore';
@@ -183,6 +184,9 @@ export default function Main({ darkMode, setDarkMode }) {
                         <HistoryIcon />
                     </ListItemIcon>
                     <ListItemText primary="Legacy Site" />
+                </ListItem>
+                <ListItem>
+                    <DeleteNotes noteState={noteState} setNoteState={setNoteState}/>
                 </ListItem>
                 <ListItem>
                     <DarkModeToggle {...toggleProps}/>
