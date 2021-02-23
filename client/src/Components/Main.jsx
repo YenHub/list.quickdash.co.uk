@@ -32,6 +32,8 @@ const noteStore = new NoteStore();
 
 const drawerWidth = 240;
 
+const showGatedFeatures = process.env.NODE_ENV === 'development';
+
 export default function Main({ darkMode, setDarkMode }) {
 
     const useStyles = makeStyles((theme) => ({
@@ -124,14 +126,7 @@ export default function Main({ darkMode, setDarkMode }) {
         }
     }, []);
 
-    useEffect(() => {
-
-        if (noteState) {
-            noteStore.setLegacyNotes(noteState);
-            noteStore.setNotes(noteState);
-        }
-
-    }, [noteState]);
+    useEffect( () => noteStore.setNotes(noteState), [noteState] );
 
     const AppHeader = () => {
 
@@ -169,6 +164,11 @@ export default function Main({ darkMode, setDarkMode }) {
 
     const AppMenuDrawer = () => {
 
+        const handleLegacyClick = () => {
+            let navToLegacySite = () => window.location.href = '/legacy';
+            noteStore.setLegacyNotes(noteState).then(navToLegacySite);
+        }
+
         const DrawerHeader = () => (
             <div className={classes.drawerHeader}>
                 <IconButton onClick={handleDrawerState}>
@@ -177,20 +177,28 @@ export default function Main({ darkMode, setDarkMode }) {
             </div>
         );
 
+        const ImportListItem = () => (
+            <ListItem>
+                <ImportButton noteState={noteState} setNoteState={setNoteState}/>
+            </ListItem>
+        );
+
+        const ExportListItem = () => (
+            <ListItem>
+                <ExportButton noteState={noteState} setNoteState={setNoteState}/>
+            </ListItem>
+        );
+
         const MenuItems = () => (
             <List>
-                <ListItem button component="a" href="/legacy">
+                <ListItem button component="a" href="/legacy" onClick={handleLegacyClick}>
                     <ListItemIcon>
                         <HistoryIcon />
                     </ListItemIcon>
                     <ListItemText primary="Legacy Site" />
                 </ListItem>
-                <ListItem>
-                    <ExportButton noteState={noteState}/>
-                </ListItem>
-                <ListItem>
-                    <ImportButton noteState={noteState} setNoteState={setNoteState}/>
-                </ListItem>
+                {showGatedFeatures ? <ExportListItem /> : null}
+                {showGatedFeatures ? <ImportListItem /> : null}
                 <ListItem>
                     <DeleteNotes noteState={noteState} setNoteState={setNoteState}/>
                 </ListItem>

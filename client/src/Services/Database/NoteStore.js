@@ -31,8 +31,7 @@ class NoteStore {
         const notes = await Store.getItem(noteStore);
         if(notes) {
             return notes;
-        }
-        if(window.localStorage.getItem('listConfig') !== null) {
+        } else if(window.localStorage.getItem('listConfig') !== null) {
             const legacyNotes = Object.values(JSON.parse(window.localStorage.getItem('listConfig')));
             const mappedNotes = legacyNotes.map((note, id) => ({ id: `note-${id}`, primary: note, secondary: '' }));
             await this.setNotes(mappedNotes);
@@ -41,8 +40,8 @@ class NoteStore {
         return [];
     }
 
-    setLegacyNotes = notes => {
-        window.localStorage.setItem('listConfig', JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)])));
+    setLegacyNotes = async notes => {
+        return window.localStorage.setItem('listConfig', JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)])));
     };
 
 };
