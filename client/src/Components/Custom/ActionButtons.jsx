@@ -20,7 +20,7 @@ const CustomButton = ({ ariaLabel, onClick, disabled, type }) => (
 export const DeleteNotes = ({ noteState, setNoteState }) => {
 
     const clearNotes = () => {
-        let shouldDelete = window.confirm('Delete All Notes:\n\nAre you sure??');
+        let shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
         if (!shouldDelete) {
             return false;
         }

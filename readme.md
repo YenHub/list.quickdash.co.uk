@@ -261,11 +261,13 @@ docker exec -it node-mysql mysql -uroot -p
                 - [ ] View
                 - [ ] Edit / Delete
     - [ ] UI/UX
+        - [ ] Interaction Modal
+            - [ ] Delete Modal
         - [ ] List Items
             - [x] Add edit note functionality
             - [ ] Add MD Ability for list item text secondary
         - [ ] Menu Items
-            - [ ] Delete all notes button
+            - [x] Delete all notes button
             - [ ] Add colour picker for UI
         - [x] DND
             - [x] Looks odd when dragging on mobile?
