@@ -1,6 +1,6 @@
 import 'typeface-dosis';
-import { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
