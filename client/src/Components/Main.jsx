@@ -120,11 +120,11 @@ export default function Main({ darkMode, setDarkMode }) {
 
     const handleDrawerState = () => setOpen(open => !open);
 
-    useEffect(() => {
-        if (!noteState) {
-            getItems();
-        }
-    }, []);
+    const attemptImport = () => !noteState && getItems();
+
+    // Were using this emtpy [] purposefully and with intent 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(attemptImport, []);
 
     useEffect( () => noteStore.setNotes(noteState), [noteState] );
 
