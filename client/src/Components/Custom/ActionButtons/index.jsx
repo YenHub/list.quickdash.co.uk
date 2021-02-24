@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 
-import { getUniqueId } from '../../Services/UUID';
-import { downloadFile } from '../../Services/BrowserUtils';
+import { getUniqueId } from '../../../Services/UUID';
+import { downloadFile } from '../../../Services/BrowserUtils';
 
 const CustomButton = ({ ariaLabel, onClick, disabled, type }) => (
     <Button
