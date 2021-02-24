@@ -25,7 +25,7 @@ import { isMobile } from 'react-device-detect';
 import NotesList from './NotesList';
 import DarkModeToggle from './Custom/DarkModeToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Custom/ActionButtons';
-import NoteModal from './Custom/NoteModal/Modal'
+import CreateNoteModal from './Custom/CreateNoteModal'
 
 import NoteStore from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
@@ -155,7 +155,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
                     <AppHeaderLogo />
 
-                    <NoteModal {...modalProps}/>
+                    <CreateNoteModal {...modalProps}/>
                 </Toolbar>
             </AppBar>
         );
