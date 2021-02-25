@@ -53,7 +53,8 @@ const App = () => {
         <div
             style={{
                 display: 'flex',
-                height: 'calc(100vh)'
+                height: 'calc(100vh)',
+                overflow: 'hidden',
             }}
         >
             <MuiThemeProvider theme={theme}>
