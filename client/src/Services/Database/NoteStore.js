@@ -4,6 +4,19 @@ const Store = localForage.createInstance({
     name: "toDos"
 });
 
+const DefaultNotes = [{
+        id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
+        primary: 'Welcome to QuickList',
+        secondary: '• Create your own simple lists to help organise the chaos! \n' +
+            '• Your list is stored locally on your device 😎',
+    },
+    {
+        id: 'bca2f4a9-d510-4d6e-9b47-28c9fcc8ca07',
+        primary: 'Use the icons to edit or delete this note',
+        secondary: 'Or, create new notes using the ➕ icon',
+    }
+];
+
 const noteStore = 'notes';
 
 class NoteStore {
@@ -21,28 +34,36 @@ class NoteStore {
         }
     };
 
-    getNotes = () => this.importLegacyNotes();
+    getNotes = async () => {
+        const notes = await Store.getItem(noteStore);
+        switch (true) {
+            case (notes?.length > 0):
+                // Existing Notes Found
+                return notes;
+            case (window.localStorage.getItem('listConfig') !== null):
+                // Legacy Notes Found
+                const mappedNotes = await this.#getLegacyNotes();
+                return mappedNotes;
+            default:
+                return DefaultNotes;
+        }
+    };
 
     setNotes = (notes) => Store.setItem(noteStore, notes);
 
     deleteNotes = () => Store.clear();
 
-    importLegacyNotes = async () => {
-        const notes = await Store.getItem(noteStore);
-        if(notes) {
-            return notes;
-        } else if(window.localStorage.getItem('listConfig') !== null) {
-            const legacyNotes = Object.values(JSON.parse(window.localStorage.getItem('listConfig')));
-            const mappedNotes = legacyNotes.map((note, id) => ({ id: `note-${id}`, primary: note, secondary: '' }));
-            await this.setNotes(mappedNotes);
-            return mappedNotes;
-        }
-        return [];
-    }
+    setLegacyNotes = async notes => window.localStorage.setItem(
+        'listConfig',
+        JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]))
+    );
 
-    setLegacyNotes = async notes => {
-        return window.localStorage.setItem('listConfig', JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)])));
-    };
+    #getLegacyNotes = async () => {
+        const legacyNotes = Object.values(JSON.parse(window.localStorage.getItem('listConfig')));
+        const mappedNotes = legacyNotes.map((note, id) => ({ id: `note-${id}`, primary: note, secondary: '' }));
+        window.localStorage.removeItem('listConfig');
+        return await this.setNotes(mappedNotes);
+    }
 
 };
 
