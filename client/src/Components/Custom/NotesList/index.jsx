@@ -7,14 +7,14 @@ import {
     ListItemIcon,
     IconButton,
     ListItemSecondaryAction
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import RootRef from "@material-ui/core/RootRef";
+import RootRef from '@material-ui/core/RootRef';
 import NotesIcon from '@material-ui/icons/Notes';
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { isMobile } from 'react-device-detect';
 
@@ -76,7 +76,7 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId }) => {
         setNoteState([...noteState.filter(note => note.id !== item.id)]);
     }
 
-    if(noteState === null) {
+    if (noteState === null) {
         return null;
     } else {
 

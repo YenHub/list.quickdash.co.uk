@@ -22,7 +22,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { isMobile } from 'react-device-detect';
 
-import NotesList from './NotesList';
+import NotesList from './Custom/NotesList';
 import DarkModeToggle from './Custom/DarkModeToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Custom/ActionButtons';
 import CreateNoteModal from './Custom/CreateNoteModal'
