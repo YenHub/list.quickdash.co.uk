@@ -1,9 +1,9 @@
+import './RootCSS.css';
 import 'typeface-roboto';
+import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useState, useEffect } from 'react';
-import './RootCSS.css';
-import Main from './Components/Main';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { AutoSizer } from 'react-virtualized';
 
