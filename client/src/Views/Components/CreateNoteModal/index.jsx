@@ -80,8 +80,8 @@ const CreateNoteModal = ({
             case !!editNoteId:
                 return editExistingNote(editNoteId);
             case !!noteState?.length:
-                // HAS NOTES: APPEND NEW NOTE
-                return setNoteState([...noteState, { id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }]);
+                // HAS NOTES: PREPEND NEW NOTE
+                return setNoteState([{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState]);
             default:
                 // FIRST NOTE
                 return setNoteState([{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
