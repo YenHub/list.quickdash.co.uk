@@ -22,10 +22,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { isMobile } from 'react-device-detect';
 
-import NotesList from './Custom/NotesList';
-import DarkModeToggle from './Custom/DarkModeToggle';
-import { ExportButton, ImportButton, DeleteNotes } from './Custom/ActionButtons';
-import CreateNoteModal from './Custom/CreateNoteModal'
+import NotesList from './Components/NotesList';
+import DarkModeToggle from './Components/DarkModeToggle';
+import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
+import CreateNoteModal from './Components/CreateNoteModal'
 
 import NoteStore from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
@@ -122,7 +122,7 @@ export default function Main({ darkMode, setDarkMode }) {
 
     const attemptImport = () => !noteState && getItems();
 
-    // Were using this emtpy [] purposefully and with intent 
+    // Were using this emtpy [] purposefully and with intent
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
 
