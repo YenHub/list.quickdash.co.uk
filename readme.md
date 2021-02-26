@@ -255,6 +255,7 @@ docker exec -it node-mysql mysql -uroot -p
         - [ ] Redux
         - [ ] TypeScript
         - [ ] Jest tests
+        - [ ] Service Workers
         - [ ] Auth
             - [ ] JWT
             - [ ] Basic User management
