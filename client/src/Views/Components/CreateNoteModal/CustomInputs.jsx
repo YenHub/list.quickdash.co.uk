@@ -28,7 +28,7 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
     return (
         <TextField
             fullWidth
-            label="Note Description (opt)"
+            label="Note Description (optional)"
             variant="outlined"
             onChange={handleDescChange}
             multiline
@@ -40,7 +40,7 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
 };
 
 export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
-    const noteLabel = `${editNoteId ? 'Update' : 'Create'} Note`;
+    const noteLabel = `${editNoteId ? 'Update' : 'Create'}`;
     return (
         <Button
             aria-label={noteLabel}
@@ -48,10 +48,26 @@ export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
             onClick={createNote}
             variant="outlined"
             color="primary"
-            fullWidth
             disabled={noteTitle.length === 0}
+            style={{width: '48%', marginLeft: '2%'}}
         >
             {noteLabel}
         </Button>
     );
 };
+
+export const CloseButton = ({ createNote, editNoteId}) => {
+    return (
+        <Button
+            aria-label={'Close Note'}
+            edge="end"
+            onClick={createNote}
+            variant="outlined"
+            color="default"
+            style={{color: 'lightGrey', width: '48%', marginRight: '2%'}}
+        >
+            {editNoteId ? 'Cancel' : 'Close'}
+        </Button>
+    );
+};
+

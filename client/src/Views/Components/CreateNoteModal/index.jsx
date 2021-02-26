@@ -4,8 +4,9 @@ import { isMobile } from 'react-device-detect';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, IconButton, } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
-import { TitleInput, DescInput, SubmitButton } from './CustomInputs';
+import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
 import { getUniqueId } from '../../../Services/UUID';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         width: isMobile ? '90%' : 675,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
+        padding: theme.spacing(2, 4, 1),
     },
 }));
 
@@ -78,12 +79,13 @@ const CreateNoteModal = ({
                 // NO NOTE: Just close modal
                 return handleClose();
             case !!editNoteId:
+                // HAS NOTE: Edit existing
                 return editExistingNote(editNoteId);
             case !!noteState?.length:
-                // HAS NOTES: PREPEND NEW NOTE
+                // HAS NOTES: Prepend new note
                 return setNoteState([{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState]);
             default:
-                // FIRST NOTE
+                // FIRST NOTE: Set initial state
                 return setNoteState([{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
         }
     };
@@ -108,6 +110,7 @@ const CreateNoteModal = ({
             <form style={{marginTop: '1em'}} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
                 <TitleInput {...titleProps} />
                 <DescInput {...descProps} />
+                <CloseButton {...submitButtonProps}/>
                 <SubmitButton {...submitButtonProps} />
             </form>
             <span id="new-note-modal" style={{display: 'none'}} aria-hidden="true">
