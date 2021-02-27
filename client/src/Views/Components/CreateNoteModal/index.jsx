@@ -56,14 +56,13 @@ const CreateNoteModal = ({
     const [noteTitle, setNoteTitle] = useState(getNoteDetail('primary'));
     const titleProps = { noteTitle, setNoteTitle };
 
-    const noteButtonProps = {setModalOpen, editNoteId};
-
     const handleOpen = () => setModalOpen(true);
-
     const handleClose = () => {
         setModalOpen(false);
         setEditNoteId(false);
     };
+
+    const noteButtonProps = {handleClose, editNoteId};
 
     const editExistingNote = editNoteId => {
         let indOfNote = noteState.findIndex(note => note.id === editNoteId);
