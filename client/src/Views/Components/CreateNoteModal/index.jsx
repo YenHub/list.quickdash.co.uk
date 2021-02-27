@@ -57,6 +57,8 @@ const CreateNoteModal = ({
     const [noteTitle, setNoteTitle] = useState(getNoteDetail('primary'));
     const titleProps = { noteTitle, setNoteTitle };
 
+    const noteButtonProps = {setModalOpen, editNoteId};
+
     const handleOpen = () => setModalOpen(true);
 
     const handleClose = () => {
@@ -110,7 +112,7 @@ const CreateNoteModal = ({
             <form style={{marginTop: '1em'}} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
                 <TitleInput {...titleProps} />
                 <DescInput {...descProps} />
-                <CloseButton {...submitButtonProps}/>
+                <CloseButton {...noteButtonProps}/>
                 <SubmitButton {...submitButtonProps} />
             </form>
             <span id="new-note-modal" style={{display: 'none'}} aria-hidden="true">

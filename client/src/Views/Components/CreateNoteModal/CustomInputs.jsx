@@ -56,12 +56,12 @@ export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
     );
 };
 
-export const CloseButton = ({ createNote, editNoteId}) => {
+export const CloseButton = ({ setModalOpen, editNoteId}) => {
     return (
         <Button
             aria-label={'Close Note'}
             edge="end"
-            onClick={createNote}
+            onClick={() => setModalOpen(false)}
             variant="outlined"
             color="default"
             style={{color: 'lightGrey', width: '48%', marginRight: '2%'}}
