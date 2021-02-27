@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         width: isMobile ? '100%' : '240px',
-        padding: `0 ${isMobile ? '30%': '4em' }`,
+        padding: `0 ${isMobile ? '30%': '2.5em' }`,
         bottom: '10px',
     },
     icon: {
