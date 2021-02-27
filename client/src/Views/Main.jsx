@@ -26,6 +26,7 @@ import NotesList from './Components/NotesList';
 import DarkModeToggle from './Components/DarkModeToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal'
+import ShareButtons from './Components/ShareButtons'
 
 import NoteStore from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
@@ -221,6 +222,7 @@ export default function Main({ darkMode, setDarkMode }) {
                 <DrawerHeader />
                 <Divider />
                 <MenuItems />
+                <ShareButtons />
             </Drawer>
         );
     };
