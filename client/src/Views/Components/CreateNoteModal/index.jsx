@@ -4,7 +4,6 @@ import { isMobile } from 'react-device-detect';
 import { makeStyles } from '@material-ui/core/styles';
 import { Modal, IconButton, } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
 import { getUniqueId } from '../../../Services/UUID';
@@ -96,7 +95,8 @@ const CreateNoteModal = ({
 
     const CreateNoteButton = () => (
         <IconButton
-            aria-label='Create New Note'
+            data-testid="createNote"
+            aria-label="Create New Note"
             edge="end"
             onClick={handleOpen}
         >
