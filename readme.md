@@ -6,33 +6,35 @@
 
 ## What is it?
 
+QuickList is a simple list and task management app, available for desktop or mobile as a PWA (progressive web app).
+
+The app sports a sexy dark mode by default, stores all your notes on your device, and even helpfully runs offline 😎
+
 [![demoImage]](https://list.quickdash.co.uk)
 
-The original QuickList was written around 2013 utilising the then recently released and extremely popular [Bootstrap 3.0] library.
+The original goal of this app was to have a simple place to manage tasks at a high level without all the overhead/clutter which great tools like Trello, Jira, Monday and many others share in common.
 
-[Here is a live demo] of the original app released in 2014
+In fact, this tool is actually designed to augment those services, and be used alongside them as a small task manager for all that chaos!
+
+There is nothing more powerful and easy to use than a good old fashioned list!
+
+QuickList is free to use, take it for a [test drive here]
 
 ## Why QuickList?
 
-I love simple tools that help with organisation!
+I love simple tools that help with organisation, and have a passion for building with technology too!
 
-The original goal of this app was to have a simple place to manage tasks at a high level without all the overhead and clutter that fantastic tools like Trello, Jira, Monday and many others have in common.
-
-In fact, this tool is designed to augment those services, and is intended to be used alongside them as a general organiser for all that chaos!
-
-There is nothing more powerful and easy to use than a good old fashioned checklist!
-
-## Current Development
+The original QuickList was written in around 2013, utilising the recently released, and extremely popular, [Bootstrap 3.0] library.
 
 This project was picked up again in January 2021 during National COVID lockdown as a cabin fever relief project.. 😜
 
-The project is powered by Docker, ReactJS, ExpressJS & MySQL.
+The project is now powered by Docker, ReactJS, ExpressJS & MySQL.
 
-The latest build uses ReactJS and Material-UI for the front end.
+The front end has been built using Material UI, and uses localForage for simple client side storage.
 
-The Front End is now fully React based, has a Dark Mode by default and uses localForage for simple client side storage.
+Everything runs in Docker right from the root of the project!
 
-There is also a pre-configured phpMyAdmin instance to compliment the setup, all running in an isolated environment in the root of the project!
+There is even a pre-configured phpMyAdmin instance to compliment the setup.
 
 ## Future Development
 
@@ -57,7 +59,7 @@ The idea here though is to Keep It Simple, the intention here is to never grow b
 
 ## What does it do?
 
-The idea behind this release was to modernise the project and provide an easy and fast full stack javascript environment, front end, back end and DB included!
+The idea behind this release of the project was to modernise the app and experiment with building an easy and fast full stack javascript environment, front end, back end and DB included!
 
 No mucking around! 🎉
 
@@ -66,6 +68,7 @@ No mucking around! 🎉
 - [TLDR](#tldr)
 - [What is it?](#what-is-it)
 - [Why QuickList?](#why-quicklist)
+- [Future Development](#future-development)
 - [What does it do?](#what-does-it-do)
 - [Quick Start Usage](#quick-start-usage)
     - [Prerequisites](#prerequisites)
@@ -299,7 +302,7 @@ docker exec -it node-mysql mysql -uroot -p
 
 [demoImage]: ./web-app.png
 [Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
-[Here is a live demo]: https://list.quickdash.co.uk/legacy
+[test drive here]: https://list.quickdash.co.uk/legacy
 
 ## FAQs
 
