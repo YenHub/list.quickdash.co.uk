@@ -4,4 +4,5 @@
 	Header set X-XSS-Protection "1; mode=block"
 	Header always append X-Frame-Options SAMEORIGIN
 	Header set X-Content-Type-Options nosniff
+    Header add Content-Security-Policy "default-src 'self';script-src 'self';style-src 'self' 'unsafe-inline';base-uri 'self'"
 </IfModule>

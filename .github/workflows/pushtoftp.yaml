@@ -17,7 +17,7 @@ jobs:
       run: |
         cd client
         npm install
-        npm run build
+        INLINE_RUNTIME_CHUNK=false npm run build
 
     - name: 🧪 Test Build
       run: |

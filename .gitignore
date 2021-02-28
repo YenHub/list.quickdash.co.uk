@@ -7,7 +7,6 @@ node_modules/
 
 # dotenv environment variables file
 /.env
-/api/.env
+/server/.env
 .env.test
 .env.prod
-.env
