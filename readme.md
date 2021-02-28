@@ -302,7 +302,7 @@ docker exec -it node-mysql mysql -uroot -p
 
 [demoImage]: ./web-app.png
 [Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
-[test drive here]: https://list.quickdash.co.uk/legacy
+[test drive here]: https://list.quickdash.co.uk/
 
 ## FAQs
 
