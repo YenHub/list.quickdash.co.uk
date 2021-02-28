@@ -64,7 +64,7 @@ function drag(ev) {
  * Drag Handler
  *
  * @param  {object}       ev              [Drop Event object]
- * @regEx                                 [Test Target ID to filter unwanted drop zones !#noDrop]
+ * @regEx                                 [Test Target ID to filter unwanted drop zones !#no-drop]
  * @param  {object prop}  data            [Source Target ID]
  * @param  {object prop}  dirB            [clientY - dirA = vertical travel direction]
  * @param  {ternary}      elemTarget      [Event Target is Div or inner button]
@@ -74,7 +74,7 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var evTarg = ev.target;
-    if(/noDrop/i.test(evTarg.id)) {
+    if(/no-drop/i.test(evTarg.id)) {
         return false;
     } else {
         var data = ev.dataTransfer.getData("targID");
@@ -110,7 +110,7 @@ function drop(ev) {
     }
 
     function entrySubmit(_string, _shake) {
-        var $ent = _string.trim() || $('#entryField').val().toString();
+        var $ent = _string.trim() || $('#entry-field').val().toString();
 
         if(!$ent) {
             return false;
@@ -147,7 +147,7 @@ function drop(ev) {
         //
         // console.groupEnd();
 
-        $('#entryField').val('');
+        $('#entry-field').val('');
 
         // Increment Note ID
         noteId++;
@@ -159,7 +159,7 @@ function drop(ev) {
 
         logMsg(':: QuickList Successful Launch :: ');
 
-        $('#entrySubmit').on('submit', function () {
+        $('#entry-submit').on('submit', function () {
             entrySubmit($(this).val());
         });
 
@@ -173,9 +173,9 @@ function drop(ev) {
 
         // Edit Note
         $('.container').on('click', '.edit, .fa-edit', function () {
-            animations.shake('#entryField', 850);
-            $("#entryField").focus();
-            $('#entryField').val($(this).closest('div').find('button').text());
+            animations.shake('#entry-field', 850);
+            $("#entry-field").focus();
+            $('#entry-field').val($(this).closest('div').find('button').text());
             $(this).closest('div').slideUp(500, function () {
                 $(this).remove();
                 pageActions.storeConfig();
@@ -183,7 +183,7 @@ function drop(ev) {
         });
 
         // Animations
-        $("#entryField").one('click focus touch', function () {
+        $("#entry-field").one('click focus touch', function () {
             // $('').css('visibility', 'hidden').slideUp(750);
             $('.jumbotron p,.jumbotron h1').slideUp(500, function () {
                 $('.jumbotron h1').text('QuickList').addClass('lg-font').fadeIn(150);
