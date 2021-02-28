@@ -28,7 +28,7 @@ export const DeleteNotes = ({ noteState, setNoteState }) => {
     };
 
     const buttonProps = {
-        ariaLabel: 'Delete Notes',
+        ariaLabel: 'Delete List',
         onClick: clearNotes,
         disabled: noteState?.length === 0,
         type: 'primary',

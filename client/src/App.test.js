@@ -17,7 +17,7 @@ test('Menu renders correctly', async () => {
     fireEvent.click(screen.getByTestId('menuButton'));
 
     // Wait for page to update with query text
-    const deleteNoteButton = screen.getByText(/(Delete Notes)/i);
+    const deleteNoteButton = screen.getByText(/(Delete List)/i);
     expect(deleteNoteButton).toBeInTheDocument();
 });
 
