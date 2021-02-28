@@ -2,7 +2,7 @@
 
 ![Author] ![React Version] ![ExpressJS Version] ![Beer Money]
 
-![Build Status] ![Last Commit] ![Open Issues] ![Progress] ![Project Status] ![Repo Size]
+![Build Status] ![Last Commit] ![MozScore] ![Open Issues] ![Repo Size]
 
 ## What is it?
 
@@ -290,11 +290,10 @@ docker exec -it node-mysql mysql -uroot -p
 [ExpressJS Version]:https://img.shields.io/badge/ExpressJS-4.16.1-blueviolet
 [Beer Money]:https://img.shields.io/badge/beer%20money-$0-ff69b4
 [Build Status]: https://img.shields.io/github/workflow/status/YenHub/list.quickdash.co.uk/🚀%20Deploy%20website%20on%20push
+[MozScore]: https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish
 
 [Last Commit]: https://img.shields.io/github/last-commit/YenHub/list.quickdash.co.uk
 [Open Issues]:https://img.shields.io/github/issues-raw/YenHub/list.quickdash.co.uk
-[Progress]:https://img.shields.io/badge/progress-dev-brightgreen
-[Project Status]: https://img.shields.io/badge/status-active-brightgreen
 [Repo Size]: https://img.shields.io/github/repo-size/YenHub/list.quickdash.co.uk
 
 [demoImage]: ./web-app.png
