@@ -12,10 +12,10 @@ export const downloadFile = (content) => {
         window.navigator.msSaveOrOpenBlob(blobObject, _fileName);
     } else {
         // All other browsers
-        var link = document.createElement("a");
+        var link = document.createElement('a');
         var url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", _fileName);
+        link.setAttribute('href', url);
+        link.setAttribute('download', _fileName);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
