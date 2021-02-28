@@ -31,4 +31,3 @@ jobs:
         username: ${{ secrets.ftpuser }}
         password: ${{ secrets.ftppass }}
         local-dir: ./client/build/
-        dangerous-clean-slate: true

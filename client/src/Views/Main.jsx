@@ -12,11 +12,8 @@ import {
     Divider,
     IconButton,
     ListItem,
-    ListItemIcon,
-    ListItemText,
 } from '@material-ui/core';
 
-import HistoryIcon from '@material-ui/icons/History';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -166,11 +163,6 @@ export default function Main({ darkMode, setDarkMode }) {
 
     const AppMenuDrawer = () => {
 
-        const handleLegacyClick = () => {
-            let navToLegacySite = () => window.location.href = '/legacy';
-            noteStore.setLegacyNotes(noteState).then(navToLegacySite);
-        }
-
         const DrawerHeader = () => (
             <div className={classes.drawerHeader}>
                 <IconButton onClick={handleDrawerState}>
@@ -193,12 +185,6 @@ export default function Main({ darkMode, setDarkMode }) {
 
         const MenuItems = () => (
             <List>
-                <ListItem button component="a" href="/legacy" onClick={handleLegacyClick}>
-                    <ListItemIcon>
-                        <HistoryIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Legacy Site" />
-                </ListItem>
                 {showGatedFeatures ? <ExportListItem /> : null}
                 {showGatedFeatures ? <ImportListItem /> : null}
                 <ListItem>

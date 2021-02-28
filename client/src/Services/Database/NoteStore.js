@@ -40,11 +40,8 @@ class NoteStore {
             case (notes?.length > 0):
                 // Existing Notes Found
                 return notes;
-            case (window.localStorage.getItem('listConfig') !== null):
-                // Legacy Notes Found
-                const mappedNotes = await this.#getLegacyNotes();
-                return mappedNotes;
             default:
+                // First Visit: Default Notes
                 return DefaultNotes;
         }
     };
@@ -53,23 +50,9 @@ class NoteStore {
 
     deleteNotes = () => Store.clear();
 
-    setLegacyNotes = async notes => window.localStorage.setItem(
-        'listConfig',
-        JSON.stringify(Object.assign({}, [...notes.map(it => it.primary)]))
-    );
-
-    #getLegacyNotes = async () => {
-        const legacyNotes = Object.values(JSON.parse(window.localStorage.getItem('listConfig')));
-        const mappedNotes = legacyNotes.map((note, id) => ({ id: `note-${id}`, primary: note, secondary: '' }));
-        window.localStorage.removeItem('listConfig');
-        return await this.setNotes(mappedNotes);
-    }
-
 };
 
 // const myStore = new NoteStore();
-//
-// myStore.importLegacyNotes();
 
 // myStore.createNote('New Note').then( () => myStore.getNotes().then( notes => (console.log(notes), myStore.deleteNotes())) );
 // Store.clear();
