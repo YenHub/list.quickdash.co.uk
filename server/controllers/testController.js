@@ -15,7 +15,7 @@ const handleFailure = (err, res) => {
     throw err;
 };
 
-const APItestDB = process.env.DB_TEST ? process.env.DB_PREFIX + process.env.DB_TEST : 'testDB';
+const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX + process.env.DB_TEST : process.env.DB_TEST;
 
 exports.index = (req, res, next) => {
 

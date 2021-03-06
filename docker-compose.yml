@@ -43,8 +43,6 @@ services:
       - client-network
 
  server-app:
-    depends_on:
-     - node-mysql
     container_name:        server-app
     build:
         context:           ./server
@@ -68,7 +66,7 @@ services:
 
  phpmyadmin:
     image:                 phpmyadmin
-    container_name:        phpmyadmin
+    container_name:        php-my-admin
     environment:
       PMA_ARBITRARY:       1
       PMA_HOST:            node-mysql
