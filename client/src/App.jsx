@@ -14,6 +14,28 @@ const getDarkMode = () => {
     return true;
 }
 
+const getTheme = darkMode => createMuiTheme({
+    palette: {
+        type: darkMode ? 'dark' : 'light',
+        primary: {
+            main: darkMode ? '#08d2ff' : '#007bff',
+        },
+        secondary: {
+            main: '#66ffde',
+        },
+        error: {
+            main: '#ff0000'
+        }
+    },
+    typography: {
+        fontSize: 13,
+        fontFamily: [
+            'Roboto',
+            'serif',
+        ].join(','),
+    },
+});
+
 const App = () => {
 
     const [darkMode, setDarkMode] = useState(getDarkMode());
@@ -22,27 +44,7 @@ const App = () => {
         window.localStorage.setItem('darkMode', darkMode);
     }, [darkMode])
 
-    const theme = createMuiTheme({
-        palette: {
-            type: darkMode ? 'dark' : 'light',
-            primary: {
-                main: darkMode ? '#08d2ff' : '#007bff',
-            },
-            secondary: {
-                main: '#66ffde',
-            },
-            error: {
-                main: '#ff0000'
-            }
-        },
-        typography: {
-            fontSize: 13,
-            fontFamily: [
-                'Roboto',
-                'serif',
-            ].join(','),
-        },
-    });
+    const theme = getTheme(darkMode);
 
     const mainProps = {
         darkMode,
