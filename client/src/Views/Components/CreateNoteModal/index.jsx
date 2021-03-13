@@ -29,14 +29,17 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
 };
 
-const CreateNoteModal = ({
-    noteState,
-    setNoteState,
-    modalOpen,
-    setModalOpen,
-    editNoteId,
-    setEditNoteId,
-}) => {
+const CreateNoteModal = props => {
+
+    const {
+        noteState,
+        setNoteState,
+        modalOpen,
+        setModalOpen,
+        editNoteId,
+        setEditNoteId,
+        darkMode,
+    } = props;
 
     const classes = useStyles();
 
@@ -62,7 +65,7 @@ const CreateNoteModal = ({
         setEditNoteId(false);
     };
 
-    const noteButtonProps = {handleClose, editNoteId};
+    const noteButtonProps = {handleClose, editNoteId, darkMode};
 
     const editExistingNote = editNoteId => {
         let indOfNote = noteState.findIndex(note => note.id === editNoteId);

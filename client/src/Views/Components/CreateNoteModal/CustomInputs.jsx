@@ -56,15 +56,15 @@ export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
     );
 };
 
-export const CloseButton = ({ handleClose, editNoteId}) => {
+export const CloseButton = ({ handleClose, editNoteId, darkMode}) => {
     return (
         <Button
             aria-label={'Close Note'}
             edge="end"
             onClick={handleClose}
             variant="outlined"
-            color="default"
-            style={{color: 'lightGrey', width: '48%', marginRight: '2%'}}
+            color={`${darkMode ? 'default' : 'primary'}`}
+            style={{color: `${darkMode ? 'lightGrey' : 'black'}`, width: '48%', marginRight: '2%'}}
         >
             {editNoteId ? 'Cancel' : 'Close'}
         </Button>
