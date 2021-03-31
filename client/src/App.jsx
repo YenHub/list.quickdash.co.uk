@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useState, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
-import { AutoSizer } from 'react-virtualized';
 
 const getDarkMode = () => {
     if(window.localStorage.getItem('darkMode')) {
@@ -60,16 +59,10 @@ const App = () => {
             }}
         >
             <MuiThemeProvider theme={theme}>
-                <AutoSizer>
-                    {( { width, height }) => {
-                        return (
-                            <Scrollbar style={{ width, height }}>
-                            <CssBaseline />
-                            <Main {...mainProps} /> <br />
-                            </Scrollbar>
-                        );
-                    }}
-                </AutoSizer>
+                <Scrollbar style={{ width: '100%', height: 'calc(100vh)' }}>
+                    <CssBaseline />
+                    <Main {...mainProps} /> <br />
+                </Scrollbar>
             </MuiThemeProvider>
         </div>
     );
