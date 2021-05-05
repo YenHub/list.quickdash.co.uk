@@ -16,6 +16,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+import ReactMarkdown from 'react-markdown'
+
 import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +55,7 @@ const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
 
-const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId }) => {
+const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode }) => {
 
     const classes = useStyles();
 
@@ -105,9 +107,12 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId }) => {
                                                         <NotesIcon style={getTextStyle(snapshot.isDragging, darkMode)}/>
                                                     </ListItemIcon>
                                                     <ListItemText
+                                                        disableTypography={mdMode ? true : false}
                                                         primary={item.primary}
                                                         primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
-                                                        secondary={item.secondary}
+                                                        secondary={
+                                                            mdMode ? <ReactMarkdown children={item.secondary} /> : item.secondary
+                                                        }
                                                         secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
                                                     />
                                                     <ListItemIcon onClick={() => setEditNoteId(item.id)}>

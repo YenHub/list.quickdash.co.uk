@@ -21,6 +21,7 @@ import { isMobile } from 'react-device-detect';
 
 import NotesList from './Components/NotesList';
 import DarkModeToggle from './Components/DarkModeToggle';
+import MDToggle from './Components/MDToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal'
 import ShareButtons from './Components/ShareButtons'
@@ -99,15 +100,16 @@ const useStyles = darkMode => makeStyles((theme) => ({
     },
 }));
 
-export default function Main({ darkMode, setDarkMode }) {
+export default function Main({ darkMode, setDarkMode, mdMode, setMDMode }) {
 
     const classes = useStyles(darkMode)();
 
     const [open, setOpen] = useState(false);
 
     const [noteState, setNoteState] = useState(null);
-    const noteProps = { darkMode, noteState, setNoteState };
+    const noteProps = { darkMode, mdMode, noteState, setNoteState };
     const toggleProps = { ...noteProps, setDarkMode };
+    const mdToggleProps = { ...noteProps, setMDMode };
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editNoteId, setEditNoteId] = useState(false);
@@ -191,6 +193,9 @@ export default function Main({ darkMode, setDarkMode }) {
                 </ListItem>
                 <ListItem>
                     <DarkModeToggle {...toggleProps}/>
+                </ListItem>
+                <ListItem>
+                    <MDToggle {...mdToggleProps}/>
                 </ListItem>
             </List>
         );

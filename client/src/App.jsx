@@ -13,6 +13,13 @@ const getDarkMode = () => {
     return true;
 }
 
+const getMDMode = () => {
+    if(window.localStorage.getItem('mdMode')) {
+        return window.localStorage.getItem('mdMode') === 'true';
+    }
+    return false;
+}
+
 const getTheme = darkMode => createMuiTheme({
     palette: {
         type: darkMode ? 'dark' : 'light',
@@ -38,16 +45,23 @@ const getTheme = darkMode => createMuiTheme({
 const App = () => {
 
     const [darkMode, setDarkMode] = useState(getDarkMode());
+    const [mdMode, setMDMode] = useState(getMDMode());
 
     useEffect( () => {
         window.localStorage.setItem('darkMode', darkMode);
     }, [darkMode])
+
+    useEffect( () => {
+        window.localStorage.setItem('mdMode', mdMode);
+    }, [mdMode])
 
     const theme = getTheme(darkMode);
 
     const mainProps = {
         darkMode,
         setDarkMode,
+        mdMode,
+        setMDMode,
     }
 
     return (
