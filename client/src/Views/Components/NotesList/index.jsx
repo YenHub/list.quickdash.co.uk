@@ -44,7 +44,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     ...draggableStyle,
 
     ...(isDragging && {
-        background: "rgb(235,235,235)"
+        background: "rgb(134,134,134)"
     })
 });
 
@@ -55,6 +55,30 @@ const getListStyle = (isDraggingOver, darkMode) => ({
 const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
+
+const getListItemFrags = (mdMode, listItem, className) => {
+
+    let primary = listItem.primary;
+    let secondary = listItem.secondary;
+
+    if (mdMode) {
+        primary = (
+            <div style={className}>
+                listItem.primary
+            </div>
+        );
+        secondary = (
+            <div style={className}>
+                <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} children={listItem.secondary} />
+            </div>
+        );
+    }
+
+    return {
+        primary,
+        secondary,
+    }
+}
 
 const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode }) => {
 
@@ -92,45 +116,46 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                 <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
                                     {noteState.map((item, index) => (
                                         <Draggable key={item.id} draggableId={item.id} index={index}>
-                                            {(provided, snapshot) => (
-                                                <ListItem
-                                                    className={classes.secondaryAction}
-                                                    ContainerComponent="li"
-                                                    ContainerProps={{ ref: provided.innerRef }}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style
-                                                    )}
-                                                >
-                                                    <ListItemIcon>
-                                                        <NotesIcon style={getTextStyle(snapshot.isDragging, darkMode)}/>
-                                                    </ListItemIcon>
-                                                    <ListItemText
-                                                        disableTypography={mdMode ? true : false}
-                                                        primary={item.primary}
-                                                        primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
-                                                        secondary={
-                                                            mdMode ?
-                                                            <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} children={item.secondary} /> :
-                                                            item.secondary
-                                                        }
-                                                        secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
-                                                    />
-                                                    <ListItemIcon onClick={() => setEditNoteId(item.id)}>
-                                                        <IconButton>
-                                                            <EditIcon color="primary"/>
-                                                        </IconButton>
-                                                    </ListItemIcon>
-                                                    <ListItemIcon role="deleteNote" onClick={ () => deleteNote(item) }>
-                                                        <IconButton>
-                                                            <DeleteForeverIcon color="error"/>
-                                                        </IconButton>
-                                                    </ListItemIcon>
-                                                    <ListItemSecondaryAction />
-                                                </ListItem>
-                                            )}
+                                            {(provided, snapshot) => {
+                                                const textStyle = getTextStyle(snapshot.isDragging, darkMode);
+                                                const itemStyle = getItemStyle(
+                                                    snapshot.isDragging,
+                                                    provided.draggableProps.style
+                                                );
+                                                const listItemFrags = getListItemFrags(mdMode,item, textStyle);
+                                                return (
+                                                    <ListItem
+                                                        className={classes.secondaryAction}
+                                                        ContainerComponent="li"
+                                                        ContainerProps={{ ref: provided.innerRef }}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        style={itemStyle}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <NotesIcon style={textStyle}/>
+                                                        </ListItemIcon>
+                                                        <ListItemText
+                                                            disableTypography={mdMode ? true : false}
+                                                            primary={listItemFrags.primary}
+                                                            primaryTypographyProps={{ style: {...textStyle}}}
+                                                            secondary={listItemFrags.secondary}
+                                                            secondaryTypographyProps={{ style: {...textStyle, whiteSpace: 'pre-wrap'}}}
+                                                        />
+                                                        <ListItemIcon onClick={() => setEditNoteId(item.id)}>
+                                                            <IconButton>
+                                                                <EditIcon color="primary"/>
+                                                            </IconButton>
+                                                        </ListItemIcon>
+                                                        <ListItemIcon role="deleteNote" onClick={ () => deleteNote(item) }>
+                                                            <IconButton>
+                                                                <DeleteForeverIcon color="error"/>
+                                                            </IconButton>
+                                                        </ListItemIcon>
+                                                        <ListItemSecondaryAction />
+                                                    </ListItem>
+                                                )
+                                            }}
                                         </Draggable>
                                     ))}
                                     {provided.placeholder}
