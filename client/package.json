@@ -17,6 +17,7 @@
     "react-scripts": "4.0.2",
     "react-scrollbars-custom": "^4.0.25",
     "react-share": "^4.3.1",
+    "remark-gfm": "^1.0.0",
     "typeface-dosis": "^1.1.13",
     "typeface-roboto": "^1.1.13",
     "uuid": "^8.3.2",

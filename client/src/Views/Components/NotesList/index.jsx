@@ -17,6 +17,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm';
 
 import { isMobile } from 'react-device-detect';
 
@@ -111,7 +112,9 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                                         primary={item.primary}
                                                         primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
                                                         secondary={
-                                                            mdMode ? <ReactMarkdown children={item.secondary} /> : item.secondary
+                                                            mdMode ?
+                                                            <ReactMarkdown remarkPlugins={[gfm]} children={item.secondary} /> :
+                                                            item.secondary
                                                         }
                                                         secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
                                                     />
