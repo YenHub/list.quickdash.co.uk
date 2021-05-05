@@ -16,6 +16,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+import style from './markdown-styles.module.css';
+import darkStyle from './markdown-styles-dark.module.css';
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm';
 
@@ -56,19 +58,19 @@ const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
 
-const getListItemFrags = (mdMode, listItem, className) => {
+const getListItemFrags = (darkMode, mdMode, listItem, className) => {
 
     let primary = listItem.primary;
     let secondary = listItem.secondary;
 
     if (mdMode) {
         primary = (
-            <div style={className}>
-                listItem.primary
+            <div className={darkMode ? darkStyle.reactMarkDown : style.reactMarkDown }>
+                {listItem.primary}
             </div>
         );
         secondary = (
-            <div style={className}>
+            <div className={darkMode ? darkStyle.reactMarkDown : style.reactMarkDown }>
                 <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} children={listItem.secondary} />
             </div>
         );
@@ -122,7 +124,7 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                                     snapshot.isDragging,
                                                     provided.draggableProps.style
                                                 );
-                                                const listItemFrags = getListItemFrags(mdMode,item, textStyle);
+                                                const listItemFrags = getListItemFrags(darkMode, mdMode,item, textStyle);
                                                 return (
                                                     <ListItem
                                                         className={classes.secondaryAction}

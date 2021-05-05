@@ -1,0 +1,13 @@
+.reactMarkDown a:link {
+    text-decoration: none;
+    color: #08d2ff;
+}
+
+.reactMarkDown a:visited {
+    color: #08ff98;
+}
+
+.reactMarkDown a:active,
+.reactMarkDown a:hover {
+    color: white;
+}
