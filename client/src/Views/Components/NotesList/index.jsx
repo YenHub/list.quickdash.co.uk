@@ -113,7 +113,7 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                                         primaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode)}}}
                                                         secondary={
                                                             mdMode ?
-                                                            <ReactMarkdown remarkPlugins={[gfm]} children={item.secondary} /> :
+                                                            <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} children={item.secondary} /> :
                                                             item.secondary
                                                         }
                                                         secondaryTypographyProps={{ style: {...getTextStyle(snapshot.isDragging, darkMode), whiteSpace: 'pre-wrap'}}}
