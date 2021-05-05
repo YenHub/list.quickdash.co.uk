@@ -12,7 +12,7 @@ export default function MDToggle({ mdMode, setMDMode }) {
         <FormGroup>
             <FormControlLabel
                 control={<Switch checked={mdMode} onChange={toggleChecked} color="primary"/>}
-                label="Enable Markdown in Description"
+                label="Enable Markdown (beta)"
             />
         </FormGroup>
     );
