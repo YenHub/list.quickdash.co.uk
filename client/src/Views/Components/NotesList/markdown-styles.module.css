@@ -22,3 +22,7 @@
     height: 1px;
     background-color: black;
 }
+
+.reactMarkDown code {
+    background-color: lightgrey;
+}
