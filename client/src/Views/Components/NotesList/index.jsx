@@ -20,6 +20,7 @@ import style from './markdown-styles.module.css';
 import darkStyle from './markdown-styles-dark.module.css';
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw'
 
 import { isMobile } from 'react-device-detect';
 
@@ -71,7 +72,12 @@ const getListItemFrags = (darkMode, mdMode, listItem, className) => {
         );
         secondary = (
             <div className={darkMode ? darkStyle.reactMarkDown : style.reactMarkDown }>
-                <ReactMarkdown linkTarget="_blank" remarkPlugins={[gfm]} children={listItem.secondary} />
+                <ReactMarkdown
+                    linkTarget="_blank"
+                    rehypePlugins={[rehypeRaw]}
+                    remarkPlugins={[gfm]}
+                    children={listItem.secondary}
+                />
             </div>
         );
     }
