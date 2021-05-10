@@ -144,7 +144,7 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode }) {
             >
                 <Toolbar className={classes.toolBar}>
                     <IconButton
-                        data-testid="menuButton"
+                        data-testid="menu-button"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerState}

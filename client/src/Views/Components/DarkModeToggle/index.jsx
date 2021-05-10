@@ -11,7 +11,7 @@ export default function DarkModeToggle({ darkMode, setDarkMode }) {
     return (
         <FormGroup>
             <FormControlLabel
-                control={<Switch checked={darkMode} onChange={toggleChecked} color="primary"/>}
+                control={<Switch data-testid="dm-toggle" checked={darkMode} onChange={toggleChecked} color="primary"/>}
                 label="Dark Mode"
             />
         </FormGroup>

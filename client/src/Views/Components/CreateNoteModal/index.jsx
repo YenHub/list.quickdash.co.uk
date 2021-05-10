@@ -97,7 +97,7 @@ const CreateNoteModal = props => {
 
     const CreateNoteButton = () => (
         <IconButton
-            data-testid="createNote"
+            data-testid="create-note-button"
             aria-label="Create New Note"
             edge="end"
             onClick={handleOpen}

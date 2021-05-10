@@ -155,7 +155,10 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                                                 <EditIcon color="primary"/>
                                                             </IconButton>
                                                         </ListItemIcon>
-                                                        <ListItemIcon role="deleteNote" onClick={ () => deleteNote(item) }>
+                                                        <ListItemIcon
+                                                            role="deleteNote"
+                                                            onClick={ () => deleteNote(item) }
+                                                        >
                                                             <IconButton>
                                                                 <DeleteForeverIcon color="error"/>
                                                             </IconButton>

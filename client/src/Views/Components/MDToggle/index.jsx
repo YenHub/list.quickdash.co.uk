@@ -11,7 +11,7 @@ export default function MDToggle({ mdMode, setMDMode }) {
     return (
         <FormGroup>
             <FormControlLabel
-                control={<Switch checked={mdMode} onChange={toggleChecked} color="primary"/>}
+                control={<Switch data-testid="md-toggle" checked={mdMode} onChange={toggleChecked} color="primary"/>}
                 label="Enable Markdown (beta)"
             />
         </FormGroup>

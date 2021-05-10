@@ -28,6 +28,7 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
     return (
         <TextField
             fullWidth
+            data-testid="description-input"
             label="Note Description (optional)"
             variant="outlined"
             onChange={handleDescChange}
@@ -49,6 +50,7 @@ export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
             variant="outlined"
             color="primary"
             disabled={noteTitle.length === 0}
+            data-testid="create-note-submit"
             style={{width: '48%', marginLeft: '2%'}}
         >
             {noteLabel}
