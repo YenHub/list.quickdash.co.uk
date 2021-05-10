@@ -14,6 +14,11 @@ const DefaultNotes = [{
         id: 'bca2f4a9-d510-4d6e-9b47-28c9fcc8ca07',
         primary: 'Use the icons to edit or delete this note',
         secondary: 'Or, create new notes using the ➕ icon',
+    },
+    {
+        id: '03a83e99-ea71-4505-81d0-92de5638a5df',
+        primary: 'NEW: You can now use markdown in your descriptions! 🎉',
+        secondary: 'Head on over to settings to enable the feature 😎',
     }
 ];
 
