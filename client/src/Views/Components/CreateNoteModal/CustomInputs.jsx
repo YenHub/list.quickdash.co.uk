@@ -1,4 +1,5 @@
 import { TextField, Button } from '@material-ui/core';
+import { isMobile } from 'react-device-detect';
 
 export const TitleInput = ({ noteTitle, setNoteTitle }) => {
 
@@ -33,7 +34,7 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
             variant="outlined"
             onChange={handleDescChange}
             multiline
-            rows={6}
+            rows={isMobile ? 6 : 8}
             defaultValue={noteDesc}
             inputProps={{'aria-label': 'Note Description'}}
         />
