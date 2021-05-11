@@ -230,7 +230,7 @@ docker start node-mysql
 docker exec -it node-mysql mysql -uroot -p
 ```
 
-## Project To Do
+## Project To-Do
 
 - [ ] Make it better
     - In progress... forever™
@@ -257,8 +257,8 @@ docker exec -it node-mysql mysql -uroot -p
     - [ ] Gubbins
         - [ ] Redux
         - [ ] TypeScript
-        - [ ] Jest tests
-        - [ ] Service Workers
+        - [x] Jest tests
+        - [x] Service Workers
         - [ ] Auth
             - [ ] JWT
             - [ ] Basic User management
@@ -270,7 +270,7 @@ docker exec -it node-mysql mysql -uroot -p
             - [x] Close/Cancel Button
         - [ ] List Items
             - [x] Add edit note functionality
-            - [ ] Add MD Ability for list item text secondary
+            - [x] Add MD Ability for list item text secondary
         - [ ] Menu Items
             - [x] Delete all notes button
             - [ ] Add colour picker for UI
