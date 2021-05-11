@@ -198,11 +198,13 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, preview
                 <ListItem>
                     <MDToggle {...mdToggleProps}/>
                 </ListItem>
-                { mdMode && <Divider /> }
-                { mdMode && (
-                    <ListItem>
-                        <MDPreviewToggle {...mdPreviewProps}/>
-                    </ListItem>
+                { (mdMode && !isMobile) && (
+                    <div>
+                        <Divider />
+                        <ListItem>
+                            <MDPreviewToggle {...mdPreviewProps}/>
+                        </ListItem>
+                    </div>
                 )}
             </List>
         );
