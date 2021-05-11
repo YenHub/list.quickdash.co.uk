@@ -52,7 +52,7 @@ export const ImportButton = ({ noteState, setNoteState }) => {
     };
 
     const buttonProps = {
-        ariaLabel: 'Import Notes',
+        'aria-label': 'Import Notes',
         onClick: () => importNotes(noteState),
         disabled: !noteState,
         type: 'secondary',
@@ -70,7 +70,7 @@ export const ExportButton = ({ noteState }) => {
     };
 
     const buttonProps = {
-        ariaLabel: 'Export Notes',
+        'aria-label': 'Export Notes',
         onClick: () => exportNotes(noteState),
         disabled: noteState?.length === 0,
         type: 'default',

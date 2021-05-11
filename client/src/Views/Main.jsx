@@ -112,7 +112,7 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode }) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editNoteId, setEditNoteId] = useState(false);
-    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId, darkMode };
+    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId, darkMode, mdMode };
 
     const getItems = async () => setNoteState(await noteStore.getNotes());
 

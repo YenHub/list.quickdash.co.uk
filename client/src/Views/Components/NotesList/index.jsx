@@ -16,11 +16,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import style from './markdown-styles.module.css';
-import darkStyle from './markdown-styles-dark.module.css';
-import ReactMarkdown from 'react-markdown'
-import gfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw'
+import MDPreview, { MDTitle } from '../MDPreview';
 
 import { isMobile } from 'react-device-detect';
 
@@ -59,27 +55,19 @@ const getTextStyle = (isDraggingOver, darkMode) => ({
     color: isDraggingOver ? 'black' : null,
 });
 
-const getListItemFrags = (darkMode, mdMode, listItem, className) => {
+const getListItemFrags = (darkMode, mdMode, listItem) => {
 
-    let primary = listItem.primary;
-    let secondary = listItem.secondary;
+    let { primary, secondary } = listItem;
+
+    const customProps = textItem => ({
+        children: textItem,
+        darkMode,
+        mdMode,
+    })
 
     if (mdMode) {
-        primary = (
-            <div className={darkMode ? darkStyle.reactMarkDown : style.reactMarkDown }>
-                {listItem.primary}
-            </div>
-        );
-        secondary = (
-            <div className={darkMode ? darkStyle.reactMarkDown : style.reactMarkDown }>
-                <ReactMarkdown
-                    linkTarget="_blank"
-                    rehypePlugins={[rehypeRaw]}
-                    remarkPlugins={[gfm]}
-                    children={listItem.secondary}
-                />
-            </div>
-        );
+        primary = <MDTitle {...customProps(primary)} />
+        secondary = <MDPreview {...customProps(secondary)} />
     }
 
     return {
