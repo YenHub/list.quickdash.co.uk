@@ -29,9 +29,8 @@ import ShareButtons from './Components/ShareButtons'
 import NoteStore from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
 
-const drawerWidth = 240;
-
 const showGatedFeatures = process.env.NODE_ENV === 'development';
+const drawerWidth = 240;
 
 const useStyles = darkMode => makeStyles((theme) => ({
     root: {
