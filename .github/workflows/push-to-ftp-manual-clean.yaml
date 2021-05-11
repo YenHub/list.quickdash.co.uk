@@ -1,4 +1,4 @@
-name:                           🧪 Prod | Manual Deploy
+name:                           🧪 Manual | Clean & Deploy
 on:                             [workflow_dispatch]
 jobs:
   web-deploy:
