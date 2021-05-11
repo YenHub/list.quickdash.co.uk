@@ -8,6 +8,11 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
 import { getUniqueId } from '../../../Services/UUID';
 
+import MDPreview from '../MDPreview';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -39,6 +44,7 @@ const CreateNoteModal = props => {
         editNoteId,
         setEditNoteId,
         darkMode,
+        mdMode,
     } = props;
 
     const classes = useStyles();
@@ -65,7 +71,7 @@ const CreateNoteModal = props => {
         setEditNoteId(false);
     };
 
-    const noteButtonProps = {handleClose, editNoteId, darkMode};
+    const noteButtonProps = { handleClose, editNoteId, darkMode };
 
     const editExistingNote = editNoteId => {
         let indOfNote = noteState.findIndex(note => note.id === editNoteId);
@@ -109,6 +115,39 @@ const CreateNoteModal = props => {
         </IconButton>
     );
 
+    const MDContainer = () => {
+        const [showPreview, togglePreview] = useState(true);
+
+        const handleChange = (event) => togglePreview(event.target.checked);
+
+        return (
+            <div style={{
+                border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
+                padding: '1em 1em',
+                borderRadius: '4px',
+                maxHeight: 'calc(40vh)',
+                overflowY: 'auto',
+            }}>
+                <FormGroup>
+                    <FormControlLabel
+                        labelPlacement="start"
+                        control={
+                            <Switch
+                                inputProps={{ 'aria-label': 'Show MarkDown Preview' }}
+                                checked={showPreview}
+                                onChange={handleChange}
+                                name="showPreview"
+                                color="primary"
+                            />
+                        }
+                        label="Show MarkDown Preview"
+                    />
+                </FormGroup>
+                {showPreview && <MDPreview children={noteDesc} darkMode={darkMode} />}
+            </div>
+        );
+    };
+
     const ModalBody = () => (
         <div style={modalStyle} className={classes.paper}>
             <form style={{marginTop: '1em'}} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
@@ -116,6 +155,9 @@ const CreateNoteModal = props => {
                 <DescInput {...descProps} />
                 <CloseButton {...noteButtonProps}/>
                 <SubmitButton {...submitButtonProps} />
+                {
+                    (mdMode && !isMobile) && <MDContainer />
+                }
             </form>
             <span id="new-note-modal" style={{display: 'none'}} aria-hidden="true">
                 New Note modal
