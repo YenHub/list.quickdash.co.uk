@@ -15,8 +15,8 @@ describe('UI Rendering', () => {
     test('Menu Renders', async () => {
         await initApp();
         openMainMenu();
-        const deleteNoteButton = screen.getByText(/(Delete List)/i);
-        expect(deleteNoteButton).toBeInTheDocument();
+        // Test for
+        expect(screen.getByTestId('delete-all-notes')).toBeInTheDocument();
     });
 
     test('Note Modal Renders', async () => {

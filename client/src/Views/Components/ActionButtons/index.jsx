@@ -3,17 +3,14 @@ import Button from '@material-ui/core/Button';
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
 
-const CustomButton = ({ ariaLabel, onClick, disabled, type }) => (
+const CustomButton = props => (
     <Button
-        aria-label={ariaLabel}
+        {...props}
         edge="end"
-        onClick={onClick}
         variant="outlined"
-        color={type}
         fullWidth
-        disabled={disabled}
     >
-        {ariaLabel}
+        {props['aria-label']}
     </Button>
 );
 
@@ -28,10 +25,11 @@ export const DeleteNotes = ({ noteState, setNoteState }) => {
     };
 
     const buttonProps = {
-        ariaLabel: 'Delete List',
+        'aria-label': 'Delete List',
         onClick: clearNotes,
         disabled: noteState?.length === 0,
-        type: 'primary',
+        'data-testid': 'delete-all-notes',
+        color: 'primary',
     }
 
     return <CustomButton {...buttonProps}/>;
