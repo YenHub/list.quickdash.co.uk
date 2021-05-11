@@ -1,34 +1,69 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { initApp, openMainMenu, openNoteModal } from '../../test-helpers';
+import {
+    initApp,
+    openNoteModal,
+    setNoteTitle,
+    setNoteDesc,
+    deleteLastNote,
+    closeNoteModal,
+    getNoteCount,
+    toggleMD,
+    submitNote,
+} from '../../test-helpers';
 
 describe('Note Functions', () => {
 
-    test('Can Delete Notes', async () => {
+    test('Can delete notes', async () => {
         await initApp();
-        fireEvent.click(screen.getAllByRole(/deleteNote/)[0]);
-        const welcomeNotes = screen.queryByText(/(Welcome To QuickList)/i);
-        expect(welcomeNotes).toBeFalsy();
+        const initialCount = getNoteCount();
+        deleteLastNote();
+        expect(getNoteCount()).toBe(initialCount - 1);
     });
 
     test('Cannot create blank notes', async () => {
         await initApp();
         openNoteModal();
         expect(screen.getByTestId('create-note-submit').closest('button')).toBeDisabled();
+        // Check count before > attempt to submit > check count after
+        const expectedCount = getNoteCount();
+        submitNote()
+        expect(getNoteCount()).toBe(expectedCount);
     });
 
-    test('Can create a note with title', async () => {
+    test('Can create a note with only a title', async () => {
         await initApp();
-        // Open create note modal
         openNoteModal();
-        // Input text into title field
-        const titleInput = screen.getByLabelText('Note Title').closest('input');
-        fireEvent.change(titleInput, { target: { value: 'Dondollo' } });
-        // Submit the note
-        const submitButton = screen.getByTestId('create-note-submit').closest('button');
-        fireEvent.click(submitButton);
-        // Test if a note has been created
-        const newNote = screen.queryByText(/(Dondollo)/i);
-        expect(newNote).toBeTruthy();
+        setNoteTitle('Dondollo')
+        submitNote()
+        // Check modal has closed
+        expect(screen.queryByTestId('create-note-submit')).toBeNull();
+        // Check the note was created
+        expect(screen.queryByText(/(Dondollo)/i)).toBeTruthy();
+    });
+
+    test('Can not create a note with only a desc', async () => {
+        await initApp();
+        openNoteModal();
+        setNoteDesc('Only Desc ab123');
+        submitNote() && closeNoteModal();
+        // Test the modal is closed
+        expect(screen.queryByTestId('create-note-submit')).toBeNull();
+        // Test if the note has been created
+        expect(screen.queryByText(/(Only Desc ab123)/i)).toBeNull();
+    });
+
+    test('Can create a note using Markdown', async () => {
+        await initApp();
+        toggleMD();
+        openNoteModal();
+        setNoteTitle('MDTitle');
+        setNoteDesc('---');
+        submitNote() && toggleMD();
+        // Test the modal is closed
+        expect(screen.queryByTestId('create-note-submit')).toBeNull();
+        // Test if a note has been created with a <hr>
+        const newNote = document.querySelectorAll('.MuiListItem-container hr');
+        expect(newNote.length === 1).toBeTruthy();
     });
 
 });

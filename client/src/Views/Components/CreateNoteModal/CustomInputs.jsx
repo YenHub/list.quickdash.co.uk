@@ -66,6 +66,7 @@ export const CloseButton = ({ handleClose, editNoteId, darkMode}) => {
             onClick={handleClose}
             variant="outlined"
             color={`${darkMode ? 'default' : 'primary'}`}
+            data-testid="create-note-close"
             style={{color: `${darkMode ? 'lightGrey' : 'black'}`, width: '48%', marginRight: '2%'}}
         >
             {editNoteId ? 'Cancel' : 'Close'}
