@@ -21,7 +21,7 @@ import { isMobile } from 'react-device-detect';
 
 import NotesList from './Components/NotesList';
 import DarkModeToggle from './Components/DarkModeToggle';
-import MDToggle from './Components/MDToggle';
+import MDToggle, { MDPreviewToggle }from './Components/MDToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal'
 import ShareButtons from './Components/ShareButtons'
@@ -99,16 +99,17 @@ const useStyles = darkMode => makeStyles((theme) => ({
     },
 }));
 
-export default function Main({ darkMode, setDarkMode, mdMode, setMDMode }) {
+export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, previewMode, setPreviewMode }) {
 
     const classes = useStyles(darkMode)();
 
     const [open, setOpen] = useState(false);
 
     const [noteState, setNoteState] = useState(null);
-    const noteProps = { darkMode, mdMode, noteState, setNoteState };
+    const noteProps = { darkMode, mdMode, noteState, setNoteState, previewMode };
     const toggleProps = { ...noteProps, setDarkMode };
     const mdToggleProps = { ...noteProps, setMDMode };
+    const mdPreviewProps = { ...noteProps, setPreviewMode };
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editNoteId, setEditNoteId] = useState(false);
@@ -193,9 +194,16 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode }) {
                 <ListItem>
                     <DarkModeToggle {...toggleProps}/>
                 </ListItem>
+                <Divider />
                 <ListItem>
                     <MDToggle {...mdToggleProps}/>
                 </ListItem>
+                { mdMode && <Divider /> }
+                { mdMode && (
+                    <ListItem>
+                        <MDPreviewToggle {...mdPreviewProps}/>
+                    </ListItem>
+                )}
             </List>
         );
 

@@ -45,6 +45,7 @@ const CreateNoteModal = props => {
         setEditNoteId,
         darkMode,
         mdMode,
+        previewMode,
     } = props;
 
     const classes = useStyles();
@@ -116,7 +117,7 @@ const CreateNoteModal = props => {
     );
 
     const MDContainer = () => {
-        const [showPreview, togglePreview] = useState(true);
+        const [showPreview, togglePreview] = useState(previewMode);
 
         const handleChange = (event) => togglePreview(event.target.checked);
 
@@ -140,7 +141,7 @@ const CreateNoteModal = props => {
                                 color="primary"
                             />
                         }
-                        label="Show MarkDown Preview"
+                        label="Live Preview"
                     />
                 </FormGroup>
                 {showPreview && <MDPreview children={noteDesc} darkMode={darkMode} />}
