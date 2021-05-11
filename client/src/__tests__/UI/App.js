@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
 import { initApp, openMainMenu, openNoteModal } from '../../test-helpers';
 
-// TESTS
 describe('UI Rendering', () => {
 
     test('Header & Welcome List Renders', async () => {
