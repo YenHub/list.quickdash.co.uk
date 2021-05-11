@@ -22,7 +22,7 @@ jobs:
     - name:            🔨 Build Project
       run:             |
         cd client
-        yarn install
+        npm ci
         INLINE_RUNTIME_CHUNK=false npm run build
 
     - name:            🧪 Test Build

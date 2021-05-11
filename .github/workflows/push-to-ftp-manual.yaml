@@ -5,33 +5,29 @@ jobs:
     name:              🎉 Deploy
     runs-on:           ubuntu-latest
     steps:
-    - name:            📩 Check Out Code
+    - name:            🚚 Get latest code
       uses:            actions/checkout@v2.3.2
 
-    - name:            🔥 Sync files to the server
-      uses:            SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server:        ${{ secrets.ftpserver }}
-        username:      ${{ secrets.ftpuser }}
-        password:      ${{ secrets.ftppass }}
-        local-dir:     ./static/
-        server-dir:    public_html/
-
-    - name:            🐱‍👤 Prep Node 12 Image
+    - name:            Use Node.js 12
       uses:            actions/setup-node@v2-beta
       with:
         node-version:  '12'
 
-    - name:            🌐 Generate & Add Sitemap
+    - name:            🔨 Build Project
       run:             |
-        cd static
-        npx sitemap-generator-cli -d 10 -l -g monthly -c 15 https://www.atkin-farm-machinery.co.uk/
+        cd client
+        npm ci
+        INLINE_RUNTIME_CHUNK=false npm run build
 
-    - name:            🔥 Re-Sync with SiteMap
+    - name:            🧪 Test Build
+      run:             |
+        cd client
+        npm test
+
+    - name:            📂 Sync files
       uses:            SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server:        ${{ secrets.ftpserver }}
         username:      ${{ secrets.ftpuser }}
         password:      ${{ secrets.ftppass }}
-        local-dir:     ./static/
-        server-dir:    public_html/
+        local-dir:     ./client/build/
