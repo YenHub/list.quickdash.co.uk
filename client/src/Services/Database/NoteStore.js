@@ -7,7 +7,7 @@ const Store = localForage.createInstance({
 const DefaultNotes = [{
         id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
         primary: 'Welcome to QuickList 🚀',
-        secondary: '  \n• QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
+        secondary: '\n  • QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
             '  • Your list is stored locally on your device, so it\'s secure and available to you anytime, even while you\'re offline\n',
     },
     {
