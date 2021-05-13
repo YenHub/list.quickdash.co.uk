@@ -6,18 +6,27 @@ const Store = localForage.createInstance({
 
 const DefaultNotes = [{
         id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
-        primary: 'Welcome to QuickList',
-        secondary: '• Create your own simple lists to help organise the chaos! \n' +
-            '• Your list is stored locally on your device 😎',
+        primary: 'Welcome to QuickList 🚀',
+        secondary: '• QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
+            '• Your list is stored locally on your device so it\'s secure and availble anytime, even while you\'re offline\n' +
+            '• Visit using your mobile to add QuickList to your homescreen now\n' +
+            '• If you are visiting using a desktop, you can also install using the link in the address bar' +
+            'Not so old fashioned anymore, hey? 😉'
     },
     {
         id: 'bca2f4a9-d510-4d6e-9b47-28c9fcc8ca07',
-        primary: 'Use the icons to edit or delete this note',
-        secondary: 'Or, create new notes using the ➕ icon',
+        primary: 'Use the icons to edit or delete this note 👀',
+        secondary: 'Or, create new notes using the ➕ icon\n' +
+            'There is also an option to delete all items from the main menu',
+    },
+    {
+        id: 'dca2f4a9-d510-4d6e-9b47-28c9fcc8ca08',
+        primary: 'Drag & drop items to rearrange them in the list 🔃',
+        secondary: 'New items you create are added to the top of your list',
     },
     {
         id: '03a83e99-ea71-4505-81d0-92de5638a5df',
-        primary: 'NEW: You can now use markdown in your descriptions! 🎉',
+        primary: 'You can now use markdown in your descriptions! 🎉',
         secondary: 'Head on over to settings to enable the feature 😎',
     }
 ];
