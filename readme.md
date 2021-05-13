@@ -4,6 +4,30 @@
 
 ![Site Status] ![Build Status] ![Last Commit] ![MozScore] ![Open Issues]
 
+## TOC
+
+- [TLDR](#tldr)
+- [What is it?](#what-is-it)
+- [Why QuickList?](#why-quicklist)
+- [Future Development](#future-development)
+- [What does it do?](#what-does-it-do)
+- [Quick Start Usage](#quick-start-usage)
+    - [Prerequisites](#prerequisites)
+    - [Create a .env config](#create-a-env-config)
+    - [Run the solution using Docker 🐳](#run-the-solution-using-docker)
+    - [What now?](#what-now)
+    - [Where is everything?](#where-is-everything)
+- [Development Info](#development-info)
+    - [Running the front end standalone](#running-fe-standalone)
+    - [Running the back end standalone](#running-api-standalone)
+    - [Running the entire system](#start-the-solution)
+    - [Backing up your database](#backing-up-your-database)
+    - [Docker Tips & Commands](#docker-commands-you-can-use)
+- [Deployment](#deployment)
+- [Project To-Do](#project-to-do)
+- [FAQs](#faqs)
+
+
 ## What is it?
 
 QuickList is a simple list and task management app, available for desktop or mobile as a PWA (progressive web app).
@@ -62,28 +86,6 @@ The idea here though is to Keep It Simple, the intention here is to never grow b
 The idea behind this release of the project was to modernise the app and experiment with building an easy and fast full stack javascript environment, front end, back end and DB included!
 
 No mucking around! 🎉
-
-## TOC
-
-- [TLDR](#tldr)
-- [What is it?](#what-is-it)
-- [Why QuickList?](#why-quicklist)
-- [Future Development](#future-development)
-- [What does it do?](#what-does-it-do)
-- [Quick Start Usage](#quick-start-usage)
-    - [Prerequisites](#prerequisites)
-    - [Create a .env config](#create-a-env-config)
-    - [Run the solution using Docker 🐳](#run-the-solution-using-docker)
-    - [What now?](#what-now)
-    - [Where is everything?](#where-is-everything)
-- [Development Info](#development-info)
-    - [Running the front end standalone](#running-fe-standalone)
-    - [Running the back end standalone](#running-api-standalone)
-    - [Running the entire system](#start-the-solution)
-    - [Backing up your database](#backing-up-your-database)
-    - [Docker Tips & Commands](#docker-commands-you-can-use)
-- [Project To Do](#project-to-do)
-- [FAQs](#faqs)
 
 ## TLDR;
 
@@ -229,6 +231,46 @@ docker start node-mysql
 # docker exec -it [container-name] mysql -uroot -p
 docker exec -it node-mysql mysql -uroot -p
 ```
+
+## Deployment
+
+The deployment of this project is automated using GitHub Actions.
+
+When pushing to master, and changes are made to the paths defined in [the action](/.github/workflows/pushtoftp.yaml), the code will be built, tested & pushed to the live environment all in less than 2 minutes!
+
+End to end, the process takes approximately 1m30s, though there are still some improvements that could be implemented in the future, including caching of the more stable npm assets, which would help reduce this time (but more importantly save some wasted compute cycles and trees!!)
+
+The pipeline is driven by three simple steps:
+
+### Build
+
+For the front end, we `npm ci` before our `npm run build` to ensure better efficiency in the pipeline, and better dependency stability
+
+Long term, it would be desirable to implement caching of the npm modules
+
+### Test
+
+Here we will run `npm run test` with verbose output
+
+Unit Testing is driven by the CRA provided unit testing packages
+
+If the pipeline fails at this stage, we don't push the code live
+
+### Sync
+
+SamKirkland's awesome simple ftp action is then used to run a diff check between the new environment produced and that of the server.
+
+Any changes that are identified are then synced to the server.
+
+### Manual Deployment
+
+Mistakes happen, right? For this reason, there is a [manual "emergency publish"](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual.yaml) available.
+
+You can manually trigger this action to wipe the remote & resync the current master branch across.
+
+This process takes a little more time (~2m30s) and is more likely to result in downtime.
+
+There is also a less destructive method available, which mimics the standard automated deployment, which can be [seen here](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual-clean.yaml).
 
 ## Project To-Do
 
