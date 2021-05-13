@@ -23,7 +23,7 @@ const DefaultNotes = [{
     },
 
     {
-        id: '03a83e99-ea71-4505-81d0-92de5638a5df',
+        id: '13a83e99-ea71-4505-81d0-92de5638a5dg',
         primary: 'Installing the app 💾',
         secondary: '  • Visit using your mobile to add QuickList to your homescreen now\n' +
             '  • If you are visiting using a desktop, you can also install using the link in the address bar\n\n' +
