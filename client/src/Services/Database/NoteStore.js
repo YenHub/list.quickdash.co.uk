@@ -13,8 +13,8 @@ const DefaultNotes = [{
     {
         id: 'bca2f4a9-d510-4d6e-9b47-28c9fcc8ca07',
         primary: 'Use the icons to edit or delete this note 👀',
-        secondary: 'Or, create new notes using the ➕ icon\n' +
-            'There is also an option to delete all items from the main menu',
+        secondary: 'You can create new notes using the ➕ icon at the top of this page\n' +
+            'There is also an option to delete all items in the main menu',
     },
     {
         id: 'dca2f4a9-d510-4d6e-9b47-28c9fcc8ca08',
