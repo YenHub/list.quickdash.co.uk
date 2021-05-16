@@ -22,7 +22,7 @@ import { isMobile } from 'react-device-detect';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: isMobile ? '100%' : '80%',
+        width: isMobile ? '100%' : '85%',
         maxWidth: '1250px',
         margin: 'auto auto'
     },

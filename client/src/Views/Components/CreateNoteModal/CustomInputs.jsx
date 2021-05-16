@@ -41,7 +41,7 @@ export const DescInput = ({ noteDesc, setNoteDesc }) => {
     );
 };
 
-export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
+export const SubmitButton = ({ createNote, noteTitle, editNoteId, noteDesc }) => {
     const noteLabel = `${editNoteId ? 'Update' : 'Create'}`;
     return (
         <Button
@@ -50,7 +50,7 @@ export const SubmitButton = ({ createNote, noteTitle, editNoteId }) => {
             onClick={createNote}
             variant="outlined"
             color="primary"
-            disabled={noteTitle.length === 0}
+            disabled={!noteTitle.length && !noteDesc.length}
             data-testid="create-note-submit"
             style={{width: '48%', marginLeft: '2%'}}
         >

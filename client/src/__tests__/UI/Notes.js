@@ -41,7 +41,7 @@ describe('Note Functions', () => {
         expect(screen.queryByText(/(Dondollo)/i)).toBeTruthy();
     });
 
-    test('Can not create a note with only a desc', async () => {
+    test('Can create a note with only a desc', async () => {
         await initApp();
         openNoteModal();
         setNoteDesc('Only Desc ab123');
@@ -49,7 +49,7 @@ describe('Note Functions', () => {
         // Test the modal is closed
         expect(screen.queryByTestId('create-note-submit')).toBeNull();
         // Test if the note has been created
-        expect(screen.queryByText(/(Only Desc ab123)/i)).toBeNull();
+        expect(screen.queryByText(/Only Desc ab123/i)).toBeInTheDocument();
     });
 
     test('Can create a note using Markdown', async () => {

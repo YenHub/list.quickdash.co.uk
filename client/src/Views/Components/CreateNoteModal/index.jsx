@@ -85,7 +85,7 @@ const CreateNoteModal = props => {
         handleClose();
         evt.preventDefault();
         switch (true) {
-            case !noteTitle.length:
+            case !noteTitle && !noteDesc:
                 // NO NOTE: Just close modal
                 return handleClose();
             case !!editNoteId:
@@ -100,7 +100,7 @@ const CreateNoteModal = props => {
         }
     };
 
-    const submitButtonProps = { noteTitle, createNote, editNoteId };
+    const submitButtonProps = { noteTitle, createNote, editNoteId, noteDesc };
 
     const CreateNoteButton = () => (
         <IconButton
