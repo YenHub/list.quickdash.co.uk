@@ -47,7 +47,7 @@ SOFTWARE.
 }
 
 .reactMarkDown a {
-    color: #4183c4;
+    color: #08d2ff;
     text-decoration: none;
 }
 
@@ -131,31 +131,29 @@ SOFTWARE.
 }
 
 .reactMarkDown h1 {
-    font-size: 28px;
-    color: black;
+    font-size: 24px;
 }
 
 .reactMarkDown h2 {
-    font-size: 24px;
+    font-size: 20px;
+    color: lightgrey;
     border-bottom: 1px solid #cccccc;
-    color: black;
 }
 
 .reactMarkDown h3 {
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .reactMarkDown h4 {
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .reactMarkDown h5 {
-    font-size: 14px;
+    font-size: 10px;
 }
 
 .reactMarkDown h6 {
-    color: #777777;
-    font-size: 14px;
+    font-size: 10px;
 }
 
 .reactMarkDown p,
