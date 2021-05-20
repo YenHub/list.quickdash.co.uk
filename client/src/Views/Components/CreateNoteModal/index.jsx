@@ -13,7 +13,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = wideView => makeStyles((theme) => ({
     root: {
         '& > *': {
             marginBottom: theme.spacing(2),
@@ -21,10 +21,14 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         position: 'absolute',
-        width: isMobile ? '90%' : 675,
+        width: isMobile ? '90%' : wideView ? '75%' : 675,
+        minWidth: isMobile ? '90%' : 675,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 1),
+    },
+    formGroup: {
+        flexDirection: 'row-reverse'
     },
 }));
 
@@ -48,7 +52,9 @@ const CreateNoteModal = props => {
         previewMode,
     } = props;
 
-    const classes = useStyles();
+    const [wideView, toggleWideView] = useState(false);
+
+    const classes = useStyles(wideView)();
 
     const getNoteDetail = detail => {
         let editingNote, editingNoteIndex;
@@ -119,7 +125,8 @@ const CreateNoteModal = props => {
     const MDContainer = () => {
         const [showPreview, togglePreview] = useState(previewMode);
 
-        const handleChange = (event) => togglePreview(event.target.checked);
+        const handlePreview = (event) => togglePreview(event.target.checked);
+        const handleWideView = (event) => toggleWideView(event.target.checked);
 
         return (
             <div style={{
@@ -129,20 +136,35 @@ const CreateNoteModal = props => {
                 maxHeight: 'calc(40vh)',
                 overflowY: 'auto',
             }}>
-                <FormGroup>
+                <FormGroup row className={classes.formGroup}>
                     <FormControlLabel
                         labelPlacement="start"
                         control={
                             <Switch
                                 inputProps={{ 'aria-label': 'Show MarkDown Preview' }}
                                 checked={showPreview}
-                                onChange={handleChange}
+                                onChange={handlePreview}
                                 name="showPreview"
                                 color="primary"
                             />
                         }
                         label="Live Preview"
                     />
+                    { !isMobile && (
+                        <FormControlLabel
+                            labelPlacement="start"
+                            control={
+                                <Switch
+                                    inputProps={{ 'aria-label': 'Show Wide View' }}
+                                    checked={wideView}
+                                    onChange={handleWideView}
+                                    name="wideView"
+                                    color="primary"
+                                />
+                            }
+                            label="Wide View"
+                        />
+                    )}
                 </FormGroup>
                 {showPreview && <MDPreview children={noteDesc} darkMode={darkMode} />}
             </div>
