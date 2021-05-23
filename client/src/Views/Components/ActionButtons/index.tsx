@@ -1,9 +1,12 @@
+import { SetStateAction, Dispatch } from 'react';
+
 import Button from '@material-ui/core/Button';
 
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
+import { NoteItem } from '../../../Services/Database/NoteStore';
 
-const CustomButton = props => (
+const CustomButton = (props: any) => (
     <Button
         {...props}
         edge="end"
@@ -14,12 +17,27 @@ const CustomButton = props => (
     </Button>
 );
 
-export const DeleteNotes = ({ noteState, setNoteState }) => {
+interface IActionButtons {
+    noteTitle: string,
+    setNoteTitle: Dispatch<SetStateAction<string>>,
+    noteDesc: string,
+    darkMode: boolean,
+    setNoteDesc: Dispatch<SetStateAction<string>>,
+    createNote: (evt: any) => void,
+    editNoteId: string,
+    handleClose: () => void,
+    noteState: NoteItem[],
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
+};
 
-    const clearNotes = () => {
+export const DeleteNotes = (
+    { noteState, setNoteState }: Pick<IActionButtons, "noteState" | "setNoteState">
+): JSX.Element => {
+
+    const clearNotes = (): void => {
         let shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
         if (!shouldDelete) {
-            return false;
+            return;
         }
         setNoteState([]);
     };
@@ -35,9 +53,11 @@ export const DeleteNotes = ({ noteState, setNoteState }) => {
     return <CustomButton {...buttonProps}/>;
 };
 
-export const ImportButton = ({ noteState, setNoteState }) => {
+export const ImportButton = (
+    { noteState, setNoteState }: Pick<IActionButtons, "noteState" | "setNoteState">
+): JSX.Element => {
 
-    const importNotes = (noteState) => {
+    const importNotes = (noteState: NoteItem[]) => {
         let currentNotes = [...noteState];
         [
             { primary: 'test', secondary: 'More Text' },
@@ -62,9 +82,11 @@ export const ImportButton = ({ noteState, setNoteState }) => {
 
 };
 
-export const ExportButton = ({ noteState }) => {
+export const ExportButton = (
+    { noteState }: Pick<IActionButtons, "noteState">
+): JSX.Element => {
 
-    const exportNotes = (noteState) => {
+    const exportNotes = (noteState: NoteItem[]): void => {
         let exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));
         downloadFile(exportContent);
     };

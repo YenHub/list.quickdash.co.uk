@@ -1,5 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { Dispatch, SetStateAction } from 'react';
 
+import { makeStyles } from '@material-ui/core/styles';
 import {
     List,
     ListItem,
@@ -16,11 +17,12 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+import { NoteItem } from '../../../Services/Database/NoteStore'
 import MDPreview, { MDTitle } from '../MDPreview';
 
 import { isMobile } from 'react-device-detect';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         width: isMobile ? '100%' : '85%',
         maxWidth: '1250px',
@@ -31,14 +33,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const reorder = (noteState, startIndex, endIndex) => {
+const reorder = (
+    noteState: NoteItem[], startIndex: number, endIndex: number
+): NoteItem[] => {
     const [removed] = noteState.splice(startIndex, 1);
     noteState.splice(endIndex, 0, removed);
-
     return noteState;
 };
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // styles we need to apply on draggables
     ...draggableStyle,
 
@@ -47,40 +50,53 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     })
 });
 
-const getListStyle = (isDraggingOver, darkMode) => ({
+const getListStyle = (
+    isDraggingOver: boolean, darkMode: boolean
+): { background: string } => ({
     background: isDraggingOver ? darkMode ? '#303030' : '#fafafa' : '',
 });
 
-const getTextStyle = (isDraggingOver, darkMode) => ({
-    color: isDraggingOver ? 'black' : null,
+const getTextStyle = (isDraggingOver: boolean): { color: string } => ({
+    color: isDraggingOver ? 'black' : '',
 });
 
-const getListItemFrags = (darkMode, mdMode, listItem) => {
+type IListFragItem = string | JSX.Element | undefined;
+
+const getListItemFrags = (
+    darkMode: boolean, mdMode: boolean, listItem: NoteItem
+): IListFragItem[] => {
 
     let { primary, secondary } = listItem;
 
-    const customProps = textItem => ({
+    const customProps = (textItem?: string) => ({
         children: textItem,
         darkMode,
-        mdMode,
-    })
-
-    if (mdMode) {
-        primary = <MDTitle {...customProps(primary)} />
-        secondary = <MDPreview {...customProps(secondary)} />
-    }
-
-    return {
-        primary,
-        secondary,
-    }
+    });
+    return [
+        mdMode ? <MDTitle {...customProps(primary)} /> : primary,
+        mdMode ? <MDPreview {...customProps(secondary)} /> : secondary
+    ];
 }
 
-const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode }) => {
+interface INoteList {
+    darkMode: boolean,
+    noteState: NoteItem[],
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
+    setEditNoteId: Dispatch<SetStateAction<string>>,
+    mdMode: boolean,
+}
+
+const NotesList = ({
+    darkMode,
+    noteState,
+    setNoteState,
+    setEditNoteId,
+    mdMode
+}: INoteList): JSX.Element | null => {
 
     const classes = useStyles();
 
-    const onDragEnd = (result) => {
+    const onDragEnd = (result: any) => {
         // Drop zone is outside of the list
         if (!result.destination) {
             return;
@@ -95,7 +111,7 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
         setNoteState([...items]);
     }
 
-    const deleteNote = (item) => {
+    const deleteNote = (item: NoteItem) => {
         setNoteState([...noteState.filter(note => note.id !== item.id)]);
     }
 
@@ -113,42 +129,43 @@ const NotesList = ({ darkMode, noteState, setNoteState, setEditNoteId, mdMode })
                                     {noteState.map((item, index) => (
                                         <Draggable key={item.id} draggableId={item.id} index={index}>
                                             {(provided, snapshot) => {
-                                                const textStyle = getTextStyle(snapshot.isDragging, darkMode);
+                                                const textStyle = getTextStyle(snapshot.isDragging);
                                                 const itemStyle = getItemStyle(
                                                     snapshot.isDragging,
                                                     provided.draggableProps.style
                                                 );
-                                                const listItemFrags = getListItemFrags(darkMode, mdMode,item, textStyle);
+                                                const listItemFrags = getListItemFrags(darkMode, mdMode, item);
                                                 return (
                                                     <ListItem
                                                         className={classes.secondaryAction}
-                                                        ContainerComponent="li"
-                                                        ContainerProps={{ ref: provided.innerRef }}
+                                                        ContainerComponent={(<li />).type}
+                                                        // ContainerProps={{ ref: provided.innerRef }}
+                                                        ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
                                                         style={itemStyle}
                                                     >
                                                         <ListItemIcon>
-                                                            <NotesIcon style={textStyle}/>
+                                                            <NotesIcon style={textStyle} />
                                                         </ListItemIcon>
                                                         <ListItemText
                                                             disableTypography={mdMode ? true : false}
-                                                            primary={listItemFrags.primary}
-                                                            primaryTypographyProps={{ style: {...textStyle}}}
-                                                            secondary={listItemFrags.secondary}
-                                                            secondaryTypographyProps={{ style: {...textStyle, whiteSpace: 'pre-wrap'}}}
+                                                            primary={listItemFrags[0]}
+                                                            primaryTypographyProps={{ style: { ...textStyle } }}
+                                                            secondary={listItemFrags[1]}
+                                                            secondaryTypographyProps={{ style: { ...textStyle, whiteSpace: 'pre-wrap' } }}
                                                         />
                                                         <ListItemIcon onClick={() => setEditNoteId(item.id)}>
                                                             <IconButton>
-                                                                <EditIcon color="primary"/>
+                                                                <EditIcon color="primary" />
                                                             </IconButton>
                                                         </ListItemIcon>
                                                         <ListItemIcon
                                                             role="deleteNote"
-                                                            onClick={ () => deleteNote(item) }
+                                                            onClick={() => deleteNote(item)}
                                                         >
                                                             <IconButton>
-                                                                <DeleteForeverIcon color="error"/>
+                                                                <DeleteForeverIcon color="error" />
                                                             </IconButton>
                                                         </ListItemIcon>
                                                         <ListItemSecondaryAction />

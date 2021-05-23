@@ -18,6 +18,8 @@ describe('Note Functions', () => {
         const initialCount = getNoteCount();
         deleteLastNote();
         expect(getNoteCount()).toBe(initialCount - 1);
+        await global.location.assign('');
+        expect(getNoteCount()).toBe(initialCount - 1);
     });
 
     test('Cannot create blank notes', async () => {

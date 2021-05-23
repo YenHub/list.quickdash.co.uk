@@ -1,6 +1,6 @@
 import 'typeface-dosis';
 import clsx from 'clsx';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -21,18 +21,18 @@ import { isMobile } from 'react-device-detect';
 
 import NotesList from './Components/NotesList';
 import DarkModeToggle from './Components/DarkModeToggle';
-import MDToggle, { MDPreviewToggle }from './Components/MDToggle';
+import MDToggle, { MDPreviewToggle } from './Components/MDToggle';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal'
 import ShareButtons from './Components/ShareButtons'
 
-import NoteStore from '../Services/Database/NoteStore';
+import NoteStore, { NoteItem } from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
 
 const showGatedFeatures = process.env.NODE_ENV === 'development';
 const drawerWidth = 240;
 
-const useStyles = darkMode => makeStyles((theme) => ({
+const useStyles = (darkMode: boolean) => makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
@@ -99,37 +99,45 @@ const useStyles = darkMode => makeStyles((theme) => ({
     },
 }));
 
-export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, previewMode, setPreviewMode }) {
+export interface IMain {
+    darkMode: boolean,
+    setDarkMode: Dispatch<SetStateAction<boolean>>,
+    mdMode: boolean,
+    setMDMode: Dispatch<SetStateAction<boolean>>,
+    previewMode: boolean,
+    setPreviewMode: Dispatch<SetStateAction<boolean>>,
+}
+
+export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, previewMode, setPreviewMode }: IMain) {
 
     const classes = useStyles(darkMode)();
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [noteState, setNoteState] = useState<NoteItem[] | []>([]);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [editNoteId, setEditNoteId] = useState<string>('');
 
-    const [noteState, setNoteState] = useState(null);
     const noteProps = { darkMode, mdMode, noteState, setNoteState, previewMode };
     const toggleProps = { ...noteProps, setDarkMode };
     const mdToggleProps = { ...noteProps, setMDMode };
     const mdPreviewProps = { ...noteProps, setPreviewMode };
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editNoteId, setEditNoteId] = useState(false);
     const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId, darkMode, mdMode };
 
-    const getItems = async () => setNoteState(await noteStore.getNotes());
+    const getItems = async (): Promise<void> => setNoteState(await noteStore.getNotes());
 
-    const handleDrawerState = () => setOpen(open => !open);
+    const handleDrawerState = (): void => setOpen(open => !open);
 
-    const attemptImport = () => !noteState && getItems();
+    const attemptImport = (): void => { !noteState.length && getItems() };
 
     // Were using this emtpy [] purposefully and with intent
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
 
-    useEffect( () => noteStore.setNotes(noteState), [noteState] );
+    useEffect(() => { noteStore.setNotes(noteState) }, [noteState]);
 
-    const AppHeader = () => {
+    const AppHeader = (): JSX.Element => {
 
-        const AppHeaderLogo = () => (
+        const AppHeaderLogo = (): JSX.Element => (
             <Typography variant="h1" noWrap className={classes.title}>
                 QuickList
             </Typography>
@@ -150,21 +158,21 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, preview
                         onClick={handleDrawerState}
                         className={clsx(open && classes.hide)}
                     >
-                        <SettingsIcon fontSize="large"/>
+                        <SettingsIcon fontSize="large" />
                     </IconButton>
 
                     <AppHeaderLogo />
 
-                    <CreateNoteModal {...modalProps}/>
+                    <CreateNoteModal {...modalProps} />
                 </Toolbar>
             </AppBar>
         );
 
     };
 
-    const AppMenuDrawer = () => {
+    const AppMenuDrawer = (): JSX.Element => {
 
-        const DrawerHeader = () => (
+        const DrawerHeader = (): JSX.Element => (
             <div className={classes.drawerHeader}>
                 <IconButton onClick={handleDrawerState}>
                     <ChevronLeftIcon />
@@ -172,37 +180,37 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, preview
             </div>
         );
 
-        const ImportListItem = () => (
+        const ImportListItem = (): JSX.Element => (
             <ListItem>
-                <ImportButton noteState={noteState} setNoteState={setNoteState}/>
+                <ImportButton noteState={noteState} setNoteState={setNoteState} />
             </ListItem>
         );
 
-        const ExportListItem = () => (
+        const ExportListItem = (): JSX.Element => (
             <ListItem>
-                <ExportButton noteState={noteState} setNoteState={setNoteState}/>
+                <ExportButton noteState={noteState} />
             </ListItem>
         );
 
-        const MenuItems = () => (
+        const MenuItems = (): JSX.Element => (
             <List>
                 {showGatedFeatures ? <ExportListItem /> : null}
                 {showGatedFeatures ? <ImportListItem /> : null}
                 <ListItem>
-                    <DeleteNotes noteState={noteState} setNoteState={setNoteState}/>
+                    <DeleteNotes noteState={noteState} setNoteState={setNoteState} />
                 </ListItem>
                 <ListItem>
-                    <DarkModeToggle {...toggleProps}/>
+                    <DarkModeToggle {...toggleProps} />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <MDToggle {...mdToggleProps}/>
+                    <MDToggle {...mdToggleProps} />
                 </ListItem>
-                { (mdMode && !isMobile) && (
+                {(mdMode && !isMobile) && (
                     <div>
                         <Divider />
                         <ListItem>
-                            <MDPreviewToggle {...mdPreviewProps}/>
+                            <MDPreviewToggle {...mdPreviewProps} />
                         </ListItem>
                     </div>
                 )}
@@ -227,10 +235,10 @@ export default function Main({ darkMode, setDarkMode, mdMode, setMDMode, preview
         );
     };
 
-    const MainContentWindow = () => (
+    const MainContentWindow = (): JSX.Element => (
         <main className={clsx(classes.content, { [classes.contentShift]: open, })} >
             <div className={classes.drawerHeader} />
-            <NotesList setEditNoteId={setEditNoteId} {...noteProps}/>
+            <NotesList setEditNoteId={setEditNoteId} {...noteProps} />
         </main>
     );
 

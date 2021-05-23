@@ -1,6 +1,6 @@
 const isIE = () => navigator.userAgent.indexOf('MISE ') !== -1 || !!navigator.userAgent.match(/Trident.*rv:11\./);
 
-export const downloadFile = (content) => {
+export const downloadFile = (content: string): void => {
     let _fileName = `QuickList-${new Date().toLocaleDateString().replace(/\//g,'-')}.txt`;
     var blob = new Blob([content], {
         type: 'text/plain;charset=utf-8;'

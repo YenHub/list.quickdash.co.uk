@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import {
+    SetStateAction,
+    ChangeEventHandler,
+    Dispatch,
+    FormEvent,
+    useState,
+} from 'react';
 import { isMobile } from 'react-device-detect';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +12,7 @@ import { Modal, IconButton, } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
+import { NoteItem } from '../../../Services/Database/NoteStore';
 import { getUniqueId } from '../../../Services/UUID';
 
 import MDPreview from '../MDPreview';
@@ -13,7 +20,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-const useStyles = wideView => makeStyles((theme) => ({
+const useStyles = (wideView: boolean) => makeStyles((theme) => ({
     root: {
         '& > *': {
             marginBottom: theme.spacing(2),
@@ -38,56 +45,66 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
 };
 
-const CreateNoteModal = props => {
+interface ICreateNoteModal {
+    noteState: NoteItem[],
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
+    modalOpen: boolean,
+    setModalOpen: Dispatch<SetStateAction<boolean>>,
+    editNoteId: string,
+    setEditNoteId: Dispatch<SetStateAction<string>>,
+    darkMode: boolean,
+    mdMode: boolean,
+    previewMode: boolean,
+}
 
-    const {
-        noteState,
-        setNoteState,
-        modalOpen,
-        setModalOpen,
-        editNoteId,
-        setEditNoteId,
-        darkMode,
-        mdMode,
-        previewMode,
-    } = props;
+const CreateNoteModal = ({
+    noteState,
+    setNoteState,
+    modalOpen,
+    setModalOpen,
+    editNoteId,
+    setEditNoteId,
+    darkMode,
+    mdMode,
+    previewMode,
+}: ICreateNoteModal): JSX.Element => {
 
-    const [wideView, toggleWideView] = useState(false);
+    const [wideView, toggleWideView] = useState<boolean>(false);
 
     const classes = useStyles(wideView)();
 
-    const getNoteDetail = detail => {
+    const getNoteDetail = (detail: 'primary' | 'secondary'): string => {
         let editingNote, editingNoteIndex;
 
         if (editNoteId) {
-            editingNoteIndex = noteState.findIndex(note => note.id === editNoteId);
+            editingNoteIndex = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
             editingNote = noteState[editingNoteIndex];
         }
         return editingNote?.[detail] || ''
     };
 
-    const [noteDesc, setNoteDesc] = useState(getNoteDetail('secondary'));
+    const [noteDesc, setNoteDesc] = useState<string>(getNoteDetail('secondary'));
     const descProps = { noteDesc, setNoteDesc };
 
-    const [noteTitle, setNoteTitle] = useState(getNoteDetail('primary'));
+    const [noteTitle, setNoteTitle] = useState<string>(getNoteDetail('primary'));
     const titleProps = { noteTitle, setNoteTitle };
 
-    const handleOpen = () => setModalOpen(true);
-    const handleClose = () => {
+    const handleOpen = (): void => setModalOpen(true);
+    const handleClose = (): void => {
         setModalOpen(false);
-        setEditNoteId(false);
+        setEditNoteId('');
     };
 
     const noteButtonProps = { handleClose, editNoteId, darkMode };
 
-    const editExistingNote = editNoteId => {
-        let indOfNote = noteState.findIndex(note => note.id === editNoteId);
+    const editExistingNote = (editNoteId: string): void => {
+        let indOfNote = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
         let newNotes = [...noteState];
         newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: `${noteDesc}` };
         setNoteState([...newNotes]);
     };
 
-    const createNote = (evt) => {
+    const createNote = (evt: FormEvent | MouseEvent): void => {
         handleClose();
         evt.preventDefault();
         switch (true) {
@@ -97,7 +114,7 @@ const CreateNoteModal = props => {
             case !!editNoteId:
                 // HAS NOTE: Edit existing
                 return editExistingNote(editNoteId);
-            case !!noteState?.length:
+            case !!noteState?.length :
                 // HAS NOTES: Prepend new note
                 return setNoteState([{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState]);
             default:
@@ -108,7 +125,7 @@ const CreateNoteModal = props => {
 
     const submitButtonProps = { noteTitle, createNote, editNoteId, noteDesc };
 
-    const CreateNoteButton = () => (
+    const CreateNoteButton = (): JSX.Element => (
         <IconButton
             data-testid="create-note-button"
             aria-label="Create New Note"
@@ -122,11 +139,11 @@ const CreateNoteModal = props => {
         </IconButton>
     );
 
-    const MDContainer = () => {
-        const [showPreview, togglePreview] = useState(previewMode);
+    const MDContainer = (): JSX.Element => {
+        const [showPreview, togglePreview] = useState<boolean>(previewMode);
 
-        const handlePreview = (event) => togglePreview(event.target.checked);
-        const handleWideView = (event) => toggleWideView(event.target.checked);
+        const handlePreview: ChangeEventHandler<HTMLInputElement> = event => togglePreview(event.target.checked);
+        const handleWideView: ChangeEventHandler<HTMLInputElement> = event => toggleWideView(event.target.checked);
 
         return (
             <div style={{
@@ -150,7 +167,7 @@ const CreateNoteModal = props => {
                         }
                         label="Live Preview"
                     />
-                    { !isMobile && (
+                    {!isMobile && (
                         <FormControlLabel
                             labelPlacement="start"
                             control={
@@ -171,21 +188,21 @@ const CreateNoteModal = props => {
         );
     };
 
-    const ModalBody = () => (
+    const ModalBody = (): JSX.Element => (
         <div style={modalStyle} className={classes.paper}>
-            <form style={{marginTop: '1em'}} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
+            <form style={{ marginTop: '1em' }} className={classes.root} onSubmit={createNote} noValidate autoComplete="off" >
                 <TitleInput {...titleProps} />
                 <DescInput {...descProps} />
-                <CloseButton {...noteButtonProps}/>
+                <CloseButton {...noteButtonProps} />
                 <SubmitButton {...submitButtonProps} />
                 {
                     (mdMode && !isMobile) && <MDContainer />
                 }
             </form>
-            <span id="new-note-modal" style={{display: 'none'}} aria-hidden="true">
+            <span id="new-note-modal" style={{ display: 'none' }} aria-hidden="true">
                 New Note modal
              </span>
-            <span id="new-note-modal-description" style={{display: 'none'}} aria-hidden="true">
+            <span id="new-note-modal-description" style={{ display: 'none' }} aria-hidden="true">
                 Here you can set the Title and Description of your new note
              </span>
         </div>

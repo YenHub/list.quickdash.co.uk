@@ -6,14 +6,18 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useState, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
 
-const getSetting = setting => {
+export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
+
+const getSetting = (setting: Setting): boolean => {
     if(window.localStorage.getItem(setting)) {
         return window.localStorage.getItem(setting) === 'true';
     }
     return setting !== 'mdMode';
 };
 
-const getTheme = darkMode => createMuiTheme({
+const setBoolSetting = (setting: Setting, value: boolean): void => localStorage.setItem(setting, value.toString());
+
+const getTheme = (darkMode: boolean) => createMuiTheme({
     palette: {
         type: darkMode ? 'dark' : 'light',
         primary: {
@@ -35,22 +39,22 @@ const getTheme = darkMode => createMuiTheme({
     },
 });
 
-const App = () => {
+const App = (): JSX.Element => {
 
-    const [darkMode, setDarkMode] = useState(getSetting('darkMode'));
-    const [mdMode, setMDMode] = useState(getSetting('mdMode'));
-    const [previewMode, setPreviewMode] = useState(getSetting('previewMode'));
+    const [darkMode, setDarkMode] = useState<boolean>(getSetting('darkMode'));
+    const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
+    const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
 
     useEffect( () => {
-        window.localStorage.setItem('darkMode', darkMode);
+        setBoolSetting('darkMode', darkMode);
     }, [darkMode])
 
     useEffect( () => {
-        window.localStorage.setItem('mdMode', mdMode);
+        setBoolSetting('mdMode', mdMode);
     }, [mdMode])
 
     useEffect( () => {
-        window.localStorage.setItem('previewMode', previewMode);
+        setBoolSetting('previewMode', previewMode);
     }, [previewMode])
 
     const theme = getTheme(darkMode);

@@ -11,13 +11,13 @@ import { isMobile } from 'react-device-detect';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     shareIcons: {
         position: 'fixed',
         display: 'flex',
         justifyContent: 'space-between',
         width: isMobile ? '100%' : '240px',
-        padding: `0 ${isMobile ? '30%': '2.5em' }`,
+        padding: `0 ${isMobile ? '30%' : '2.5em'}`,
         bottom: '10px',
     },
     icon: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const ShareButtons = () => {
+const ShareButtons = (): JSX.Element => {
 
     const classes = useStyles();
 

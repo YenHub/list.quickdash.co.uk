@@ -26,3 +26,7 @@
 .reactMarkDown code {
     background-color: lightgrey;
 }
+
+.reactMarkDown ul {
+    padding-inline-start: 1.5rem;
+}
