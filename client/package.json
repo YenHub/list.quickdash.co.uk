@@ -21,6 +21,7 @@
     "remark-gfm": "^1.0.0",
     "typeface-dosis": "^1.1.13",
     "typeface-roboto": "^1.1.13",
+    "typescript": "^4.2.4",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.0",
     "workbox-background-sync": "^5.1.4",
@@ -40,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -59,5 +61,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.0.0",
+    "@types/react-dom": "^17.0.5",
+    "@types/uuid": "^8.3.0",
+    "eslint": "^7.27.0"
   }
 }
