@@ -46,7 +46,7 @@ export const DescInput = (
             variant="outlined"
             onChange={handleDescChange}
             multiline
-            rows={isMobile ? 6 : 8}
+            rows={isMobile ? 6 : 12}
             defaultValue={noteDesc}
             inputProps={{ 'aria-label': 'Note Description' }}
         />
