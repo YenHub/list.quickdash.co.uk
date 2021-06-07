@@ -1,23 +1,27 @@
-const DBConnector = require('../utils/database/DBConnector');
-const { apiLog } = require('../utils/logger');
+import { Response, Request, NextFunction } from 'express';
+import { pool as DBConnector } from '../utils/database/DBConnector';
+import { apiLog } from '../utils/logger';
+import { HttpException } from '../app';
+import { MysqlError } from 'mysql';
 
+const messages = {
+    success: 'THE API IS NOT A ☕ POT',
+    failure: 'THE API IS A ☕ POT',
+}
 
-const success = 'THE API IS NOT A ☕ POT';
-const failure = 'THE API IS A ☕ POT';
-
-const handleFailure = (err, res) => {
+const handleFailure = (err: HttpException | MysqlError, res: Response) => {
 
     apiLog(`There has been a boo boo...`);
     apiLog(JSON.stringify(err));
 
-    res.status(500).send(failure);
+    res.status(500).send(messages.failure);
 
     throw err;
 };
 
-const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX + process.env.DB_TEST : process.env.DB_TEST;
+const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
 
-exports.index = (req, res, next) => {
+export const index = (_req: Request, res: Response, _next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
@@ -57,7 +61,7 @@ exports.index = (req, res, next) => {
 
 };
 
-exports.reset = (req, res, next) => {
+export const reset = (_req: Request, res: Response, _next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
@@ -71,7 +75,7 @@ exports.reset = (req, res, next) => {
           UPDATE testTable SET HitCount = '0' WHERE testTable.ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, result) {
+        con.query(sqlStatement, function (err, _result) {
 
             if(err) {
                 return handleFailure(err, res);
@@ -89,11 +93,11 @@ exports.reset = (req, res, next) => {
 
 };
 
-exports.testPayload = (req, res, next) => {
+export const testPayload = (_req: Request, res: Response, _next: NextFunction) => {
     res.status(200).json({ status: 'THE API IS NOT A TEAPOT ☕' });
 };
 
-exports.magicalSpam = (req, res, next) => {
+export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) => {
 
     const randomGenerator = () => {
 
@@ -101,7 +105,7 @@ exports.magicalSpam = (req, res, next) => {
         var randB = ( Math.random() * randA );
         var randC = ( ( randA * randB ) * Math.random() );
 
-        return parseInt(randC);
+        return Number(randC);
     };
 
     DBConnector.getConnection((err, con) => {
