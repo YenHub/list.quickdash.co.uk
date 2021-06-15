@@ -3,8 +3,9 @@ import 'typeface-roboto';
 import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { store } from './Services/State/Store';
 
 export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
 
@@ -39,9 +40,12 @@ const getTheme = (darkMode: boolean) => createMuiTheme({
     },
 });
 
-const App = (): JSX.Element => {
+const App: React.FC = () => {
 
-    const [darkMode, setDarkMode] = useState<boolean>(getSetting('darkMode'));
+    const globalState = useContext(store);
+    const { state } = globalState;
+    const { darkMode } = state;
+
     const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
     const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
 
@@ -61,7 +65,6 @@ const App = (): JSX.Element => {
 
     const mainProps = {
         darkMode,
-        setDarkMode,
         mdMode,
         setMDMode,
         previewMode,

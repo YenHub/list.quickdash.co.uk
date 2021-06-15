@@ -1,18 +1,21 @@
 import React, { createContext, useReducer } from 'react';
+import { getBoolSetting } from '../ReactUtils';
 
-type State = {
-    'DarkMode': boolean,
-    'NoteStore': string[] | null,
+export type State = {
+    darkMode: boolean,
 };
 
-type Actions = { type: 'DarkModeToggle', payload: boolean } | { type: 'SetNotes', payload: string[] };
+export type Actions = { type: 'DarkModeToggle' } | { type: 'SetNotes', payload: string[] };
 
 const initialState: State = {
-    DarkMode: true,
-    NoteStore: null,
+    darkMode: getBoolSetting('darkMode'),
 };
 
-const store = createContext(initialState);
+const store = createContext<{
+    state: State,
+    dispatch: React.Dispatch<Actions>
+}>({ state: initialState, dispatch: () => undefined });
+
 const { Provider } = store;
 
 const StateProvider: React.FC = ({ children }: any) => {
@@ -20,9 +23,10 @@ const StateProvider: React.FC = ({ children }: any) => {
     const stateReducer = (state: State, action: Actions): State => {
         switch (action.type) {
             case 'DarkModeToggle':
-                return { ...state, DarkMode: action.payload };
+                return { ...state, darkMode: !state.darkMode };
             case 'SetNotes':
-                return { ...state, NoteStore: [...action.payload] };
+                // return { ...state, NoteStore: [...action.payload] };
+                return { ...state };
             default:
                 return { ...state };
         };
@@ -30,7 +34,7 @@ const StateProvider: React.FC = ({ children }: any) => {
 
     const [state, dispatch] = useReducer(stateReducer, initialState);
 
-    const stateValue = { ...state, dispatch };
+    const stateValue = { state, dispatch };
 
     return <Provider value={stateValue}>{children}</Provider>;
 };

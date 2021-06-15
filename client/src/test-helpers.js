@@ -6,6 +6,7 @@ import { act } from 'react-dom/test-utils';
 export const initApp = () => act(async () => render(<App />));
 export const openNoteModal = () => fireEvent.click(screen.getByTestId('create-note-button'));
 export const openMainMenu = () => fireEvent.click(screen.getByTestId('menu-button'));
+export const closeMainMenu = () => fireEvent.click(screen.getByTestId('close-menu-button'));
 export const closeNoteModal = () => fireEvent.click(screen.getByTestId('create-note-close').closest('button'));
 export const submitNote = () => fireEvent.click(screen.getByTestId('create-note-submit').closest('button'));
 export const getNoteCount = () => document.querySelectorAll('.MuiListItemText-secondary').length;
@@ -25,4 +26,3 @@ export const deleteLastNote = () => {
     const deleteButtons = screen.getAllByRole(/deleteNote/);
     fireEvent.click(deleteButtons[deleteButtons.length-1]);
 };
-

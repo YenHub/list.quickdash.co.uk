@@ -6,8 +6,9 @@ describe('Menu Toggles', () => {
     test('Can Toggle DarkMode', async () => {
         await initApp();
 
+        const darkModeActive = () => window.localStorage.getItem('darkMode') === 'true';
+
         // Test initial value is true
-        const darkModeActive = () => window.localStorage.darkMode === 'true';
         expect(darkModeActive()).toBeTruthy();
 
         // Toggle the setting
@@ -21,7 +22,7 @@ describe('Menu Toggles', () => {
     test('Can Toggle Markdown', async () => {
         await initApp();
 
-        const mdModeActive = () => window.localStorage.mdMode === 'true';
+        const mdModeActive = () => window.localStorage.getItem('mdMode') === 'true';
 
         // Test initial value
         expect(mdModeActive()).toBeFalsy();

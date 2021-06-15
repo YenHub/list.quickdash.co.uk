@@ -1,21 +1,33 @@
+import React, { useContext } from 'react';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { IMain } from '../../Main';
+import { setBoolSetting } from '../../../Services/ReactUtils';
 
-export default function DarkModeToggle(
-    { darkMode, setDarkMode }: Pick<IMain, "darkMode" | "setDarkMode">
-): JSX.Element {
+import { store } from '../../../Services/State/Store';
 
-    const toggleChecked = (): void => setDarkMode((state) => !state);
+const DarkModeToggle: React.FC = () => {
+
+    const globalState = useContext(store);
+    const { state, dispatch } = globalState;
+    const { darkMode } = state;
+
+    const toggleChecked = (): void => {
+        setBoolSetting('darkMode', !darkMode);
+        dispatch({ type: 'DarkModeToggle' })
+    };
 
     return (
-        <FormGroup>
-            <FormControlLabel
-                control={<Switch data-testid="dm-toggle" checked={darkMode} onChange={toggleChecked} color="primary" />}
-                label="Dark Mode"
-            />
-        </FormGroup>
+        <React.Fragment>
+            <FormGroup>
+                <FormControlLabel
+                    control={<Switch data-testid="dm-toggle" checked={darkMode} onChange={toggleChecked} color="primary" />}
+                    label="Dark Mode"
+                />
+            </FormGroup>
+        </React.Fragment>
     );
-}
+};
+
+export default DarkModeToggle;
