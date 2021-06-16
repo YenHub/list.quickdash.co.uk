@@ -21,9 +21,8 @@ describe('Menu Toggles', () => {
     test('Can Toggle Markdown', async () => {
         await initApp();
 
-        console.log(window.localStorage.getItem('mdMode'));
-
         const mdModeActive = () => window.localStorage.getItem('mdMode') === 'true';
+        expect(mdModeActive()).toBeFalsy();
 
         // Toggle Setting ON
         openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle'));

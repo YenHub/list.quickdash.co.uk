@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import './RootCSS.css';
 import 'typeface-roboto';
 import Main from './Views/Main';
@@ -10,7 +11,7 @@ import { store } from './Services/State/Store';
 export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
 
 const getSetting = (setting: Setting): boolean => {
-    if(window.localStorage.getItem(setting)) {
+    if (window.localStorage.getItem(setting)) {
         return window.localStorage.getItem(setting) === 'true';
     }
     return setting !== 'mdMode';
@@ -40,25 +41,23 @@ const getTheme = (darkMode: boolean) => createMuiTheme({
     },
 });
 
-const App: React.FC = () => {
+const App: FC = () => {
 
     const globalState = useContext(store);
     const { state } = globalState;
     const { darkMode, mdMode } = state;
 
-    // const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
     const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
 
-    // Come back to this, it should probably be handled ONLY here or ONLY in the toggle, or ONLY in the state 😂
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('darkMode', darkMode);
     }, [darkMode]);
 
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('mdMode', mdMode);
     }, [mdMode]);
 
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('previewMode', previewMode);
     }, [previewMode]);
 

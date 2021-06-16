@@ -4,7 +4,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { IMain } from '../../Main';
 
-import { setBoolSetting } from '../../../Services/ReactUtils';
 import { store } from '../../../Services/State/Store';
 
 export const MDPreviewToggle = (
@@ -37,7 +36,6 @@ export const MDToggle: React.FC = () => {
     const { mdMode } = state;
 
     const toggleChecked = () => {
-        setBoolSetting('mdMode', !mdMode);
         dispatch({ type: 'MarkDownToggle' });
     };
 
@@ -65,7 +63,6 @@ export const DarkModeToggle: React.FC = () => {
     const { darkMode } = state;
 
     const toggleChecked = (): void => {
-        setBoolSetting('darkMode', !darkMode);
         dispatch({ type: 'DarkModeToggle' });
     };
 
