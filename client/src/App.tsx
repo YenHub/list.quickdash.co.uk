@@ -1,15 +1,17 @@
+import { FC } from 'react';
 import './RootCSS.css';
 import 'typeface-roboto';
 import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { store } from './Services/State/Store';
 
 export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
 
 const getSetting = (setting: Setting): boolean => {
-    if(window.localStorage.getItem(setting)) {
+    if (window.localStorage.getItem(setting)) {
         return window.localStorage.getItem(setting) === 'true';
     }
     return setting !== 'mdMode';
@@ -39,31 +41,31 @@ const getTheme = (darkMode: boolean) => createMuiTheme({
     },
 });
 
-const App = (): JSX.Element => {
+const App: FC = () => {
 
-    const [darkMode, setDarkMode] = useState<boolean>(getSetting('darkMode'));
-    const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
+    const globalState = useContext(store);
+    const { state } = globalState;
+    const { darkMode, mdMode } = state;
+
     const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
 
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('darkMode', darkMode);
-    }, [darkMode])
+    }, [darkMode]);
 
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('mdMode', mdMode);
-    }, [mdMode])
+    }, [mdMode]);
 
-    useEffect( () => {
+    useEffect(() => {
         setBoolSetting('previewMode', previewMode);
-    }, [previewMode])
+    }, [previewMode]);
 
     const theme = getTheme(darkMode);
 
     const mainProps = {
         darkMode,
-        setDarkMode,
         mdMode,
-        setMDMode,
         previewMode,
         setPreviewMode,
     }

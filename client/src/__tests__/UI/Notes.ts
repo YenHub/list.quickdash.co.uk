@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import {
     initApp,
     openNoteModal,
@@ -7,23 +7,25 @@ import {
     deleteLastNote,
     closeNoteModal,
     getNoteCount,
-    toggleMD,
     submitNote,
+    openMainMenu,
 } from '../../test-helpers';
+
+beforeEach(async () => {
+    await initApp();
+});
 
 describe('Note Functions', () => {
 
     test('Can delete notes', async () => {
-        await initApp();
         const initialCount = getNoteCount();
         deleteLastNote();
         expect(getNoteCount()).toBe(initialCount - 1);
-        await global.location.assign('');
+        global.location.assign('');
         expect(getNoteCount()).toBe(initialCount - 1);
     });
 
     test('Cannot create blank notes', async () => {
-        await initApp();
         openNoteModal();
         expect(screen.getByTestId('create-note-submit').closest('button')).toBeDisabled();
         // Check count before > attempt to submit > check count after
@@ -33,10 +35,9 @@ describe('Note Functions', () => {
     });
 
     test('Can create a note with only a title', async () => {
-        await initApp();
         openNoteModal();
         setNoteTitle('Dondollo')
-        submitNote()
+        submitNote();
         // Check modal has closed
         expect(screen.queryByTestId('create-note-submit')).toBeNull();
         // Check the note was created
@@ -44,7 +45,6 @@ describe('Note Functions', () => {
     });
 
     test('Can create a note with only a desc', async () => {
-        await initApp();
         openNoteModal();
         setNoteDesc('Only Desc ab123');
         submitNote() && closeNoteModal();
@@ -55,17 +55,18 @@ describe('Note Functions', () => {
     });
 
     test('Can create a note using Markdown', async () => {
-        await initApp();
-        toggleMD();
+        // Create a new note
         openNoteModal();
+        expect(screen.queryByTestId('create-note-submit')).toBeInTheDocument();
         setNoteTitle('MDTitle');
         setNoteDesc('---');
-        submitNote() && toggleMD();
-        // Test the modal is closed
+        submitNote();
         expect(screen.queryByTestId('create-note-submit')).toBeNull();
+        // Open the menu & Enable MD
+        openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle'));
         // Test if a note has been created with a <hr>
         const newNote = document.querySelectorAll('.MuiListItem-container hr');
-        expect(newNote.length === 1).toBeTruthy();
+        expect(newNote.length).toEqual(1);
     });
 
 });

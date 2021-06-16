@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useContext, Dispatch, SetStateAction } from 'react';
+import { store } from '../../../Services/State/Store';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -79,20 +80,20 @@ const getListItemFrags = (
 }
 
 interface INoteList {
-    darkMode: boolean,
     noteState: NoteItem[],
     setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
     setEditNoteId: Dispatch<SetStateAction<string>>,
-    mdMode: boolean,
 }
 
 const NotesList = ({
-    darkMode,
     noteState,
     setNoteState,
     setEditNoteId,
-    mdMode
 }: INoteList): JSX.Element | null => {
+
+    const globalState = useContext(store);
+    const { state } = globalState;
+    const { darkMode, mdMode } = state;
 
     const classes = useStyles();
 

@@ -4,6 +4,7 @@ import {
     Dispatch,
     FormEvent,
     useState,
+    useContext,
 } from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -19,6 +20,8 @@ import MDPreview from '../MDPreview';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+
+import { store } from '../../../Services/State/Store';
 
 const useStyles = (wideView: boolean) => makeStyles((theme) => ({
     root: {
@@ -52,22 +55,22 @@ interface ICreateNoteModal {
     setModalOpen: Dispatch<SetStateAction<boolean>>,
     editNoteId: string,
     setEditNoteId: Dispatch<SetStateAction<string>>,
-    darkMode: boolean,
-    mdMode: boolean,
     previewMode: boolean,
 }
 
-const CreateNoteModal = ({
+const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     noteState,
     setNoteState,
     modalOpen,
     setModalOpen,
     editNoteId,
     setEditNoteId,
-    darkMode,
-    mdMode,
     previewMode,
-}: ICreateNoteModal): JSX.Element => {
+}) => {
+
+    const globalState = useContext(store);
+    const { state } = globalState;
+    const { darkMode, mdMode } = state;
 
     const [wideView, toggleWideView] = useState<boolean>(false);
 
