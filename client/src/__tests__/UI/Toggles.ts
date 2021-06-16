@@ -11,9 +11,8 @@ describe('Menu Toggles', () => {
         // Test initial value is true
         expect(darkModeActive()).toBeTruthy();
 
-        // Toggle the setting
-        openMainMenu();
-        fireEvent.click(screen.getByTestId('dm-toggle'));
+        // Toggle the setting OFF
+        openMainMenu() && fireEvent.click(screen.getByTestId('dm-toggle'));
 
         // Test stored value is now false
         expect(darkModeActive()).toBeFalsy();
@@ -22,15 +21,12 @@ describe('Menu Toggles', () => {
     test('Can Toggle Markdown', async () => {
         await initApp();
 
+        console.log(window.localStorage.getItem('mdMode'));
+
         const mdModeActive = () => window.localStorage.getItem('mdMode') === 'true';
 
-        // Test initial value
-        expect(mdModeActive()).toBeFalsy();
-
-        // Toggle Setting
+        // Toggle Setting ON
         openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle'));
-
-        // Check MD is Toggled
         expect(mdModeActive()).toBeTruthy();
     });
 

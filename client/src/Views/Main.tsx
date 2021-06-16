@@ -22,8 +22,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { isMobile } from 'react-device-detect';
 
 import NotesList from './Components/NotesList';
-import DarkModeToggle from './Components/DarkModeToggle';
-import MDToggle, { MDPreviewToggle } from './Components/MDToggle';
+import { DarkModeToggle, MDToggle, MDPreviewToggle } from './Components/Toggles';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal'
 import ShareButtons from './Components/ShareButtons'
@@ -102,17 +101,15 @@ const useStyles = (darkMode: boolean) => makeStyles((theme) => ({
 }));
 
 export interface IMain {
-    mdMode: boolean,
-    setMDMode: Dispatch<SetStateAction<boolean>>,
     previewMode: boolean,
     setPreviewMode: Dispatch<SetStateAction<boolean>>,
 }
 
-export default function Main({ mdMode, setMDMode, previewMode, setPreviewMode }: IMain) {
+export default function Main({ previewMode, setPreviewMode }: IMain) {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode } = state;
+    const { darkMode, mdMode } = state;
 
     const classes = useStyles(darkMode)();
 
@@ -121,10 +118,9 @@ export default function Main({ mdMode, setMDMode, previewMode, setPreviewMode }:
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [editNoteId, setEditNoteId] = useState<string>('');
 
-    const noteProps = { mdMode, noteState, setNoteState, previewMode };
-    const mdToggleProps = { ...noteProps, setMDMode };
+    const noteProps = { noteState, setNoteState, previewMode };
     const mdPreviewProps = { ...noteProps, setPreviewMode };
-    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId, mdMode };
+    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const getItems = async (): Promise<void> => setNoteState(await noteStore.getNotes());
 
@@ -207,7 +203,7 @@ export default function Main({ mdMode, setMDMode, previewMode, setPreviewMode }:
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <MDToggle {...mdToggleProps} />
+                    <MDToggle />
                 </ListItem>
                 {(mdMode && !isMobile) && (
                     <div>

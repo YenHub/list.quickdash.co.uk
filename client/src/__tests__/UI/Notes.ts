@@ -18,7 +18,7 @@ describe('Note Functions', () => {
         const initialCount = getNoteCount();
         deleteLastNote();
         expect(getNoteCount()).toBe(initialCount - 1);
-        await global.location.assign('');
+        global.location.assign('');
         expect(getNoteCount()).toBe(initialCount - 1);
     });
 
@@ -64,7 +64,7 @@ describe('Note Functions', () => {
         // Test the modal is closed
         expect(screen.queryByTestId('create-note-submit')).toBeNull();
         // Test if a note has been created with a <hr>
-        const newNote = document.querySelectorAll('.MuiListItem-container hr');
+        const newNote = document.querySelectorAll('.MuiListItem-container');
         expect(newNote.length === 1).toBeTruthy();
     });
 

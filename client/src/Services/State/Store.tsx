@@ -3,12 +3,14 @@ import { getBoolSetting } from '../ReactUtils';
 
 export type State = {
     darkMode: boolean,
+    mdMode: boolean,
 };
 
-export type Actions = { type: 'DarkModeToggle' } | { type: 'SetNotes', payload: string[] };
+export type Actions = {type: 'MarkDownToggle'} | { type: 'DarkModeToggle' } | { type: 'SetNotes', payload: string[] };
 
 const initialState: State = {
     darkMode: getBoolSetting('darkMode'),
+    mdMode: getBoolSetting('mdMode'),
 };
 
 const store = createContext<{
@@ -24,9 +26,8 @@ const StateProvider: React.FC = ({ children }: any) => {
         switch (action.type) {
             case 'DarkModeToggle':
                 return { ...state, darkMode: !state.darkMode };
-            case 'SetNotes':
-                // return { ...state, NoteStore: [...action.payload] };
-                return { ...state };
+            case 'MarkDownToggle':
+                return { ...state, mdMode: !state.mdMode };
             default:
                 return { ...state };
         };

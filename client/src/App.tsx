@@ -44,29 +44,29 @@ const App: React.FC = () => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode } = state;
+    const { darkMode, mdMode } = state;
 
-    const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
+    // const [mdMode, setMDMode] = useState<boolean>(getSetting('mdMode'));
     const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
 
+    // Come back to this, it should probably be handled ONLY here or ONLY in the toggle, or ONLY in the state 😂
     useEffect( () => {
         setBoolSetting('darkMode', darkMode);
-    }, [darkMode])
+    }, [darkMode]);
 
     useEffect( () => {
         setBoolSetting('mdMode', mdMode);
-    }, [mdMode])
+    }, [mdMode]);
 
     useEffect( () => {
         setBoolSetting('previewMode', previewMode);
-    }, [previewMode])
+    }, [previewMode]);
 
     const theme = getTheme(darkMode);
 
     const mainProps = {
         darkMode,
         mdMode,
-        setMDMode,
         previewMode,
         setPreviewMode,
     }

@@ -83,19 +83,17 @@ interface INoteList {
     noteState: NoteItem[],
     setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
     setEditNoteId: Dispatch<SetStateAction<string>>,
-    mdMode: boolean,
 }
 
 const NotesList = ({
     noteState,
     setNoteState,
     setEditNoteId,
-    mdMode
 }: INoteList): JSX.Element | null => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode } = state;
+    const { darkMode, mdMode } = state;
 
     const classes = useStyles();
 

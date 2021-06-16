@@ -55,7 +55,6 @@ interface ICreateNoteModal {
     setModalOpen: Dispatch<SetStateAction<boolean>>,
     editNoteId: string,
     setEditNoteId: Dispatch<SetStateAction<string>>,
-    mdMode: boolean,
     previewMode: boolean,
 }
 
@@ -66,13 +65,12 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     setModalOpen,
     editNoteId,
     setEditNoteId,
-    mdMode,
     previewMode,
 }) => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode } = state;
+    const { darkMode, mdMode } = state;
 
     const [wideView, toggleWideView] = useState<boolean>(false);
 
