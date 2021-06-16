@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { Fragment, FC, useContext } from 'react';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -29,7 +29,7 @@ export const MDPreviewToggle = (
     );
 };
 
-export const MDToggle: React.FC = () => {
+export const MDToggle: FC = () => {
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
@@ -56,7 +56,7 @@ export const MDToggle: React.FC = () => {
     );
 };
 
-export const DarkModeToggle: React.FC = () => {
+export const DarkModeToggle: FC = () => {
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
@@ -67,13 +67,13 @@ export const DarkModeToggle: React.FC = () => {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <FormGroup>
                 <FormControlLabel
                     control={<Switch data-testid="dm-toggle" checked={darkMode} onChange={toggleChecked} color="primary" />}
                     label="Dark Mode"
                 />
             </FormGroup>
-        </React.Fragment>
+        </Fragment>
     );
 };

@@ -8,16 +8,7 @@ import { useContext, useState, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { store } from './Services/State/Store';
 
-export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
-
-const getSetting = (setting: Setting): boolean => {
-    if (window.localStorage.getItem(setting)) {
-        return window.localStorage.getItem(setting) === 'true';
-    }
-    return setting !== 'mdMode';
-};
-
-const setBoolSetting = (setting: Setting, value: boolean): void => localStorage.setItem(setting, value.toString());
+import { setBoolSetting, getBoolSetting } from './Services/ReactUtils';
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
     palette: {
@@ -47,7 +38,7 @@ const App: FC = () => {
     const { state } = globalState;
     const { darkMode, mdMode } = state;
 
-    const [previewMode, setPreviewMode] = useState<boolean>(getSetting('previewMode'));
+    const [previewMode, setPreviewMode] = useState<boolean>(getBoolSetting('previewMode'));
 
     useEffect(() => {
         setBoolSetting('darkMode', darkMode);
@@ -68,7 +59,7 @@ const App: FC = () => {
         mdMode,
         previewMode,
         setPreviewMode,
-    }
+    };
 
     return (
         <div
