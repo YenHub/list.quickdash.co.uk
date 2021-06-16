@@ -73,6 +73,7 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     const { darkMode, mdMode } = state;
 
     const [wideView, toggleWideView] = useState<boolean>(false);
+    const [showPreview, togglePreview] = useState<boolean>(previewMode);
 
     const classes = useStyles(wideView)();
 
@@ -143,7 +144,6 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     );
 
     const MDContainer = (): JSX.Element => {
-        const [showPreview, togglePreview] = useState<boolean>(previewMode);
 
         const handlePreview: ChangeEventHandler<HTMLInputElement> = event => togglePreview(event.target.checked);
         const handleWideView: ChangeEventHandler<HTMLInputElement> = event => toggleWideView(event.target.checked);
