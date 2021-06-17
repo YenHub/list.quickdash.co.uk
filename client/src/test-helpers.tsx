@@ -10,7 +10,9 @@ export const closeMainMenu = () => fireEvent.click(screen.getByTestId('close-men
 export const closeNoteModal = () => fireEvent.click(screen.getByTestId('create-note-close').closest('button')!);
 export const submitNote = () => fireEvent.click(screen.getByTestId('create-note-submit').closest('button')!);
 export const getNoteCount = () => document.querySelectorAll('.MuiListItemText-secondary').length;
+export const toggleDarkMode = () => openMainMenu() && fireEvent.click(screen.getByTestId('dm-toggle')) && closeMainMenu();
 export const toggleMD = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle')) && closeMainMenu();
+export const toggleMDPreview = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-preview-toggle')) && closeMainMenu();
 
 export const setNoteTitle = (value: string) => {
     const titleInput = screen.getByLabelText('Note Title').closest('input');
