@@ -65,12 +65,11 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     setModalOpen,
     editNoteId,
     setEditNoteId,
-    previewMode,
 }) => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode, mdMode } = state;
+    const { darkMode, mdMode, previewMode } = state;
 
     const [wideView, toggleWideView] = useState<boolean>(false);
     const [showPreview, togglePreview] = useState<boolean>(previewMode);
