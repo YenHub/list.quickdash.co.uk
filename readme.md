@@ -24,6 +24,7 @@
     - [Backing up your database](#backing-up-your-database)
     - [Docker Tips & Commands](#docker-commands-you-can-use)
 - [Deployment](#deployment)
+- [Contributing](#contributing)
 - [Project To-Do](#project-to-do)
 - [FAQs](#faqs)
 
@@ -91,7 +92,8 @@ No mucking around! 🎉
 
 1. `git clone git@github.com:YenHub/list.quickdash.co.uk.git`
 2. Create your .env config [(how do)](#create-a-env-config)
-3. `docker-compose up --build -d && chrome http://localhost/TestAPI`
+3. `docker-compose up --build`
+4. Visit http://localhost to take it for a QuickSpin! 😋
 
 ## Quick Start Usage
 
@@ -178,11 +180,16 @@ Access the front end at http://localhost
 #### Using NPM
 ```bash
 # From the root of ./client
-# Make sure you have run `npm i`
+cd client
+
+# Install the project dependencies
+npm i
+
+# Start the App 🚀
 npm start
 ```
 
-Access the front end at http://localhost:3000/
+You can access the front end at http://localhost:3000/
 
 **NOTE:** When using `npm` the project runs as it would usually on port 3000
 
@@ -193,13 +200,18 @@ Whether using Docker or npm, you can access the API on http://localhost:9000
 #### Using Docker
 ```bash
 # From the root of the project
-docker-compose up node-sql -d && docker-compose up server-app
+docker-compose up node-mysql -d && docker-compose up server-app
 ```
 
 #### Using NPM
 ```bash
 # From the root of ./api
-# Make sure you have run `npm i`
+cd api
+
+# Install the project dependencies
+npm i
+
+# Start the App 🚀
 npm run dev
 ```
 
@@ -246,7 +258,7 @@ The pipeline is driven by three simple steps:
 
 For the front end, we `npm ci` before our `npm run build` to ensure better efficiency in the pipeline, and better dependency stability
 
-Long term, it would be desirable to implement caching of the npm modules
+Long term, it would be desirable to implement caching of the npm modules too
 
 ### Test
 
@@ -255,6 +267,12 @@ Here we will run `npm run test` with verbose output
 Unit Testing is driven by the CRA provided unit testing packages
 
 If the pipeline fails at this stage, we don't push the code live
+
+### Lint
+
+We now run a lint check against the code base using `npm run lint:ts`
+
+This will enforce the TSLint config against the codebase, again failing to deploy if anything doesn't check out here.
 
 ### Sync
 
@@ -271,6 +289,18 @@ You can manually trigger this action to wipe the remote & resync the current mas
 This process takes a little more time (~2m30s) and is more likely to result in downtime.
 
 There is also a less destructive method available, which mimics the standard automated deployment, which can be [seen here](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual-clean.yaml).
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create.
+
+Any contributions you make are **greatly appreciated** 🤗
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/super-cool-new-feature`)
+3. Commit your Changes (`git commit -m '💥 Adds super cool new feature'`)
+4. Push to the Branch (`git push origin feature/super-cool-new-feature`)
+5. Open a Pull Request and enjoy yourself a nice 🍺🍷
 
 ## Project To-Do
 
