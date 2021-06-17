@@ -8,7 +8,7 @@ import {
     ListItemText,
     ListItemIcon,
     IconButton,
-    ListItemSecondaryAction
+    ListItemSecondaryAction,
 } from '@material-ui/core';
 
 import RootRef from '@material-ui/core/RootRef';
@@ -18,7 +18,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import { NoteItem } from '../../../Services/Database/NoteStore'
+import { NoteItem } from '../../../Services/Database/NoteStore';
 import MDPreview, { MDTitle } from '../MDPreview';
 
 import { isMobile } from 'react-device-detect';
@@ -27,18 +27,19 @@ const useStyles = makeStyles(() => ({
     root: {
         width: isMobile ? '100%' : '85%',
         maxWidth: '1250px',
-        margin: 'auto auto'
+        margin: 'auto auto',
     },
     secondaryAction: {
         paddingRight: '0 !important',
-    }
+    },
 }));
 
 const reorder = (
-    noteState: NoteItem[], startIndex: number, endIndex: number
+    noteState: NoteItem[], startIndex: number, endIndex: number,
 ): NoteItem[] => {
     const [removed] = noteState.splice(startIndex, 1);
     noteState.splice(endIndex, 0, removed);
+
     return noteState;
 };
 
@@ -47,12 +48,12 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     ...draggableStyle,
 
     ...(isDragging && {
-        background: "rgb(134,134,134)"
-    })
+        background: 'rgb(134,134,134)',
+    }),
 });
 
 const getListStyle = (
-    isDraggingOver: boolean, darkMode: boolean
+    isDraggingOver: boolean, darkMode: boolean,
 ): { background: string } => ({
     background: isDraggingOver ? darkMode ? '#303030' : '#fafafa' : '',
 });
@@ -64,25 +65,26 @@ const getTextStyle = (isDraggingOver: boolean): { color: string } => ({
 type IListFragItem = string | JSX.Element | undefined;
 
 const getListItemFrags = (
-    darkMode: boolean, mdMode: boolean, listItem: NoteItem
+    darkMode: boolean, mdMode: boolean, listItem: NoteItem,
 ): IListFragItem[] => {
 
-    let { primary, secondary } = listItem;
+    const { primary, secondary } = listItem;
 
     const customProps = (textItem?: string) => ({
         children: textItem,
         darkMode,
     });
+
     return [
         mdMode ? <MDTitle {...customProps(primary)} /> : primary,
-        mdMode ? <MDPreview {...customProps(secondary)} /> : secondary
+        mdMode ? <MDPreview {...customProps(secondary)} /> : secondary,
     ];
-}
+};
 
 interface INoteList {
-    noteState: NoteItem[],
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
-    setEditNoteId: Dispatch<SetStateAction<string>>,
+    noteState: NoteItem[];
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
+    setEditNoteId: Dispatch<SetStateAction<string>>;
 }
 
 const NotesList = ({
@@ -106,15 +108,15 @@ const NotesList = ({
         const items = reorder(
             noteState,
             result.source.index,
-            result.destination.index
+            result.destination.index,
         );
 
         setNoteState([...items]);
-    }
+    };
 
     const deleteNote = (item: NoteItem) => {
         setNoteState([...noteState.filter(note => note.id !== item.id)]);
-    }
+    };
 
     if (noteState === null) {
         return null;
@@ -133,9 +135,10 @@ const NotesList = ({
                                                 const textStyle = getTextStyle(snapshot.isDragging);
                                                 const itemStyle = getItemStyle(
                                                     snapshot.isDragging,
-                                                    provided.draggableProps.style
+                                                    provided.draggableProps.style,
                                                 );
                                                 const listItemFrags = getListItemFrags(darkMode, mdMode, item);
+
                                                 return (
                                                     <ListItem
                                                         className={classes.secondaryAction}
@@ -171,7 +174,7 @@ const NotesList = ({
                                                         </ListItemIcon>
                                                         <ListItemSecondaryAction />
                                                     </ListItem>
-                                                )
+                                                );
                                             }}
                                         </Draggable>
                                     ))}
@@ -183,7 +186,7 @@ const NotesList = ({
                 </DragDropContext>
             </div>
         );
-    };
-}
+    }
+};
 
 export default NotesList;

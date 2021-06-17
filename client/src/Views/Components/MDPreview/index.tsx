@@ -6,8 +6,8 @@ import style from './markdown-styles.module.css';
 import darkStyle from './markdown-styles-dark.module.css';
 
 interface IMDPreview {
-    darkMode: boolean,
-    children?: string,
+    darkMode: boolean;
+    children?: string;
 }
 
 const MDPreview = ({ darkMode, children = '' }: IMDPreview): JSX.Element => (

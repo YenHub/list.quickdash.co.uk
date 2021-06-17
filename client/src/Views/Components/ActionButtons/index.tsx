@@ -18,24 +18,24 @@ const CustomButton = (props: any) => (
 );
 
 interface IActionButtons {
-    noteTitle: string,
-    setNoteTitle: Dispatch<SetStateAction<string>>,
-    noteDesc: string,
-    darkMode: boolean,
-    setNoteDesc: Dispatch<SetStateAction<string>>,
-    createNote: (evt: any) => void,
-    editNoteId: string,
-    handleClose: () => void,
-    noteState: NoteItem[],
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
-};
+    noteTitle: string;
+    setNoteTitle: Dispatch<SetStateAction<string>>;
+    noteDesc: string;
+    darkMode: boolean;
+    setNoteDesc: Dispatch<SetStateAction<string>>;
+    createNote(evt: any): void;
+    editNoteId: string;
+    handleClose(): void;
+    noteState: NoteItem[];
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
+}
 
 export const DeleteNotes = (
-    { noteState, setNoteState }: Pick<IActionButtons, "noteState" | "setNoteState">
+    { noteState, setNoteState }: Pick<IActionButtons, 'noteState' | 'setNoteState'>,
 ): JSX.Element => {
 
     const clearNotes = (): void => {
-        let shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
+        const shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
         if (!shouldDelete) {
             return;
         }
@@ -48,17 +48,17 @@ export const DeleteNotes = (
         disabled: noteState?.length === 0,
         'data-testid': 'delete-all-notes',
         color: 'primary',
-    }
+    };
 
     return <CustomButton {...buttonProps}/>;
 };
 
 export const ImportButton = (
-    { noteState, setNoteState }: Pick<IActionButtons, "noteState" | "setNoteState">
+    { noteState, setNoteState }: Pick<IActionButtons, 'noteState' | 'setNoteState'>,
 ): JSX.Element => {
 
     const importNotes = (noteState: NoteItem[]) => {
-        let currentNotes = [...noteState];
+        const currentNotes = [...noteState];
         [
             { primary: 'test', secondary: 'More Text' },
             { primary: 'test Two', secondary: 'More Text again' },
@@ -68,7 +68,6 @@ export const ImportButton = (
             return currentNotes.push({ ...item, id: getUniqueId(currentNotes) });
         });
         setNoteState([...currentNotes]);
-        return;
     };
 
     const buttonProps = {
@@ -83,11 +82,11 @@ export const ImportButton = (
 };
 
 export const ExportButton = (
-    { noteState }: Pick<IActionButtons, "noteState">
+    { noteState }: Pick<IActionButtons, 'noteState'>,
 ): JSX.Element => {
 
     const exportNotes = (noteState: NoteItem[]): void => {
-        let exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));
+        const exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));
         downloadFile(exportContent);
     };
 

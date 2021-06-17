@@ -4,11 +4,11 @@ import 'typeface-roboto';
 import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { store } from './Services/State/Store';
 
-import { setBoolSetting, getBoolSetting } from './Services/ReactUtils';
+import { setBoolSetting } from './Services/ReactUtils';
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
     palette: {
@@ -20,8 +20,8 @@ const getTheme = (darkMode: boolean) => createMuiTheme({
             main: '#66ffde',
         },
         error: {
-            main: '#ff0000'
-        }
+            main: '#ff0000',
+        },
     },
     typography: {
         fontSize: 13,
@@ -36,9 +36,7 @@ const App: FC = () => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode, mdMode } = state;
-
-    const [previewMode, setPreviewMode] = useState<boolean>(getBoolSetting('previewMode'));
+    const { darkMode, mdMode, previewMode } = state;
 
     useEffect(() => {
         setBoolSetting('darkMode', darkMode);
@@ -54,13 +52,6 @@ const App: FC = () => {
 
     const theme = getTheme(darkMode);
 
-    const mainProps = {
-        darkMode,
-        mdMode,
-        previewMode,
-        setPreviewMode,
-    };
-
     return (
         <div
             style={{
@@ -72,7 +63,7 @@ const App: FC = () => {
             <MuiThemeProvider theme={theme}>
                 <Scrollbar style={{ width: '100%', height: 'calc(100vh)' }}>
                     <CssBaseline />
-                    <Main {...mainProps} /> <br />
+                    <Main /> <br />
                 </Scrollbar>
             </MuiThemeProvider>
         </div>

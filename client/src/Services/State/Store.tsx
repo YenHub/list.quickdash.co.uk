@@ -1,21 +1,26 @@
 import React, { createContext, useReducer } from 'react';
 import { getBoolSetting } from '../ReactUtils';
 
-export type State = {
-    darkMode: boolean,
-    mdMode: boolean,
-};
+export interface State {
+    darkMode: boolean;
+    mdMode: boolean;
+    previewMode: boolean;
+}
 
-export type Actions = {type: 'MarkDownToggle'} | { type: 'DarkModeToggle' } | { type: 'SetNotes', payload: string[] };
+export type Actions = { type: 'MarkDownToggle' }
+    | { type: 'DarkModeToggle' }
+    | { type: 'PreviewModeToggle' }
+    | { type: 'SetNotes', payload: string[] };
 
 const initialState: State = {
     darkMode: getBoolSetting('darkMode'),
     mdMode: getBoolSetting('mdMode'),
+    previewMode: getBoolSetting('previewMode'),
 };
 
 const store = createContext<{
     state: State,
-    dispatch: React.Dispatch<Actions>
+    dispatch: React.Dispatch<Actions>,
 }>({ state: initialState, dispatch: () => undefined });
 
 const { Provider } = store;
@@ -28,9 +33,11 @@ const StateProvider: React.FC = ({ children }: any) => {
                 return { ...state, darkMode: !state.darkMode };
             case 'MarkDownToggle':
                 return { ...state, mdMode: !state.mdMode };
+            case 'PreviewModeToggle':
+                return { ...state, previewMode: !state.previewMode };
             default:
                 return { ...state };
-        };
+        }
     };
 
     const [state, dispatch] = useReducer(stateReducer, initialState);

@@ -22,8 +22,7 @@ const useStyles = makeStyles(() => ({
     },
     icon: {
         marginRight: '0.5em',
-    }
-
+    },
 }));
 
 const ShareButtons = (): JSX.Element => {
@@ -34,7 +33,7 @@ const ShareButtons = (): JSX.Element => {
         title: 'QuickList',
         url: 'https://list.quickdash.co.uk',
         size: 40,
-    }
+    };
 
     return (
         <div className={classes.shareIcons}>
@@ -49,7 +48,7 @@ const ShareButtons = (): JSX.Element => {
 
             <PinterestShareButton
                 url={url}
-                media='https://github.com/YenHub/list.quickdash.co.uk/raw/master/PinterestDemo.png'
+                media="https://github.com/YenHub/list.quickdash.co.uk/raw/master/PinterestDemo.png"
                 windowWidth={1000}
                 windowHeight={730}
             >
@@ -57,5 +56,6 @@ const ShareButtons = (): JSX.Element => {
             </PinterestShareButton>
         </div>
     );
-}
+};
+
 export default ShareButtons;

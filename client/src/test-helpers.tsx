@@ -3,7 +3,7 @@ import App from './App';
 import { act } from 'react-dom/test-utils';
 
 // DOM Helpers
-export const initApp = () => act(async () => { render(<App />) });
+export const initApp = () => act(async () => { render(<App />); });
 export const openNoteModal = () => fireEvent.click(screen.getByTestId('create-note-button'));
 export const openMainMenu = () => fireEvent.click(screen.getByTestId('menu-button'));
 export const closeMainMenu = () => fireEvent.click(screen.getByTestId('close-menu-button'));

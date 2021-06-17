@@ -1,6 +1,7 @@
+import { FC } from 'react';
 import 'typeface-dosis';
 import clsx from 'clsx';
-import { useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { store } from '../Services/State/Store';
@@ -24,8 +25,8 @@ import { isMobile } from 'react-device-detect';
 import NotesList from './Components/NotesList';
 import { DarkModeToggle, MDToggle, MDPreviewToggle } from './Components/Toggles';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
-import CreateNoteModal from './Components/CreateNoteModal'
-import ShareButtons from './Components/ShareButtons'
+import CreateNoteModal from './Components/CreateNoteModal';
+import ShareButtons from './Components/ShareButtons';
 
 import NoteStore, { NoteItem } from '../Services/Database/NoteStore';
 const noteStore = new NoteStore();
@@ -33,7 +34,7 @@ const noteStore = new NoteStore();
 const showGatedFeatures = process.env.NODE_ENV === 'development';
 const drawerWidth = 240;
 
-const useStyles = (darkMode: boolean) => makeStyles((theme) => ({
+const useStyles = (darkMode: boolean) => makeStyles(theme => ({
     root: {
         display: 'flex',
     },
@@ -100,16 +101,11 @@ const useStyles = (darkMode: boolean) => makeStyles((theme) => ({
     },
 }));
 
-export interface IMain {
-    previewMode: boolean,
-    setPreviewMode: Dispatch<SetStateAction<boolean>>,
-}
-
-export default function Main({ previewMode, setPreviewMode }: IMain) {
+const Main: FC = () => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode, mdMode } = state;
+    const { darkMode, mdMode, previewMode } = state;
 
     const classes = useStyles(darkMode)();
 
@@ -119,20 +115,19 @@ export default function Main({ previewMode, setPreviewMode }: IMain) {
     const [editNoteId, setEditNoteId] = useState<string>('');
 
     const noteProps = { noteState, setNoteState, previewMode };
-    const mdPreviewProps = { ...noteProps, setPreviewMode };
     const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const getItems = async (): Promise<void> => setNoteState(await noteStore.getNotes());
 
     const handleDrawerState = (): void => setOpen(open => !open);
 
-    const attemptImport = (): void => { !noteState.length && getItems() };
+    const attemptImport = (): void => { !noteState.length && getItems(); };
 
     // Were using this emtpy [] purposefully and with intent
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
 
-    useEffect(() => { noteStore.setNotes(noteState) }, [noteState]);
+    useEffect(() => { noteStore.setNotes(noteState); }, [noteState]);
 
     const AppHeader = (): JSX.Element => {
 
@@ -209,7 +204,7 @@ export default function Main({ previewMode, setPreviewMode }: IMain) {
                     <div>
                         <Divider />
                         <ListItem>
-                            <MDPreviewToggle {...mdPreviewProps} />
+                            <MDPreviewToggle />
                         </ListItem>
                     </div>
                 )}
@@ -235,7 +230,7 @@ export default function Main({ previewMode, setPreviewMode }: IMain) {
     };
 
     const MainContentWindow = (): JSX.Element => (
-        <main className={clsx(classes.content, { [classes.contentShift]: open, })} >
+        <main className={clsx(classes.content, { [classes.contentShift]: open })} >
             <div className={classes.drawerHeader} />
             <NotesList setEditNoteId={setEditNoteId} {...noteProps} />
         </main>
@@ -248,4 +243,6 @@ export default function Main({ previewMode, setPreviewMode }: IMain) {
             <MainContentWindow />
         </div>
     );
-}
+};
+
+export default Main;

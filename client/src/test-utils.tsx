@@ -3,7 +3,7 @@ import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { StateProvider } from './Services/State/Store';
 
 interface ProviderProps {
-    children?: NonNullable<ReactNode>
+    children?: NonNullable<ReactNode>;
 }
 
 const Providers: FC<ProviderProps> = ({ children }) => {
@@ -12,12 +12,12 @@ const Providers: FC<ProviderProps> = ({ children }) => {
             {children}
         </StateProvider>
     );
-}
+};
 
 const customRender = (
     ui: ReactElement,
-    options?: Omit<RenderOptions, 'queries'>
-): RenderResult => render(ui, { wrapper: Providers, ...options })
+    options?: Omit<RenderOptions, 'queries'>,
+): RenderResult => render(ui, { wrapper: Providers, ...options });
 
 export * from '@testing-library/react';
 

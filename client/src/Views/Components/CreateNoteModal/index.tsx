@@ -9,7 +9,7 @@ import {
 import { isMobile } from 'react-device-detect';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Modal, IconButton, } from '@material-ui/core';
+import { Modal, IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
@@ -23,7 +23,7 @@ import Switch from '@material-ui/core/Switch';
 
 import { store } from '../../../Services/State/Store';
 
-const useStyles = (wideView: boolean) => makeStyles((theme) => ({
+const useStyles = (wideView: boolean) => makeStyles( theme => ({
     root: {
         '& > *': {
             marginBottom: theme.spacing(2),
@@ -38,7 +38,7 @@ const useStyles = (wideView: boolean) => makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 1),
     },
     formGroup: {
-        flexDirection: 'row-reverse'
+        flexDirection: 'row-reverse',
     },
 }));
 
@@ -49,13 +49,13 @@ const modalStyle = {
 };
 
 interface ICreateNoteModal {
-    noteState: NoteItem[],
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>,
-    modalOpen: boolean,
-    setModalOpen: Dispatch<SetStateAction<boolean>>,
-    editNoteId: string,
-    setEditNoteId: Dispatch<SetStateAction<string>>,
-    previewMode: boolean,
+    noteState: NoteItem[];
+    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
+    modalOpen: boolean;
+    setModalOpen: Dispatch<SetStateAction<boolean>>;
+    editNoteId: string;
+    setEditNoteId: Dispatch<SetStateAction<string>>;
+    previewMode: boolean;
 }
 
 const CreateNoteModal: React.FC<ICreateNoteModal> = ({
@@ -84,7 +84,8 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
             editingNoteIndex = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
             editingNote = noteState[editingNoteIndex];
         }
-        return editingNote?.[detail] || ''
+
+        return editingNote?.[detail] || '';
     };
 
     const [noteDesc, setNoteDesc] = useState<string>(getNoteDetail('secondary'));
@@ -102,8 +103,8 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     const noteButtonProps = { handleClose, editNoteId, darkMode };
 
     const editExistingNote = (editNoteId: string): void => {
-        let indOfNote = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
-        let newNotes = [...noteState];
+        const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
+        const newNotes = [...noteState];
         newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: `${noteDesc}` };
         setNoteState([...newNotes]);
     };
@@ -224,6 +225,6 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
             </Modal>
         </div>
     );
-}
+};
 
 export default CreateNoteModal;

@@ -30,13 +30,13 @@ describe('Note Functions', () => {
         expect(screen.getByTestId('create-note-submit').closest('button')).toBeDisabled();
         // Check count before > attempt to submit > check count after
         const expectedCount = getNoteCount();
-        submitNote()
+        submitNote();
         expect(getNoteCount()).toBe(expectedCount);
     });
 
     test('Can create a note with only a title', async () => {
         openNoteModal();
-        setNoteTitle('Dondollo')
+        setNoteTitle('Dondollo');
         submitNote();
         // Check modal has closed
         expect(screen.queryByTestId('create-note-submit')).toBeNull();

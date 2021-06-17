@@ -1,24 +1,24 @@
 import localForage from 'localforage';
 import { DefaultNotes } from './DefaultNotes';
 
-export type NoteItem = {
-    id: string,
-    primary?: string,
-    secondary?: string,
+export interface NoteItem {
+    id: string;
+    primary?: string;
+    secondary?: string;
 }
 
 const noteStore = 'notes';
 
 const Store = localForage.createInstance({
-    name: "toDos"
+    name: 'toDos',
 });
 
 class NoteStore {
 
-    createNote = async (note: NoteItem) => {
-        if(note) {
+    public createNote = async (note: NoteItem) => {
+        if (note) {
             const notes = await Store.getItem<NoteItem[]>(noteStore);
-            if(notes) {
+            if (notes) {
                 note.id = `note-${++notes.length}`;
                 Store.setItem(noteStore, [...notes, note]);
             } else {
@@ -26,18 +26,19 @@ class NoteStore {
                 Store.setItem(noteStore, [note]);
             }
         }
-    };
+    }
 
-    getNotes = async (): Promise<NoteItem[]> => {
+    public getNotes = async (): Promise<NoteItem[]> => {
         const storedNotes = await Store.getItem<NoteItem[]>(noteStore);
+
         return storedNotes?.length ? storedNotes : DefaultNotes;
-    };
+    }
 
-    setNotes = (notes: NoteItem[]) => Store.setItem(noteStore, notes);
+    public setNotes = (notes: NoteItem[]) => Store.setItem(noteStore, notes);
 
-    deleteNotes = () => Store.clear();
+    public deleteNotes = () => Store.clear();
 
-};
+}
 
 // const myStore = new NoteStore();
 

@@ -2,15 +2,18 @@ import { Fragment, FC, useContext } from 'react';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { IMain } from '../../Main';
 
 import { store } from '../../../Services/State/Store';
 
-export const MDPreviewToggle = (
-    { previewMode, setPreviewMode }: Pick<IMain, "previewMode" | "setPreviewMode">
-): JSX.Element => {
+export const MDPreviewToggle: FC = () => {
 
-    const toggleChecked = () => setPreviewMode(state => !state);
+    const globalState = useContext(store);
+    const { state, dispatch } = globalState;
+    const { previewMode } = state;
+
+    const toggleChecked = () => {
+        dispatch({ type: 'PreviewModeToggle' });
+    };
 
     return (
         <FormGroup>
