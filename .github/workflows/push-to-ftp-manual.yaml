@@ -24,6 +24,11 @@ jobs:
         cd client
         npm test
 
+    - name:            🧹 Lint Build
+      run:             |
+        cd client
+        npm run lint:ts
+
     - name:            📂 Sync files
       uses:            SamKirkland/FTP-Deploy-Action@4.0.0
       with:
