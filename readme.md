@@ -5,6 +5,8 @@
 ![Site Status] ![Build Status] ![Last Commit] ![MozScore] ![Open Issues]
 
 ## TOC
+<details>
+  <summary>Click to see the table of contents</summary>
 
 - [TLDR](#tldr)
 - [What is it?](#what-is-it)
@@ -28,6 +30,7 @@
 - [Project To-Do](#project-to-do)
 - [FAQs](#faqs)
 
+</details>
 
 ## What is it?
 
@@ -276,7 +279,7 @@ This will enforce the TSLint config against the codebase, again failing to deplo
 
 ### Sync
 
-SamKirkland's awesome simple ftp action is then used to run a diff check between the new environment produced and that of the server.
+[SamKirkland's awesome simple ftp action](https://github.com/SamKirkland/FTP-Deploy-Action) is then used to run a diff check between the new environment produced and that of the server.
 
 Any changes that are identified are then synced to the server.
 
@@ -284,7 +287,7 @@ Any changes that are identified are then synced to the server.
 
 Mistakes happen, right? For this reason, there is a [manual "emergency publish"](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual.yaml) available.
 
-You can manually trigger this action to wipe the remote & resync the current master branch across.
+You can manually trigger this action to wipe the remote & resync the current master branch across to the live environment.
 
 This process takes a little more time (~2m30s) and is more likely to result in downtime.
 
@@ -304,8 +307,12 @@ Any contributions you make are **greatly appreciated** 🤗
 
 ## Project To-Do
 
+<details>
+  <summary>Click to see the project to-do list</summary>
+
 - [ ] Make it better
     - In progress... forever™
+    - Betterize the bad bits
 - [x] Dockerize Solution
     - [x] Isolate Networks
         - server-network
@@ -327,8 +334,10 @@ Any contributions you make are **greatly appreciated** 🤗
         - [ ] User Admin
             - http://localhost/Admin/Users
     - [ ] Gubbins
-        - [ ] Redux
-        - [ ] TypeScript
+        - [ ] ~~Redux~~
+        - [x] Custom State Management
+            - A custom hooks context/reducer implementation has been added 🎉😎 See [The Store](/client/src/Services/State/Store.tsx)
+        - [x] TypeScript
         - [x] Jest tests
         - [x] Service Workers
         - [ ] Auth
@@ -340,7 +349,7 @@ Any contributions you make are **greatly appreciated** 🤗
         - [x] Interaction Modal
             - [x] Delete Modal
             - [x] Close/Cancel Button
-        - [ ] List Items
+        - [x] List Items
             - [x] Add edit note functionality
             - [x] Add MD Ability for list item text secondary
         - [ ] Menu Items
@@ -360,6 +369,21 @@ Any contributions you make are **greatly appreciated** 🤗
             - [ ] Roles
             - [ ] Permissions
 
+</details>
+
+## FAQs
+
+### Localhost keeps redirecting to https://
+
+This can be annoying, simply visit chrome://net-internals#hsts and delete "localhost" by entering it into the delete field at the bottom
+
+### Backing up your database
+
+The database is defined in `./docker-compose.yml`
+
+The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
+
+<!-- Doc Links -->
 [Author]: https://img.shields.io/badge/made%20by-YenHub%20❤-blue
 [React Version]:https://img.shields.io/badge/React-17.0.1-important
 [ExpressJS Version]:https://img.shields.io/badge/ExpressJS-4.16.1-blueviolet
@@ -375,15 +399,3 @@ Any contributions you make are **greatly appreciated** 🤗
 [demoImage]: ./web-app.png
 [Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
 [test drive here]: https://list.quickdash.co.uk/
-
-## FAQs
-
-### Localhost keeps redirecting to https://
-
-This can be annoying, simply visit chrome://net-internals#hsts and delete "localhost" by entering it into the delete field at the bottom
-
-### Backing up your database
-
-The database is defined in `./docker-compose.yml`
-
-The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
