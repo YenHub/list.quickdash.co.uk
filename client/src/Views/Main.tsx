@@ -105,7 +105,7 @@ const Main: FC = () => {
 
     const globalState = useContext(store);
     const { state } = globalState;
-    const { darkMode, mdMode, previewMode } = state;
+    const { darkMode, mdMode } = state;
 
     const classes = useStyles(darkMode)();
 
@@ -114,7 +114,7 @@ const Main: FC = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [editNoteId, setEditNoteId] = useState<string>('');
 
-    const noteProps = { noteState, setNoteState, previewMode };
+    const noteProps = { noteState, setNoteState };
     const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const getItems = async (): Promise<void> => setNoteState(await noteStore.getNotes());
