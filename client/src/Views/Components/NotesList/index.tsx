@@ -82,20 +82,16 @@ const getListItemFrags = (
 };
 
 interface INoteList {
-    noteState: NoteItem[];
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
     setEditNoteId: Dispatch<SetStateAction<string>>;
 }
 
 const NotesList = ({
-    noteState,
-    setNoteState,
     setEditNoteId,
 }: INoteList): JSX.Element | null => {
 
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { darkMode, mdMode } = state;
+    const { state, dispatch } = globalState;
+    const { darkMode, mdMode, noteState } = state;
 
     const classes = useStyles();
 
@@ -111,11 +107,11 @@ const NotesList = ({
             result.destination.index,
         );
 
-        setNoteState([...items]);
+        dispatch({type: 'SetNotes', payload: items});
     };
 
     const deleteNote = (item: NoteItem) => {
-        setNoteState([...noteState.filter(note => note.id !== item.id)]);
+        dispatch({type: 'SetNotes', payload: [...noteState.filter(note => note.id !== item.id)]});
     };
 
     if (noteState === null) {

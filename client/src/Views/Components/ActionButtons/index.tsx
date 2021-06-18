@@ -1,10 +1,12 @@
-import { SetStateAction, Dispatch } from 'react';
+import { FC, useContext } from 'react';
 
 import Button from '@material-ui/core/Button';
 
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
 import { NoteItem } from '../../../Services/Database/NoteStore';
+
+import { store } from '../../../Services/State/Store';
 
 const CustomButton = (props: any) => (
     <Button
@@ -17,29 +19,18 @@ const CustomButton = (props: any) => (
     </Button>
 );
 
-interface IActionButtons {
-    noteTitle: string;
-    setNoteTitle: Dispatch<SetStateAction<string>>;
-    noteDesc: string;
-    darkMode: boolean;
-    setNoteDesc: Dispatch<SetStateAction<string>>;
-    createNote(evt: any): void;
-    editNoteId: string;
-    handleClose(): void;
-    noteState: NoteItem[];
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
-}
+export const DeleteNotes: FC = () => {
 
-export const DeleteNotes = (
-    { noteState, setNoteState }: Pick<IActionButtons, 'noteState' | 'setNoteState'>,
-): JSX.Element => {
+    const globalState = useContext(store);
+    const { state, dispatch } = globalState;
+    const { noteState } = state;
 
     const clearNotes = (): void => {
         const shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
         if (!shouldDelete) {
             return;
         }
-        setNoteState([]);
+        dispatch({type: 'SetNotes', payload: []});
     };
 
     const buttonProps = {
@@ -53,9 +44,11 @@ export const DeleteNotes = (
     return <CustomButton {...buttonProps}/>;
 };
 
-export const ImportButton = (
-    { noteState, setNoteState }: Pick<IActionButtons, 'noteState' | 'setNoteState'>,
-): JSX.Element => {
+export const ImportButton: FC = () => {
+
+    const globalState = useContext(store);
+    const { state, dispatch } = globalState;
+    const { noteState } = state;
 
     const importNotes = (noteState: NoteItem[]) => {
         const currentNotes = [...noteState];
@@ -67,7 +60,7 @@ export const ImportButton = (
         ].map(item => {
             return currentNotes.push({ ...item, id: getUniqueId(currentNotes) });
         });
-        setNoteState([...currentNotes]);
+        dispatch({type: 'SetNotes', payload: currentNotes});
     };
 
     const buttonProps = {
@@ -81,9 +74,11 @@ export const ImportButton = (
 
 };
 
-export const ExportButton = (
-    { noteState }: Pick<IActionButtons, 'noteState'>,
-): JSX.Element => {
+export const ExportButton: FC = () => {
+
+    const globalState = useContext(store);
+    const { state } = globalState;
+    const { noteState } = state;
 
     const exportNotes = (noteState: NoteItem[]): void => {
         const exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));

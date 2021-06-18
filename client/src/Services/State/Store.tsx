@@ -1,21 +1,25 @@
 import React, { createContext, useReducer } from 'react';
 import { getBoolSetting } from '../ReactUtils';
+import { NoteItem } from '../Database/NoteStore';
+import { noteStore } from '../../Views/Main';
 
 export interface State {
     darkMode: boolean;
     mdMode: boolean;
     previewMode: boolean;
+    noteState: NoteItem[];
 }
 
 export type Actions = { type: 'MarkDownToggle' }
     | { type: 'DarkModeToggle' }
     | { type: 'PreviewModeToggle' }
-    | { type: 'SetNotes', payload: string[] };
+    | { type: 'SetNotes', payload: NoteItem[] };
 
 const initialState: State = {
     darkMode: getBoolSetting('darkMode'),
     mdMode: getBoolSetting('mdMode'),
     previewMode: getBoolSetting('previewMode'),
+    noteState: [],
 };
 
 const store = createContext<{
@@ -35,6 +39,10 @@ const StateProvider: React.FC = ({ children }: any) => {
                 return { ...state, mdMode: !state.mdMode };
             case 'PreviewModeToggle':
                 return { ...state, previewMode: !state.previewMode };
+            case 'SetNotes':
+                noteStore.setNotes(action.payload);
+
+                return { ...state, noteState: action.payload };
             default:
                 return { ...state };
         }

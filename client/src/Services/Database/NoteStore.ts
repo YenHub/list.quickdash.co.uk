@@ -29,14 +29,18 @@ class NoteStore {
     }
 
     public getNotes = async (): Promise<NoteItem[]> => {
-        const storedNotes = await Store.getItem<NoteItem[]>(noteStore);
+        const storedNotes = await Store.getItem<NoteItem[]>(noteStore) || [];
 
-        return storedNotes?.length ? storedNotes : DefaultNotes;
+        if (!storedNotes.length) {
+            return DefaultNotes;
+        }
+
+        return storedNotes;
     }
 
-    public setNotes = (notes: NoteItem[]) => Store.setItem(noteStore, notes);
+    public setNotes = (notes: NoteItem[]): Promise<NoteItem[]> => Store.setItem(noteStore, notes);
 
-    public deleteNotes = () => Store.clear();
+    public deleteNotes = (): Promise<void> => Store.clear();
 
 }
 

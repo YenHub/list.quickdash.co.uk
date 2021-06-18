@@ -28,8 +28,8 @@ import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButt
 import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
 
-import NoteStore, { NoteItem } from '../Services/Database/NoteStore';
-const noteStore = new NoteStore();
+import NoteStore from '../Services/Database/NoteStore';
+export const noteStore = new NoteStore();
 
 const showGatedFeatures = process.env.NODE_ENV === 'development';
 const drawerWidth = 240;
@@ -104,30 +104,27 @@ const useStyles = (darkMode: boolean) => makeStyles(theme => ({
 const Main: FC = () => {
 
     const globalState = useContext(store);
-    const { state } = globalState;
+    const { state, dispatch } = globalState;
     const { darkMode, mdMode } = state;
+    const { getNotes } = noteStore;
 
     const classes = useStyles(darkMode)();
 
     const [open, setOpen] = useState<boolean>(false);
-    const [noteState, setNoteState] = useState<NoteItem[] | []>([]);
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [editNoteId, setEditNoteId] = useState<string>('');
 
-    const noteProps = { noteState, setNoteState };
-    const modalProps = { ...noteProps, modalOpen, setModalOpen, editNoteId, setEditNoteId };
-
-    const getItems = async (): Promise<void> => setNoteState(await noteStore.getNotes());
+    const modalProps = { modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const handleDrawerState = (): void => setOpen(open => !open);
 
-    const attemptImport = (): void => { !noteState.length && getItems(); };
+    const attemptImport = (): void => {
+        getNotes().then(storedNotes => dispatch({ type: 'SetNotes', payload: storedNotes }));
+    };
 
     // Were using this emtpy [] purposefully and with intent
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
-
-    useEffect(() => { noteStore.setNotes(noteState); }, [noteState]);
 
     const AppHeader = (): JSX.Element => {
 
@@ -176,13 +173,13 @@ const Main: FC = () => {
 
         const ImportListItem = (): JSX.Element => (
             <ListItem>
-                <ImportButton noteState={noteState} setNoteState={setNoteState} />
+                <ImportButton />
             </ListItem>
         );
 
         const ExportListItem = (): JSX.Element => (
             <ListItem>
-                <ExportButton noteState={noteState} />
+                <ExportButton />
             </ListItem>
         );
 
@@ -191,7 +188,7 @@ const Main: FC = () => {
                 {showGatedFeatures ? <ExportListItem /> : null}
                 {showGatedFeatures ? <ImportListItem /> : null}
                 <ListItem>
-                    <DeleteNotes noteState={noteState} setNoteState={setNoteState} />
+                    <DeleteNotes />
                 </ListItem>
                 <ListItem>
                     <DarkModeToggle />
@@ -232,7 +229,7 @@ const Main: FC = () => {
     const MainContentWindow = (): JSX.Element => (
         <main className={clsx(classes.content, { [classes.contentShift]: open })} >
             <div className={classes.drawerHeader} />
-            <NotesList setEditNoteId={setEditNoteId} {...noteProps} />
+            <NotesList setEditNoteId={setEditNoteId} />
         </main>
     );
 

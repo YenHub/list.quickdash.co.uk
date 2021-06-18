@@ -23,7 +23,7 @@ import Switch from '@material-ui/core/Switch';
 
 import { store } from '../../../Services/State/Store';
 
-const useStyles = (wideView: boolean) => makeStyles( theme => ({
+const useStyles = (wideView: boolean) => makeStyles(theme => ({
     root: {
         '& > *': {
             marginBottom: theme.spacing(2),
@@ -49,8 +49,6 @@ const modalStyle = {
 };
 
 interface ICreateNoteModal {
-    noteState: NoteItem[];
-    setNoteState: Dispatch<SetStateAction<NoteItem[]>>;
     modalOpen: boolean;
     setModalOpen: Dispatch<SetStateAction<boolean>>;
     editNoteId: string;
@@ -58,8 +56,6 @@ interface ICreateNoteModal {
 }
 
 const CreateNoteModal: React.FC<ICreateNoteModal> = ({
-    noteState,
-    setNoteState,
     modalOpen,
     setModalOpen,
     editNoteId,
@@ -67,8 +63,8 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
 }) => {
 
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { darkMode, mdMode, previewMode } = state;
+    const { state, dispatch } = globalState;
+    const { darkMode, mdMode, previewMode, noteState } = state;
 
     const [wideView, toggleWideView] = useState<boolean>(false);
     const [showPreview, togglePreview] = useState<boolean>(previewMode);
@@ -104,7 +100,7 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
         const newNotes = [...noteState];
         newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: `${noteDesc}` };
-        setNoteState([...newNotes]);
+        dispatch({ type: 'SetNotes', payload: newNotes });
     };
 
     const createNote = (evt: FormEvent | MouseEvent): void => {
@@ -119,10 +115,16 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
                 return editExistingNote(editNoteId);
             case !!noteState?.length :
                 // HAS NOTES: Prepend new note
-                return setNoteState([{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState]);
+                return dispatch({
+                    type: 'SetNotes',
+                    payload: [{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState],
+                });
             default:
                 // FIRST NOTE: Set initial state
-                return setNoteState([{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }]);
+                return dispatch({
+                    type: 'SetNotes',
+                    payload: [{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }],
+                });
         }
     };
 
