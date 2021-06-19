@@ -1,30 +1,31 @@
-name:                  🧪 Manual | Test & Lint
-on:                    [workflow_dispatch]
+name:                       🧪 Manual | Test & Lint
+on:                         [workflow_dispatch]
 jobs:
-  lint-test:
-    name:              🧪 Dry Run Test
-    runs-on:           ubuntu-latest
+  web-deploy:
+    name:                   🎉 Deploy
+    runs-on:                ubuntu-latest
     steps:
-    - name:            🚚 Get latest code
-      uses:            actions/checkout@v2.3.2
+    - name:                 🚚 Get latest code
+      uses:                 actions/checkout@v2.3.2
 
-    - name:            Use Node.js 12
-      uses:            actions/setup-node@v2-beta
+    - name:                 🐱‍👤 Use Node.js 14.16.1
+      uses:                 actions/setup-node@v2-beta
       with:
-        node-version:  '12'
+        node-version:       '14.16.1'
 
-    - name:            🔨 Build Project
-      run:             |
-        cd client
-        npm ci
-        INLINE_RUNTIME_CHUNK=false npm run build
+    - name:                 💥 Install & Cache Deps
+      uses:                 bahmutov/npm-install@v1.4.5
+      with:
+        working-directory:  client
 
-    - name:            🧪 Test Build
-      run:             |
-        cd client
-        npm test
+    - name:                 🔨 Build Project
+      run:                  INLINE_RUNTIME_CHUNK=false npm run build
+      working-directory:    client
 
-    - name:            🧹 Lint Build
-      run:             |
-        cd client
-        npm run lint:ts
+    - name:                 🧪 Test Build
+      run:                  npm test
+      working-directory:    client
+
+    - name:                 🧹 Lint Build
+      run:                  npm run lint:ts
+      working-directory:    client
