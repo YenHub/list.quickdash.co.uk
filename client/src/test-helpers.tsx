@@ -13,6 +13,11 @@ export const getNoteCount = () => document.querySelectorAll('.MuiListItemText-se
 export const toggleDarkMode = () => openMainMenu() && fireEvent.click(screen.getByTestId('dm-toggle')) && closeMainMenu();
 export const toggleMD = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle')) && closeMainMenu();
 export const toggleMDPreview = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-preview-toggle')) && closeMainMenu();
+export const deleteAllNotes = () => {
+    openMainMenu();
+    fireEvent.click(screen.getByTestId('delete-all-notes'));
+    closeMainMenu();
+};
 
 export const setNoteTitle = (value: string) => {
     const titleInput = screen.getByLabelText('Note Title').closest('input');
