@@ -1,18 +1,15 @@
 # --- Build React App ---
-FROM node:12.0.0 as builder
+FROM node:14.16.1-buster-slim as builder
 
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
 
-# Copy our package.json
-COPY package.json ./
-
-# Install the modules
-RUN npm i
-
 # Copt the app across
 COPY . ./
+
+# Install the modules
+RUN npm ci
 
 # Run the app
 # CMD ["npm", "start"]

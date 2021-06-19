@@ -3,3 +3,4 @@ build
 .dockerignore
 dockerfile
 dockerfile.prod
+coverage
