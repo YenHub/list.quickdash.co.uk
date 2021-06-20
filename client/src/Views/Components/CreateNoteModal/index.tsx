@@ -37,6 +37,7 @@ const useStyles = (wideView: boolean) => makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 1),
+        borderRadius: '0.4rem',
     },
     formGroup: {
         flexDirection: 'row-reverse',
