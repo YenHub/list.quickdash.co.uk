@@ -17,6 +17,7 @@ import { NoteItem } from '../../../Services/Database/NoteStore';
 import { getUniqueId } from '../../../Services/UUID';
 
 import MDPreview from '../MDPreview';
+import { Scrollbars } from 'react-custom-scrollbars';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -152,42 +153,43 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         return (
             <div style={{
                 border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
-                padding: '1em 1em',
-                borderRadius: '4px',
-                maxHeight: 'calc(40vh)',
-                overflowY: 'auto',
-            }}>
-                <FormGroup row className={classes.formGroup}>
-                    <FormControlLabel
-                        labelPlacement="start"
-                        control={
-                            <Switch
-                                inputProps={{ 'aria-label': 'Show MarkDown Preview' }}
-                                checked={showPreview}
-                                onChange={handlePreview}
-                                name="showPreview"
-                                color="primary"
+                borderRadius: '4px', paddingRight: '0.3rem'}}
+            >
+                <Scrollbars hideTracksWhenNotNeeded autoHeight autoHeightMax={`calc(40vh)`} >
+                    <div style={{padding: '1em 1em', marginRight: '0.8em'}}>
+                        <FormGroup row className={classes.formGroup}>
+                            <FormControlLabel
+                                labelPlacement="start"
+                                control={
+                                    <Switch
+                                        inputProps={{ 'aria-label': 'Show MarkDown Preview' }}
+                                        checked={showPreview}
+                                        onChange={handlePreview}
+                                        name="showPreview"
+                                        color="primary"
+                                    />
+                                }
+                                label="Live Preview"
                             />
-                        }
-                        label="Live Preview"
-                    />
-                    {!isMobile && (
-                        <FormControlLabel
-                            labelPlacement="start"
-                            control={
-                                <Switch
-                                    inputProps={{ 'aria-label': 'Show Wide View' }}
-                                    checked={wideView}
-                                    onChange={handleWideView}
-                                    name="wideView"
-                                    color="primary"
+                            {!isMobile && (
+                                <FormControlLabel
+                                    labelPlacement="start"
+                                    control={
+                                        <Switch
+                                            inputProps={{ 'aria-label': 'Show Wide View' }}
+                                            checked={wideView}
+                                            onChange={handleWideView}
+                                            name="wideView"
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Wide View"
                                 />
-                            }
-                            label="Wide View"
-                        />
-                    )}
-                </FormGroup>
-                {showPreview && <MDPreview children={noteDesc} darkMode={darkMode} />}
+                            )}
+                        </FormGroup>
+                        {showPreview && <MDPreview children={noteDesc} darkMode={darkMode} />}
+                    </div>
+                </Scrollbars>
             </div>
         );
     };

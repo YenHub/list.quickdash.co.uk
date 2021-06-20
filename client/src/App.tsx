@@ -5,7 +5,7 @@ import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useContext, useEffect } from 'react';
-import { Scrollbar } from 'react-scrollbars-custom';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { store } from './Services/State/Store';
 
 import { setBoolSetting } from './Services/ReactUtils';
@@ -72,10 +72,14 @@ const App: FC = () => {
             }}
         >
             <MuiThemeProvider theme={theme}>
-                <Scrollbar style={{ width: '100%', height: 'calc(100vh)' }}>
+                <Scrollbars
+                    autoHeight
+                    autoHeightMin={`calc(100vh)`}
+                    hideTracksWhenNotNeeded
+                >
                     <CssBaseline />
                     <Main /> <br />
-                </Scrollbar>
+                </Scrollbars>
             </MuiThemeProvider>
         </div>
     );
