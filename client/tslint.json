@@ -154,7 +154,7 @@
     "valid-typeof": true,
     "cyclomatic-complexity": [
       true,
-      10
+      11
     ],
     "curly": [
       true,

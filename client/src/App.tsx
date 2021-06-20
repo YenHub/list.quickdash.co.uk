@@ -9,6 +9,7 @@ import { Scrollbar } from 'react-scrollbars-custom';
 import { store } from './Services/State/Store';
 
 import { setBoolSetting } from './Services/ReactUtils';
+import { sortTable } from './Services/BrowserUtils';
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
     palette: {
@@ -38,14 +39,24 @@ const App: FC = () => {
     const { state } = globalState;
     const { darkMode, mdMode, previewMode } = state;
 
+    // Auto Table Sorting
+    useEffect(() => {
+        window.addEventListener('click', sortTable);
+
+        return () => window.removeEventListener('click', sortTable);
+    }, []);
+
+    // Settings: Darkmode
     useEffect(() => {
         setBoolSetting('darkMode', darkMode);
     }, [darkMode]);
 
+    // Settings: MarkDown Mode
     useEffect(() => {
         setBoolSetting('mdMode', mdMode);
     }, [mdMode]);
 
+    // Settings: MarkDown Preview Mode
     useEffect(() => {
         setBoolSetting('previewMode', previewMode);
     }, [previewMode]);
