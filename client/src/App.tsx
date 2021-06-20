@@ -12,6 +12,26 @@ import { setBoolSetting } from './Services/ReactUtils';
 import { sortTable } from './Services/BrowserUtils';
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
+    overrides: {
+        // StyleSheet Name
+        MuiInputBase: {
+            // Rule Name
+            inputMultiline: {
+                // Custom CSS Override
+                '&::-webkit-scrollbar': {
+                    width: 7,
+                },
+                '&::-webkit-scrollbar-track': {
+                    boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+                    visibility: 'hidden',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    borderRadius: '10px',
+                },
+            },
+        },
+    },
     palette: {
         type: darkMode ? 'dark' : 'light',
         primary: {
