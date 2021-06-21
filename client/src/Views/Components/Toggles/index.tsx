@@ -5,33 +5,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { store, ToggleTypes } from '../../../Services/State/Store';
 
-const MDPreviewToggle: FC = () => {
-
-    const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { previewMode } = state;
-
-    const toggleChecked = () => {
-        dispatch({ type: ToggleTypes.PreviewModeToggle });
-    };
-
-    return (
-        <FormGroup>
-            <FormControlLabel
-                label="Always Show Preview"
-                control={
-                    <Switch
-                        data-testid="md-preview-toggle"
-                        checked={previewMode}
-                        onChange={toggleChecked}
-                        color="primary"
-                    />
-                }
-            />
-        </FormGroup>
-    );
-};
-
 interface ToggleProps {
     state: boolean;
     dispatchType: ToggleTypes;
