@@ -386,7 +386,7 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
 <!-- Doc Links -->
 [Author]: https://img.shields.io/badge/made%20by-YenHub%20❤-blue
 [React Version]:https://img.shields.io/badge/React-17.0.1-important
-[ExpressJS Version]:https://img.shields.io/badge/ExpressJS-4.16.1-blueviolet
+[ExpressJS Version]:https://img.shields.io/badge/ExpressJS-4.17.1-blueviolet
 [Beer Money]:https://img.shields.io/badge/beer%20money-$0-ff69b4
 [Build Status]: https://img.shields.io/github/workflow/status/YenHub/list.quickdash.co.uk/🚀%20Deploy%20website%20on%20push
 [MozScore]: https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish
