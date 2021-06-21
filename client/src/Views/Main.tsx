@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { store } from '../Services/State/Store';
+import { store, ToggleTypes } from '../Services/State/Store';
 
 import {
     Drawer,
@@ -22,8 +22,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { isMobile } from 'react-device-detect';
 
+import MenuToggle from './Components/Toggles';
 import NotesList from './Components/NotesList';
-import { DarkModeToggle, MDToggle, MDPreviewToggle } from './Components/Toggles';
 import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButtons';
 import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
@@ -105,7 +105,7 @@ const Main: FC = () => {
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
-    const { darkMode, mdMode } = state;
+    const { darkMode, mdMode, previewMode } = state;
     const { getNotes } = noteStore;
 
     const classes = useStyles(darkMode)();
@@ -126,9 +126,9 @@ const Main: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
 
-    const AppHeader = (): JSX.Element => {
+    const AppHeader: FC = () => {
 
-        const AppHeaderLogo = (): JSX.Element => (
+        const AppHeaderLogo: FC = () => (
             <Typography variant="h1" noWrap className={classes.title}>
                 QuickList
             </Typography>
@@ -161,9 +161,9 @@ const Main: FC = () => {
 
     };
 
-    const AppMenuDrawer = (): JSX.Element => {
+    const AppMenuDrawer: FC = () => {
 
-        const DrawerHeader = (): JSX.Element => (
+        const DrawerHeader: FC = () => (
             <div className={classes.drawerHeader}>
                 <IconButton data-testid="close-menu-button" onClick={handleDrawerState}>
                     <ChevronLeftIcon />
@@ -171,19 +171,19 @@ const Main: FC = () => {
             </div>
         );
 
-        const ImportListItem = (): JSX.Element => (
+        const ImportListItem: FC = () => (
             <ListItem>
                 <ImportButton />
             </ListItem>
         );
 
-        const ExportListItem = (): JSX.Element => (
+        const ExportListItem: FC = () => (
             <ListItem>
                 <ExportButton />
             </ListItem>
         );
 
-        const MenuItems = (): JSX.Element => (
+        const MenuItems: FC = () => (
             <List>
                 {showGatedFeatures ? <ExportListItem /> : null}
                 {showGatedFeatures ? <ImportListItem /> : null}
@@ -191,17 +191,32 @@ const Main: FC = () => {
                     <DeleteNotes />
                 </ListItem>
                 <ListItem>
-                    <DarkModeToggle />
+                    <MenuToggle
+                        state={darkMode}
+                        dispatchType={ToggleTypes.DarkModeToggle}
+                        label="Dark Mode"
+                        qaId="dm-toggle"
+                    />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <MDToggle />
+                    <MenuToggle
+                        state={mdMode}
+                        dispatchType={ToggleTypes.MarkDownToggle}
+                        label="Enable MarkDown"
+                        qaId="md-toggle"
+                    />
                 </ListItem>
                 {(mdMode && !isMobile) && (
                     <div>
                         <Divider />
                         <ListItem>
-                            <MDPreviewToggle />
+                            <MenuToggle
+                                state={previewMode}
+                                dispatchType={ToggleTypes.PreviewModeToggle}
+                                label="Always Show Preview"
+                                qaId="md-preview-toggle"
+                            />
                         </ListItem>
                     </div>
                 )}
@@ -226,7 +241,7 @@ const Main: FC = () => {
         );
     };
 
-    const MainContentWindow = (): JSX.Element => (
+    const MainContentWindow: FC = () => (
         <main className={clsx(classes.content, { [classes.contentShift]: open })} >
             <div className={classes.drawerHeader} />
             <NotesList setEditNoteId={setEditNoteId} />

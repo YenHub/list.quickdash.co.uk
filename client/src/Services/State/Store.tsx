@@ -3,16 +3,26 @@ import { getBoolSetting } from '../ReactUtils';
 import { NoteItem } from '../Database/NoteStore';
 import { noteStore } from '../../Views/Main';
 
-export interface State {
-    darkMode: boolean;
-    mdMode: boolean;
-    previewMode: boolean;
+type DarkMode = boolean;
+type MDMode = boolean;
+type PreviewMode = boolean;
+
+interface State {
+    darkMode: DarkMode;
+    mdMode: MDMode;
+    previewMode: PreviewMode;
     noteState: NoteItem[];
 }
 
-export type Actions = { type: 'MarkDownToggle' }
-    | { type: 'DarkModeToggle' }
-    | { type: 'PreviewModeToggle' }
+export enum ToggleTypes {
+    MarkDownToggle = 'MarkDownToggle',
+    DarkModeToggle = 'DarkModeToggle',
+    PreviewModeToggle = 'PreviewModeToggle',
+}
+
+export type Actions = { type: ToggleTypes.MarkDownToggle }
+    | { type: ToggleTypes.DarkModeToggle }
+    | { type: ToggleTypes.PreviewModeToggle }
     | { type: 'SetNotes', payload: NoteItem[] };
 
 const initialState: State = {
