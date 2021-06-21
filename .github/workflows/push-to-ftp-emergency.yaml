@@ -2,7 +2,7 @@ name:                       🚑 Emergency Deploy
 on:                         [workflow_dispatch]
 jobs:
   web-deploy:
-    name:                   🎉 Deploy
+    name:                   🚑 EMERGENCY DEPLOY
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
