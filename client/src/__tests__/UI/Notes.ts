@@ -58,7 +58,7 @@ describe('Note Functions', () => {
         // Check modal has closed
         expect(screen.queryByTestId('create-note-submit')).toBeNull();
         // Check the note was created
-        expect(screen.queryByText(/(Dondollo)/i)).toBeTruthy();
+        expect(screen.queryByText(/(Dondollo)/i)).toBeInTheDocument();
         expect(getNoteCount()).toBe(expectedCount + 1);
     });
 
