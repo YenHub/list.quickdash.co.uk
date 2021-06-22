@@ -1,37 +1,37 @@
 {
-    "env":                                   {
-        "browser":                           true,
-        "commonjs":                          true,
-        "es6":                               true,
-        "node":                              true,
-        "jquery":                            true,
-        "jest":                              true,
+  "env":                               {
+    "browser":                         true,
+    "commonjs":                        true,
+    "es6":                             true,
+    "jest":                            true,
+    "jquery":                          true,
+    "node":                            true
+  },
+  "globals":                           {
+    "IMatch":                          false,
+    "IMatchTranslate":                 false,
+    "IMWS":                            false,
+    "JSX":                             "readonly",
+    "ol":                              false
+  },
+  "parserOptions":                     {
+    "ecmaFeatures":                    {
+      "experimentalObjectRestSpread":  true,
+      "jsx":                           true
     },
-    "parserOptions":                         {
-        "ecmaVersion":                       9,
-        "ecmaFeatures":                      {
-            "jsx":                           true,
-            "experimentalObjectRestSpread":  true
-        },
-        "sourceType":                        "module"
-    },
-    "rules":                                 {
-        "no-const-assign":                   "warn",
-        "no-this-before-super":              "warn",
-        "no-undef":                          "warn",
-        "semi":                              ["error", "always"],
-        "quotes":                ["error", "single", { "allowTemplateLiterals": true }],
-        "no-unreachable":                    "warn",
-        "no-unused-vars":                    "off",
-        "constructor-super":                 "warn",
-        "valid-typeof":                      "warn",
-        "semi-style":                        ["error"],
-    },
-    "globals":                               {
-        "IMWS":                              false,
-        "IMatch":                            false,
-        "IMatchTranslate":                   false,
-        "JSX":                               "readonly",
-        "ol":false
-    }
+    "ecmaVersion":                     9,
+    "sourceType":                      "module"
+  },
+  "rules":                             {
+    "constructor-super":               "warn",
+    "no-const-assign":                 "warn",
+    "no-this-before-super":            "warn",
+    "no-undef":                        "warn",
+    "no-unreachable":                  "warn",
+    "no-unused-vars":                  "off",
+    "quotes":                          ["error","single", { "allowTemplateLiterals": true }],
+    "semi":                            [ "error", "always"],
+    "semi-style":                      ["error"],
+    "valid-typeof":                    "warn"
+  }
 }
