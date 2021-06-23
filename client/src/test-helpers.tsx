@@ -13,9 +13,11 @@ export const getNoteCount = () => document.querySelectorAll('.MuiListItemText-se
 export const toggleDarkMode = () => openMainMenu() && fireEvent.click(screen.getByTestId('dm-toggle')) && closeMainMenu();
 export const toggleMD = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle')) && closeMainMenu();
 export const toggleMDPreview = () => openMainMenu() && fireEvent.click(screen.getByTestId('md-preview-toggle')) && closeMainMenu();
+export const acceptActionDialog = () => fireEvent.click(screen.getByTestId('action-dialog-accept'));
 export const deleteAllNotes = () => {
     openMainMenu();
     fireEvent.click(screen.getByTestId('delete-all-notes'));
+    acceptActionDialog();
     closeMainMenu();
 };
 
@@ -32,5 +34,5 @@ export const setNoteDesc = (value: string) => {
 export const deleteLastNote = () => {
     const deleteButtons = screen.getAllByRole(/deleteNote/);
     fireEvent.click(deleteButtons[deleteButtons.length - 1]);
-    fireEvent.click(screen.getByTestId('action-dialog-accept'));
+    acceptActionDialog();
 };

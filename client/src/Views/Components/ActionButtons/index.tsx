@@ -1,12 +1,23 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
 import { NoteItem } from '../../../Services/Database/NoteStore';
+import ActionDialog from '../ActionDialog';
 
 import { store } from '../../../Services/State/Store';
+
+const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
+    <ActionDialog
+        open={true}
+        title="Delete List"
+        message="Are you sure you want to delete all of your notes?"
+        onAccept={handleAccept}
+        onCancel={handleClose}
+    />
+);
 
 const CustomButton = (props: any) => (
     <Button
@@ -24,24 +35,32 @@ export const DeleteNotes: FC = () => {
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
     const { noteState } = state;
+    const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false);
 
     const clearNotes = (): void => {
-        const shouldDelete = window.confirm('Are you sure you want to delete all your notes?');
-        if (!shouldDelete) {
-            return;
-        }
-        dispatch({type: 'SetNotes', payload: []});
+        dispatch({ type: 'SetNotes', payload: [] });
+        toggleDeleteAlert(false);
     };
+
+    const handleDeleteClick = () => toggleDeleteAlert(true);
+    const handleDeleteCancel = () => toggleDeleteAlert(false);
 
     const buttonProps = {
         'aria-label': 'Delete List',
-        onClick: clearNotes,
+        onClick: handleDeleteClick,
         disabled: noteState?.length === 0,
         'data-testid': 'delete-all-notes',
         color: 'primary',
     };
 
-    return <CustomButton {...buttonProps}/>;
+    return (
+        <div style={{ width: '100%' }}>
+            {showDeleteAlert && (
+                DeleteAlert(clearNotes, handleDeleteCancel)
+            )}
+            <CustomButton {...buttonProps} />
+        </div>
+    );
 };
 
 export const ImportButton: FC = () => {
@@ -60,7 +79,7 @@ export const ImportButton: FC = () => {
         ].map(item => {
             return currentNotes.push({ ...item, id: getUniqueId(currentNotes) });
         });
-        dispatch({type: 'SetNotes', payload: currentNotes});
+        dispatch({ type: 'SetNotes', payload: currentNotes });
     };
 
     const buttonProps = {
@@ -70,7 +89,7 @@ export const ImportButton: FC = () => {
         type: 'secondary',
     };
 
-    return <CustomButton {...buttonProps}/>;
+    return <CustomButton {...buttonProps} />;
 
 };
 
@@ -92,5 +111,5 @@ export const ExportButton: FC = () => {
         type: 'default',
     };
 
-    return <CustomButton {...buttonProps}/>;
+    return <CustomButton {...buttonProps} />;
 };

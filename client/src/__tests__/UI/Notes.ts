@@ -5,6 +5,7 @@ import {
     setNoteTitle,
     setNoteDesc,
     deleteLastNote,
+    deleteAllNotes,
     closeNoteModal,
     getNoteCount,
     submitNote,
@@ -31,6 +32,19 @@ describe('Note Functions', () => {
 
         // Check the notes persist a refresh
         expect(getNoteCount()).toBe(initialCount - 1);
+    });
+
+    test('Can delete list', async () => {
+        const initialNoteCount = getNoteCount();
+
+        // Run delete note routine
+        deleteAllNotes();
+
+        // Ensure we had some notes to delete first :p
+        expect(getNoteCount()).toBeLessThan(initialNoteCount);
+
+        // Check there are no notes
+        expect(getNoteCount()).toBe(0);
     });
 
     test('Cannot create blank notes', async () => {
