@@ -32,4 +32,5 @@ export const setNoteDesc = (value: string) => {
 export const deleteLastNote = () => {
     const deleteButtons = screen.getAllByRole(/deleteNote/);
     fireEvent.click(deleteButtons[deleteButtons.length - 1]);
+    fireEvent.click(screen.getByTestId('action-dialog-accept'));
 };

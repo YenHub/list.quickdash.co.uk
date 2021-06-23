@@ -1,4 +1,4 @@
-import { useContext, Dispatch, SetStateAction } from 'react';
+import { FC, useState, useContext, Dispatch, SetStateAction } from 'react';
 import { store } from '../../../Services/State/Store';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,6 +20,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { NoteItem } from '../../../Services/Database/NoteStore';
 import MDPreview, { MDTitle } from '../MDPreview';
+import ActionDialog from '../ActionDialog';
 
 import { isMobile } from 'react-device-detect';
 
@@ -85,13 +86,23 @@ interface INoteList {
     setEditNoteId: Dispatch<SetStateAction<string>>;
 }
 
-const NotesList = ({
-    setEditNoteId,
-}: INoteList): JSX.Element | null => {
+const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
+    <ActionDialog
+        open={true}
+        title="Delete Note"
+        message="Are you sure you want to delete this note?"
+        onAccept={handleAccept}
+        onCancel={handleClose}
+    />
+);
+
+const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
     const { darkMode, mdMode, noteState } = state;
+
+    const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null);
 
     const classes = useStyles();
 
@@ -107,12 +118,16 @@ const NotesList = ({
             result.destination.index,
         );
 
-        dispatch({type: 'SetNotes', payload: items});
+        dispatch({ type: 'SetNotes', payload: items });
     };
 
-    const deleteNote = (item: NoteItem) => {
-        dispatch({type: 'SetNotes', payload: [...noteState.filter(note => note.id !== item.id)]});
+    const handleDeleteNote = () => {
+        dispatch({ type: 'SetNotes', payload: [...noteState.filter(note => note.id !== deleteNote!.id)] });
+        setDeleteNote(null);
     };
+
+    const handleCloseAlert = () => setDeleteNote(null);
+    const showDeleteAlert = (item: NoteItem) => setDeleteNote(item);
 
     if (noteState === null) {
         return null;
@@ -120,6 +135,9 @@ const NotesList = ({
 
         return (
             <div className={classes.root}>
+                {deleteNote && (
+                    DeleteAlert(handleDeleteNote, handleCloseAlert)
+                )}
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="droppable">
                         {(provided, snapshot) => (
@@ -162,7 +180,7 @@ const NotesList = ({
                                                         </ListItemIcon>
                                                         <ListItemIcon
                                                             role="deleteNote"
-                                                            onClick={() => deleteNote(item)}
+                                                            onClick={() => showDeleteAlert(item)}
                                                         >
                                                             <IconButton>
                                                                 <DeleteForeverIcon color="error" />
