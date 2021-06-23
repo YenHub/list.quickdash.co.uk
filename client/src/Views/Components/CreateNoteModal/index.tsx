@@ -168,6 +168,7 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
                                         onChange={handlePreview}
                                         name="showPreview"
                                         color="primary"
+                                        data-testid="create-note-md-toggle"
                                     />
                                 }
                                 label="Live Preview"
