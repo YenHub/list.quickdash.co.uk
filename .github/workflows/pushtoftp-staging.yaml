@@ -1,0 +1,53 @@
+on:
+  push:
+    branches:
+      - feature/share-list
+    paths:
+      - 'client/**'
+
+name:                       🧪 Auto | Deploy | Staging
+jobs:
+  web-deploy:
+    name:                   🎉 Deploy
+    runs-on:                ubuntu-latest
+    steps:
+    - name:                 🚚 Get latest code
+      uses:                 actions/checkout@v2.3.2
+
+    - name:                 🐱‍👤 Use Node.js 14.16.1
+      uses:                 actions/setup-node@v2-beta
+      with:
+        node-version:       '14.16.1'
+
+    - name:                 💥 Install & Cache Deps
+      uses:                 bahmutov/npm-install@v1.4.5
+      with:
+        working-directory:  client
+
+    - name:                 🧹 Lint Build
+      run:                  npm run lint:ts
+      working-directory:    client
+
+    - name:                 🔨 Build Project
+      run:                  INLINE_RUNTIME_CHUNK=false npm run build
+      working-directory:    client
+
+    - name:                 🧪 Test Build
+      run:                  npm test
+      working-directory:    client
+
+    - name:                 📂 Sync Client
+      uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        password:           ${{ secrets.client_ftppass_staging }}
+        server:             ${{ secrets.client_ftpserver_staging }}
+        username:           ${{ secrets.client_ftpuser_staging }}
+        local-dir:          ./client/build/
+
+    # - name:                 📂 Sync Server
+    #   uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
+    #   with:
+    #     server:             ${{ secrets.ftpserver_srstaging }}
+    #     username:           ${{ secrets.ftpuser_staging }}
+    #     password:           ${{ secrets.ftppass_staging }}
+    #     local-dir:          ./client/dist/
