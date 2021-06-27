@@ -1,0 +1,156 @@
+{
+  "extends": ["tslint-eslint-rules"],
+  "linterOptions": {
+    "exclude": ["src/*.js", "src/*.jsx", "src/**/*.js"]
+  },
+  "rules": {
+    "adjacent-overload-signatures": true,
+    "align": [true, "parameters", "statements"],
+    "array-bracket-spacing": [true, "never"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-return-shorthand": true,
+    "block-spacing": [true, "always"],
+    "brace-style": [
+      true,
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "callable-types": true,
+    "class-name": true,
+    "curly": [true, "ignore-same-line"],
+    "cyclomatic-complexity": [true, 11],
+    "eofline": true,
+    "import-spacing": true,
+    "indent": [true, "spaces", 4],
+    "interface-over-type-literal": true,
+    "jsx-boolean-value": false,
+    "jsx-no-lambda": false,
+    "jsx-no-multiline-js": false,
+    "label-position": true,
+    "member-access": true,
+    "new-parens": true,
+    "newline-before-return": true,
+    "no-angle-bracket-type-assertion": true,
+    "no-arg": true,
+    "no-conditional-assignment": true,
+    "no-consecutive-blank-lines": [true, 2],
+    "no-constant-condition": true,
+    "no-construct": true,
+    "no-control-regex": true,
+    "no-debugger": true,
+    "no-duplicate-case": true,
+    "no-duplicate-super": true,
+    "no-duplicate-variable": true,
+    "no-empty": true,
+    "no-empty-character-class": true,
+    "no-eval": true,
+    "no-ex-assign": true,
+    "no-extra-boolean-cast": true,
+    "no-extra-semi": true,
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-inner-declarations": true,
+    "no-internal-module": true,
+    "no-invalid-regexp": true,
+    "no-irregular-whitespace": true,
+    "no-mergeable-namespace": true,
+    "no-misused-new": true,
+    "no-reference": true,
+    "no-regex-spaces": true,
+    "no-shadowed-variable": false,
+    "no-sparse-arrays": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-trailing-whitespace": true,
+    "no-unexpected-multiline": true,
+    "no-unsafe-finally": true,
+    "no-unused-expression": [true, "allow-fast-null-checks"],
+    "no-var-keyword": true,
+    "object-literal-key-quotes": [true, "as-needed"],
+    "object-literal-shorthand": true,
+    "one-line": [
+      true,
+      "check-catch",
+      "check-finally",
+      "check-else",
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "one-variable-per-declaration": [false],
+    "prefer-const": [
+      true,
+      {
+        "destructuring": "all"
+      }
+    ],
+    "prefer-function-over-method": false,
+    "prefer-method-signature": true,
+    "quotemark": [true, "single", "jsx-double"],
+    "radix": true,
+    "semicolon": [true, "always"],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "never",
+        "asyncArrow": "always",
+        "constructor": "never",
+        "method": "never",
+        "named": "never"
+      }
+    ],
+    "switch-default": true,
+    "ter-arrow-spacing": true,
+    "ter-indent": [
+      true,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "ter-max-len": [true, 200],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "triple-equals": [true, "allow-null-check"],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
+    ],
+    "use-isnan": true,
+    "valid-typeof": true,
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-decl",
+      "check-typecast",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type",
+      "check-preblock"
+    ]
+  }
+}

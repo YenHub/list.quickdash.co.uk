@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "start": "node ./bin/www",
     "preserve": "npm run build",
@@ -38,6 +38,8 @@
     "gulp": "^4.0.2",
     "nodemon": "^2.0.7",
     "source-map-support": "^0.5.19",
+    "tslint": "^6.1.3",
+    "tslint-eslint-rules": "^5.4.0",
     "typescript": "^4.3.4"
   }
 }

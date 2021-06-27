@@ -11,11 +11,11 @@ import { router as testRouter } from './routes/testAPI';
 
 export interface HttpException extends Error {
     status: number;
-};
+}
 
 require('dotenv').config();
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -49,5 +49,5 @@ app.use(function(err: HttpException, req: express.Request, res: express.Response
 });
 
 export {
-    app
+    app,
 };

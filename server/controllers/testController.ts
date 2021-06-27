@@ -1,32 +1,27 @@
 import { Response, Request, NextFunction } from 'express';
 import { pool as DBConnector } from '../utils/database/DBConnector';
-import { apiLog } from '../utils/logger';
-import { HttpException } from '../app';
+import { apiLog, apiError } from '../utils/logger';
 import { MysqlError } from 'mysql';
 
-const messages = {
+export const apiResponseMessages = {
     success: 'THE API IS NOT A ☕ POT',
     failure: 'THE API IS A ☕ POT',
-}
+};
 
-const handleFailure = (err: HttpException | MysqlError, res: Response) => {
-
-    apiLog(`There has been a boo boo...`);
-    apiLog(JSON.stringify(err));
-
-    res.status(500).send(messages.failure);
-
-    throw err;
+const handleFailure = (err: MysqlError, res: Response, next: NextFunction) => {
+    apiError(JSON.stringify(err));
+    res.status(err.code === 'ECONNREFUSED' ? 503 : 500).send(apiResponseMessages.failure);
+    next(err);
 };
 
 const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
 
-export const index = (_req: Request, res: Response, _next: NextFunction) => {
+export const index = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
         if(err) {
-            return handleFailure(err, res);
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
@@ -45,7 +40,7 @@ export const index = (_req: Request, res: Response, _next: NextFunction) => {
         con.query(sqlStatement, function (err, result) {
 
             if(err) {
-                return handleFailure(err, res);
+                return handleFailure(err, res, next);
             }
 
             apiLog(`CREATED API CALL`);
@@ -61,12 +56,12 @@ export const index = (_req: Request, res: Response, _next: NextFunction) => {
 
 };
 
-export const reset = (_req: Request, res: Response, _next: NextFunction) => {
+export const reset = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
         if(err) {
-            return handleFailure(err, res);
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
@@ -78,7 +73,7 @@ export const reset = (_req: Request, res: Response, _next: NextFunction) => {
         con.query(sqlStatement, function (err, _result) {
 
             if(err) {
-                return handleFailure(err, res);
+                return handleFailure(err, res, next);
             }
 
             apiLog(`RESET API CALLS`);
@@ -97,7 +92,7 @@ export const testPayload = (_req: Request, res: Response, _next: NextFunction) =
     res.status(200).json({ status: 'THE API IS NOT A TEAPOT ☕' });
 };
 
-export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) => {
+export const magicalSpam = (_req: Request, res: Response, next: NextFunction) => {
 
     const randomGenerator = () => {
 
@@ -111,7 +106,7 @@ export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) =
     DBConnector.getConnection((err, con) => {
 
         if(err) {
-            return handleFailure(err, res);
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
@@ -130,7 +125,7 @@ export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) =
         con.query(sqlStatement, function (err, result) {
 
             if(err) {
-                return handleFailure(err, res);
+                return handleFailure(err, res, next);
             }
 
             apiLog(`CREATED MAGICAL RANDOM NUMBER OF CALLS 😝`);

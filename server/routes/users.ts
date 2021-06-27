@@ -1,5 +1,5 @@
 import express, { Response } from 'express';
-var router = express.Router();
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(_req, res: Response, _next) {
