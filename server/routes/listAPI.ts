@@ -10,12 +10,19 @@ import {
     createRandom,
 } from '../controllers/listController';
 
-router.post('/', get);
+// READ
+router.get('/:id', get);
 router.get('/all', getAll);
-router.delete('/', deleteList);
+
+// DELETE
+router.delete('/:id', deleteList);
 router.delete('/all', deleteAll);
+
+// CREATE
 router.post('/create', createList);
-router.put('/update', updateList);
 router.post('/random', createRandom);
+
+// UPDATE
+router.put('/update/:id', updateList);
 
 export { router };

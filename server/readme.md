@@ -18,20 +18,19 @@ javascript: (() => {
 })();
 ```
 
-### GET /list: (listId)
+### GET /list/:ListID
 
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list", {
-      method: "POST",
+    const rawResponse = await fetch("/list/10", {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ listId: 10000 })
+      }
     });
-    const content = await rawResponse;
+    const content = await rawResponse.json();
     console.log(content);
   })();
 })();
@@ -84,21 +83,21 @@ javascript: (() => {
 })();
 ```
 
-### PUT /list/update: (listId, list)
+### PUT /list/update/:ListID (list)
 
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list/update", {
+    const rawResponse = await fetch("/list/update/2", {
       method: "PUT",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        listId: 1,
-        list: [{ notes: "this is one" }, { notes: "this is another" }]
-      })
+      body: JSON.stringify([
+        { notes: "this is one" },
+        { notes: "this is another" }
+      ])
     });
     const content = await rawResponse;
     console.log(content);
@@ -111,13 +110,8 @@ e.g. DELETE
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list/", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ listId: 1 })
+    const rawResponse = await fetch("/list/1", {
+      method: "DELETE"
     });
     const content = await rawResponse;
     console.log(content);
