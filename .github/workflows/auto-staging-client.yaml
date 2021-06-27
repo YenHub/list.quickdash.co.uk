@@ -5,7 +5,7 @@ on:
     paths:
       - 'client/**'
 
-name:                       🧪 Auto | Client | Staging
+name:                       🧪 Auto | Staging | Client
 jobs:
   client-deploy:
     name:                   🎉 Deploy Client

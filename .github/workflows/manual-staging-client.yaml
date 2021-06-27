@@ -1,9 +1,7 @@
 name:                       🧪 Client | Staging | Manual
-on:
-  workflow_run:
-    branches:               [feature/share-list]
+on:                         [workflow_dispatch]
 
-name:                       🧪 Manual | Deploy | Staging
+name:                       🧪 Manual | Staging | Client
 jobs:
   client-deploy:
     name:                   🎉 Deploy Client

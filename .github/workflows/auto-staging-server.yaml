@@ -5,7 +5,7 @@ on:
     paths:
       - 'server/**'
 
-name:                       🧪 Auto | Server | Staging
+name:                       🧪 Auto | Staging | Server
 jobs:
   server-deploy:
     name:                   🎉 Deploy Server
