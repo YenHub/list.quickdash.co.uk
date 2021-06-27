@@ -1,4 +1,4 @@
-name:                       🧪 Manual | Test & Lint
+name:                       🧪 Test & Lint | Prod
 on:                         [workflow_dispatch]
 jobs:
   web-deploy:

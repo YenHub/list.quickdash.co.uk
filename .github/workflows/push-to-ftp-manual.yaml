@@ -1,4 +1,4 @@
-name:                       🧪 Manual | Deploy
+name:                       🧪 Manual | Prod
 on:                         [workflow_dispatch]
 jobs:
   web-deploy:
