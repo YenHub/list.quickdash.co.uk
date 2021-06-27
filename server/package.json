@@ -24,6 +24,8 @@
     "jade": "~1.11.0",
     "morgan": "~1.10.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.4",
     "winston": "^3.3.3"
   },
   "devDependencies": {
