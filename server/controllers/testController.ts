@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from 'express';
-import { pool as DBConnector } from '../utils/database/DBConnector';
+import { pool as DBConnector } from '../database/DBConnector';
 import { apiLog, apiError } from '../utils/logger';
 import { MysqlError } from 'mysql';
 
