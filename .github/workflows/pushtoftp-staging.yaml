@@ -8,8 +8,8 @@ on:
 
 name:                       🧪 Auto | Deploy | Staging
 jobs:
-  web-deploy:
-    name:                   🎉 Deploy
+  client-deploy:
+    name:                   🎉 Deploy Client
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
@@ -20,20 +20,20 @@ jobs:
       with:
         node-version:       '14.17.1'
 
-    - name:                 💥 Install & Cache Deps
+    - name:                 💥 Install & Cache Deps (CLIENT)
       uses:                 bahmutov/npm-install@v1.4.5
       with:
         working-directory:  client
 
-    - name:                 🧹 Lint Build
+    - name:                 🧹 Lint Build (CLIENT)
       run:                  npm run lint:ts
       working-directory:    client
 
-    - name:                 🔨 Build Project
+    - name:                 🔨 Build Project (CLIENT)
       run:                  INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:    client
 
-    - name:                 🧪 Test Build
+    - name:                 🧪 Test Build (CLIENT)
       run:                  npm test
       working-directory:    client
 
@@ -45,10 +45,35 @@ jobs:
         username:           ${{ secrets.client_ftpuser_staging }}
         local-dir:          ./client/build/
 
-    # - name:                 📂 Sync Server
-    #   uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
+  server-deploy:
+    name:                   🎉 Deploy Server
+    runs-on:                ubuntu-latest
+    steps:
+    - name:                 🚚 Get latest code
+      uses:                 actions/checkout@v2.3.2
+
+    - name:                 🐱‍👤 Use Node.js 14.17.1
+      uses:                 actions/setup-node@v2-beta
+      with:
+        node-version:       '14.17.1'
+
+    - name:                 💥 Install & Cache Deps (SERV)
+      uses:                 bahmutov/npm-install@v1.4.5
+      with:
+        working-directory:  server
+
+    - name:                 🧹 Lint Build  (SERV)
+      run:                  npm run lint:ts
+      working-directory:    server
+
+    - name:                 🔨 Build Project  (SERV)
+      run:                  npm run build:production
+      working-directory:    server
+
+    # - name:               📂 Sync Server
+    #   uses:               SamKirkland/FTP-Deploy-Action@4.0.0
     #   with:
-    #     server:             ${{ secrets.ftpserver_srstaging }}
-    #     username:           ${{ secrets.ftpuser_staging }}
-    #     password:           ${{ secrets.ftppass_staging }}
-    #     local-dir:          ./client/dist/
+    #     password:         ${{ secrets.servr_ftppass_staging }}
+    #     server:           ${{ secrets.server_ftpserver_staging }}
+    #     username:         ${{ secrets.server_ftpuser_staging }}
+    #     local-dir:        ./server/dist/

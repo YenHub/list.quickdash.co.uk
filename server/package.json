@@ -1,11 +1,12 @@
 {
-  "name": "api",
+  "name": "server",
   "version": "0.0.1",
   "private": true,
   "main": "app.ts",
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon -L ./bin/www",
+    "lint:ts": "tslint -p tsconfig.json",
     "debug": "SET DEBUG=* && npm run dev",
     "build": "rimraf dist && gulp copy && tsc",
     "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
