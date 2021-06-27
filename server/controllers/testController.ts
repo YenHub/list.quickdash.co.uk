@@ -1,18 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
 import { pool as DBConnector } from '../database/DBConnector';
-import { apiLog, apiError } from '../utils/logger';
-import { MysqlError } from 'mysql';
-
-export const apiResponseMessages = {
-    success: 'THE API IS NOT A ☕ POT',
-    failure: 'THE API IS A ☕ POT',
-};
-
-const handleFailure = (err: MysqlError, res: Response, next: NextFunction) => {
-    apiError(JSON.stringify(err));
-    res.status(err.code === 'ECONNREFUSED' ? 503 : 500).send(apiResponseMessages.failure);
-    next(err);
-};
+import { apiLog } from '../utils/logger';
+import { handleFailure } from '../utils/errorHandler';
 
 const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
 
