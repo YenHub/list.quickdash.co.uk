@@ -20,13 +20,13 @@ export const index = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
+        if (err) {
             return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
+        const sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
           USE ${APItestDB};
           CREATE TABLE IF NOT EXISTS testTable(
               ID int NOT NULL AUTO_INCREMENT,
@@ -37,9 +37,9 @@ export const index = (_req: Request, res: Response, next: NextFunction) => {
           UPDATE testTable SET HitCount = HitCount + 1 WHERE ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, result) {
+        con.query(sqlStatement, function(err, result) {
 
-            if(err) {
+            if (err) {
                 return handleFailure(err, res, next);
             }
 
@@ -60,19 +60,19 @@ export const reset = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
+        if (err) {
             return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `USE ${APItestDB};
+        const sqlStatement = `USE ${APItestDB};
           UPDATE testTable SET HitCount = '0' WHERE testTable.ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, _result) {
+        con.query(sqlStatement, function(err, _result) {
 
-            if(err) {
+            if (err) {
                 return handleFailure(err, res, next);
             }
 
@@ -96,22 +96,22 @@ export const magicalSpam = (_req: Request, res: Response, next: NextFunction) =>
 
     const randomGenerator = () => {
 
-        var randA = (Math.random() * 10) > 1 ?  ( Math.random() * 2e4 ) :  ( Math.random() * 2e2 );
-        var randB = ( Math.random() * randA );
-        var randC = ( ( randA * randB ) * Math.random() );
+        const randA = (Math.random() * 10) > 1 ? (Math.random() * 2e4) : (Math.random() * 2e2);
+        const randB = (Math.random() * randA);
+        const randC = ((randA * randB) * Math.random());
 
         return Number(randC);
     };
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
+        if (err) {
             return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
+        const sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
           USE ${APItestDB};
           CREATE TABLE IF NOT EXISTS testTable(
               ID int NOT NULL AUTO_INCREMENT,
@@ -122,9 +122,9 @@ export const magicalSpam = (_req: Request, res: Response, next: NextFunction) =>
           UPDATE testTable SET HitCount = ${randomGenerator()};
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, result) {
+        con.query(sqlStatement, function(err, result) {
 
-            if(err) {
+            if (err) {
                 return handleFailure(err, res, next);
             }
 
