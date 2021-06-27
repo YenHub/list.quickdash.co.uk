@@ -1,4 +1,4 @@
-name:                       🧪 Manual | Deploy | Staging
+name:                       🧪 Client | Staging | Manual
 on:
   workflow_run:
     branches:               [feature/share-list]
