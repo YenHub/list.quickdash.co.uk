@@ -65,6 +65,8 @@ services:
       - client-network
 
  phpmyadmin:
+    depends_on:
+      - node-mysql
     image:                 phpmyadmin
     container_name:        php-my-admin
     environment:

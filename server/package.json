@@ -1,15 +1,18 @@
 {
-  "name": "api",
-  "version": "0.0.0",
+  "name": "server",
+  "version": "0.0.1",
   "private": true,
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "start": "node ./bin/www",
-    "preserve": "npm run build",
-    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "dev": "nodemon -L ./bin/www",
+    "lint:ts": "tslint -p tsconfig.json",
+    "debug": "SET DEBUG=* && npm run dev",
     "build": "rimraf dist && gulp copy && tsc",
-    "debug": "SET DEBUG=* && npm run build",
-    "dev": "nodemon -L ./bin/www"
+    "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
+    "serve:dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "serve:production": "cross-env NODE_ENV=production concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "preserve": "npm run build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -19,10 +22,14 @@
     "dotenv": "^8.6.0",
     "express": "~4.17.1",
     "express-winston": "^4.1.0",
+    "helmet": "^4.6.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "lorem-ipsum": "^2.0.3",
     "morgan": "~1.10.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.4",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -33,11 +40,15 @@
     "@types/http-errors": "^1.8.0",
     "@types/morgan": "^1.9.2",
     "@types/mysql": "^2.15.18",
+    "@types/validator": "^13.1.4",
     "concurrently": "^6.2.0",
     "eslint": "^7.29.0",
     "gulp": "^4.0.2",
     "nodemon": "^2.0.7",
     "source-map-support": "^0.5.19",
+    "ts-node": "^10.0.0",
+    "tslint": "^6.1.3",
+    "tslint-eslint-rules": "^5.4.0",
     "typescript": "^4.3.4"
   }
 }

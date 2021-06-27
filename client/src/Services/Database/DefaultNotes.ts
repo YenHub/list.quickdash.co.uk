@@ -1,6 +1,10 @@
 import { NoteItem } from './NoteStore';
 
 export const DefaultNotes: NoteItem[] = [{
+    id: '4a11b44b-3f04-4f56-b468-ea36c091b03f',
+    primary: 'QuickList BETA 🧪',
+    secondary: 'You are in a test environment',
+}, {
     id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
     primary: 'Welcome to QuickList 🚀',
     secondary: '\n  • QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
