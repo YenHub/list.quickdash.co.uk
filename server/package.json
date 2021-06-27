@@ -1,15 +1,15 @@
 {
   "name": "api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "main": "app.ts",
   "scripts": {
     "start": "node ./bin/www",
-    "preserve": "npm run build",
-    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
-    "build": "rimraf dist && gulp copy && tsc",
+    "dev": "nodemon -L ./bin/www",
     "debug": "SET DEBUG=* && npm run build",
-    "dev": "nodemon -L ./bin/www"
+    "build": "rimraf dist && gulp copy && tsc",
+    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "preserve": "npm run build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
