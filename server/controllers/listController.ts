@@ -5,6 +5,10 @@ import lorem from '../utils/loremIpsum';
 
 enum ResMsgs {
     NotFound = 'No list found using the ID provided',
+    Created = 'List Created',
+    Updated = 'List Updated',
+    Deleted = 'List Deleted',
+    Forbidden = 'Forbidden',
 }
 
 // CREATE
@@ -25,7 +29,7 @@ export const createRandom = (_req: Request, res: Response, next: NextFunction) =
         return { list: newList };
     });
     List.bulkCreate(listItems)
-        .then(() => res.status(201).send('Created'))
+        .then(() => res.status(201).send(ResMsgs.Created))
         .catch(err => handleFailure(err, res, next));
 };
 
@@ -44,13 +48,12 @@ export const getAll = (_req: Request, res: Response, next: NextFunction) => {
 
 // UPDATE
 export const updateList = (req: Request, res: Response, next: NextFunction) => {
-
     List.update({list: req.body}, {where: {id: req.params.id}})
         .then(rs => {
             if (rs[0] === 0) {
                 return res.status(404).send(ResMsgs.NotFound);
             }
-            res.status(201).send();
+            res.status(201).send(ResMsgs.Updated);
         })
         .catch(err => handleFailure(err, res, next));
 };
@@ -64,13 +67,13 @@ export const deleteList = (req: Request, res: Response, next: NextFunction) => {
     List.destroy({
         where: { id: req.params.id },
     })
-        .then( () => { res.status(201).send('List Deleted'); })
+        .then( () => { res.status(201).send(ResMsgs.Deleted); })
         .catch(err => handleFailure(err, res, next));
 };
 
 export const deleteAll = (_req: Request, res: Response, next: NextFunction) => {
     if (process.env.NODE_ENV === 'production') {
-        return res.status(403).send('Forbidden');
+        return res.status(403).send(ResMsgs.Forbidden);
     }
     List.destroy({
         where: {},
