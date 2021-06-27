@@ -27,12 +27,11 @@ export const createList = (req: Request, res: Response, next: NextFunction) => {
 
 export const updateList = (req: Request, res: Response, next: NextFunction) => {
 
-    List.findByPk(req.body.listId)
-        .then(list => {
-            if (!list) {
+    List.update({list: req.body.list}, {where: {id: req.body.listId}})
+        .then(rs => {
+            if (rs[0] === 0) {
                 return res.status(404).send(ResMsgs.NotFound);
             }
-            list.update(req.body.list);
             res.status(201).send();
         })
         .catch(err => handleFailure(err, res, next));
