@@ -9,6 +9,7 @@ import cors from 'cors';
 import { router as indexRouter } from './routes/index';
 import { router as usersRouter } from './routes/users';
 import { router as testRouter } from './routes/testAPI';
+import { router as listRouter } from './routes/listAPI';
 
 export interface HttpException extends Error {
     status: number;
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testRouter);
+app.use('/list', listRouter);
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next: express.NextFunction) {

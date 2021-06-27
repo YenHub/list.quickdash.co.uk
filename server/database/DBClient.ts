@@ -1,8 +1,9 @@
 import { Sequelize } from 'sequelize';
-import { Log, MessageSources } from '../utils/logger';
+import { Err, Log, MessageSources } from '../utils/logger';
 require('dotenv').config(); // load everything from `.env` file into the `process.env` variable
 
 const log = Log(MessageSources.DBClient);
+const error = Err(MessageSources.DBClient);
 
 const {
     DB_PORT = '3306',
@@ -21,8 +22,13 @@ const sequelize = new Sequelize({
     port: Number(DB_PORT),
 });
 
-sequelize.authenticate().then( () => {
-    log('Authentication Succeeded');
-});
+sequelize.authenticate()
+    .then(() => {
+        log('Connection Succeeded');
+    })
+    .catch(err => {
+        error('Connection Failed');
+        error(err);
+    });
 
 export default sequelize;
