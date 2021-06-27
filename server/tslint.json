@@ -1,7 +1,7 @@
 {
   "extends": ["tslint-eslint-rules"],
   "linterOptions": {
-    "exclude": ["src/*.js", "src/*.jsx", "src/**/*.js"]
+    "exclude": ["src/*.js", "src/*.jsx", "src/**/*.js", "node_modules"]
   },
   "rules": {
     "adjacent-overload-signatures": true,

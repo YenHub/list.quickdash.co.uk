@@ -8,7 +8,9 @@
     "dev": "nodemon -L ./bin/www",
     "debug": "SET DEBUG=* && npm run dev",
     "build": "rimraf dist && gulp copy && tsc",
-    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
+    "serve:dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "serve:production": "cross-env NODE_ENV=production concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
     "preserve": "npm run build"
   },
   "dependencies": {
@@ -37,6 +39,7 @@
     "@types/http-errors": "^1.8.0",
     "@types/morgan": "^1.9.2",
     "@types/mysql": "^2.15.18",
+    "@types/validator": "^13.1.4",
     "concurrently": "^6.2.0",
     "eslint": "^7.29.0",
     "gulp": "^4.0.2",
