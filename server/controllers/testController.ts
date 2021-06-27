@@ -1,37 +1,21 @@
 import { Response, Request, NextFunction } from 'express';
-import { pool as DBConnector } from '../utils/database/DBConnector';
+import { pool as DBConnector } from '../database/DBConnector';
 import { apiLog } from '../utils/logger';
-import { HttpException } from '../app';
-import { MysqlError } from 'mysql';
-
-const messages = {
-    success: 'THE API IS NOT A ☕ POT',
-    failure: 'THE API IS A ☕ POT',
-}
-
-const handleFailure = (err: HttpException | MysqlError, res: Response) => {
-
-    apiLog(`There has been a boo boo...`);
-    apiLog(JSON.stringify(err));
-
-    res.status(500).send(messages.failure);
-
-    throw err;
-};
+import { handleFailure } from '../utils/errorHandler';
 
 const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
 
-export const index = (_req: Request, res: Response, _next: NextFunction) => {
+export const index = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
-            return handleFailure(err, res);
+        if (err) {
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
+        const sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
           USE ${APItestDB};
           CREATE TABLE IF NOT EXISTS testTable(
               ID int NOT NULL AUTO_INCREMENT,
@@ -42,10 +26,10 @@ export const index = (_req: Request, res: Response, _next: NextFunction) => {
           UPDATE testTable SET HitCount = HitCount + 1 WHERE ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, result) {
+        con.query(sqlStatement, function(err, result) {
 
-            if(err) {
-                return handleFailure(err, res);
+            if (err) {
+                return handleFailure(err, res, next);
             }
 
             apiLog(`CREATED API CALL`);
@@ -61,24 +45,24 @@ export const index = (_req: Request, res: Response, _next: NextFunction) => {
 
 };
 
-export const reset = (_req: Request, res: Response, _next: NextFunction) => {
+export const reset = (_req: Request, res: Response, next: NextFunction) => {
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
-            return handleFailure(err, res);
+        if (err) {
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `USE ${APItestDB};
+        const sqlStatement = `USE ${APItestDB};
           UPDATE testTable SET HitCount = '0' WHERE testTable.ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, _result) {
+        con.query(sqlStatement, function(err, _result) {
 
-            if(err) {
-                return handleFailure(err, res);
+            if (err) {
+                return handleFailure(err, res, next);
             }
 
             apiLog(`RESET API CALLS`);
@@ -97,26 +81,26 @@ export const testPayload = (_req: Request, res: Response, _next: NextFunction) =
     res.status(200).json({ status: 'THE API IS NOT A TEAPOT ☕' });
 };
 
-export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) => {
+export const magicalSpam = (_req: Request, res: Response, next: NextFunction) => {
 
     const randomGenerator = () => {
 
-        var randA = (Math.random() * 10) > 1 ?  ( Math.random() * 2e4 ) :  ( Math.random() * 2e2 );
-        var randB = ( Math.random() * randA );
-        var randC = ( ( randA * randB ) * Math.random() );
+        const randA = (Math.random() * 10) > 1 ? (Math.random() * 2e4) : (Math.random() * 2e2);
+        const randB = (Math.random() * randA);
+        const randC = ((randA * randB) * Math.random());
 
         return Number(randC);
     };
 
     DBConnector.getConnection((err, con) => {
 
-        if(err) {
-            return handleFailure(err, res);
+        if (err) {
+            return handleFailure(err, res, next);
         }
 
         apiLog(`Connected to pool`);
 
-        let sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
+        const sqlStatement = `CREATE DATABASE IF NOT EXISTS ${APItestDB};
           USE ${APItestDB};
           CREATE TABLE IF NOT EXISTS testTable(
               ID int NOT NULL AUTO_INCREMENT,
@@ -127,10 +111,10 @@ export const magicalSpam = (_req: Request, res: Response, _next: NextFunction) =
           UPDATE testTable SET HitCount = ${randomGenerator()};
           SELECT HitCount FROM testTable WHERE ID = 1`;
 
-        con.query(sqlStatement, function (err, result) {
+        con.query(sqlStatement, function(err, result) {
 
-            if(err) {
-                return handleFailure(err, res);
+            if (err) {
+                return handleFailure(err, res, next);
             }
 
             apiLog(`CREATED MAGICAL RANDOM NUMBER OF CALLS 😝`);

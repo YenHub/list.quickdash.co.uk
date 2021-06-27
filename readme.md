@@ -122,6 +122,7 @@ _This file is .gitignored_
 DB_PORT=3306
 DB_USERNAME=root    
 DB_SERVICE_USER=NodeUser
+DB_SERVICE_USER_PASSWORD=Node@User_Pass2021
 DB_PASSWORD=NodeUserPassword
 DB_DATABASE=nodeDB
 DB_HOST=node-mysql

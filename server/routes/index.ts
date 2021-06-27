@@ -1,5 +1,5 @@
 import express, { Response } from 'express';
-let router = express.Router();
+const router = express.Router();
 
 router.get('/', function(_req, res: Response, _next) {
     res.status(200);
@@ -7,5 +7,5 @@ router.get('/', function(_req, res: Response, _next) {
 });
 
 export {
-    router
+    router,
 };
