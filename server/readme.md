@@ -23,7 +23,8 @@ javascript: (() => {
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list/10", {
+    const listId = prompt("Set listID", "10") || "10";
+    const rawResponse = await fetch(`/list/${listId}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -88,7 +89,8 @@ javascript: (() => {
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list/update/2", {
+    const listId = prompt("List ID", 2) || 2;
+    const rawResponse = await fetch(`/list/update/${listId}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -110,7 +112,8 @@ e.g. DELETE
 ```javascript
 javascript: (() => {
   (async () => {
-    const rawResponse = await fetch("/list/1", {
+      const listId = prompt("List ID", 2) || 2;
+    const rawResponse = await fetch(`/list/${listId}`, {
       method: "DELETE"
     });
     const content = await rawResponse;

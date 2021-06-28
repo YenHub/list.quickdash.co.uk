@@ -1,20 +1,29 @@
-import { DataTypes, Model } from 'sequelize';
+import { UUID, UUIDV4, DataTypes, Model } from 'sequelize';
 import sequelize from '../database/DBClient';
 
 export class List extends Model { }
 
-List.init({
-    // Model attributes are defined here
+const modelAttributes = {
+    id: {
+        type: UUID,
+        defaultValue: UUIDV4,
+        primaryKey: true,
+    },
     list: {
         type: DataTypes.JSON,
         allowNull: false,
     },
-}, { // Other model options go here
+};
+
+const options = {
     sequelize, // We need to pass the connection instance
     modelName: 'List', // We need to choose the model name
-});
+};
+
+List.init(modelAttributes, options);
 
 sequelize.sync();
+// sequelize.sync({force: true});
 
-// the defined model is the class itself
+// The defined model is equal to the class created
 // console.log(List === sequelize.models.List);

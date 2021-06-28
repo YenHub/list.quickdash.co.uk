@@ -11,12 +11,12 @@ import {
 } from '../controllers/listController';
 
 // READ
-router.get('/:id', get);
 router.get('/all', getAll);
+router.get('/:id', get);
 
 // DELETE
-router.delete('/:id', deleteList);
 router.delete('/all', deleteAll);
+router.delete('/:id', deleteList);
 
 // CREATE
 router.post('/create', createList);
