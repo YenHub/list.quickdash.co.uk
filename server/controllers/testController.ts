@@ -3,7 +3,7 @@ import { pool as DBConnector } from '../database/DBConnector';
 import { apiLog } from '../utils/logger';
 import { handleFailure } from '../utils/errorHandler';
 
-const APItestDB = process.env.NODE_ENV === 'production' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
+const APItestDB = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? process.env.DB_PREFIX ?? '' + process.env.DB_TEST : process.env.DB_TEST;
 
 export const index = (_req: Request, res: Response, next: NextFunction) => {
 
