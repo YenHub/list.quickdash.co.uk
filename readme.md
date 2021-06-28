@@ -36,7 +36,7 @@
 
 QuickList is a simple list and task management app, available for desktop or mobile as a PWA (progressive web app).
 
-The app sports a sexy dark mode by default, stores all your notes on your device, and even helpfully runs offline 😎
+The app sports a slinky dark mode by default, stores all your notes on your device, and even helpfully runs offline 😎
 
 [![demoImage]](https://list.quickdash.co.uk)
 
