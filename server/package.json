@@ -10,6 +10,7 @@
     "debug": "SET DEBUG=* && npm run dev",
     "build": "rimraf dist && gulp copy && tsc",
     "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
+    "build:staging": "cross-env NODE_ENV=staging rimraf dist && gulp copy && tsc",
     "serve:dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
     "serve:production": "cross-env NODE_ENV=production concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
     "preserve": "npm run build"
