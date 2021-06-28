@@ -1,7 +1,6 @@
-name:                       🧪 Client | Staging | Manual
+name:                       🧪 Manual | Staging | Client
 on:                         [workflow_dispatch]
 
-name:                       🧪 Manual | Staging | Client
 jobs:
   client-deploy:
     name:                   🎉 Deploy Client

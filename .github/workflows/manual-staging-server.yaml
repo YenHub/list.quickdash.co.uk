@@ -1,7 +1,6 @@
-name:                       🧪 Server | Staging | Manual
+name:                       🧪 Manual | Staging | Server
 on:                         [workflow_dispatch]
 
-name:                       🧪 Manual | Staging | Server
 jobs:
   server-deploy:
     name:                   🎉 Deploy Server
