@@ -20,15 +20,15 @@ jobs:
         working-directory:      client
 
     - name:                     🧹 Lint Build (CLIENT)
-      run:                      npm run lint:ts
-      working-directory:        client
-
-    - name:                     🔨 Build Project (CLIENT)
-      run:                      INLINE_RUNTIME_CHUNK=false npm run build
+      run:                      npm run lint:ts && npm run lint
       working-directory:        client
 
     - name:                     🧪 Test Build (CLIENT)
       run:                      npm test
+      working-directory:        client
+
+    - name:                     🔨 Build Project (CLIENT)
+      run:                      INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:        client
 
     - name:                     📂 Sync Client

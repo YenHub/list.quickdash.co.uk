@@ -23,7 +23,7 @@ jobs:
       run:                      npm run lint:ts
       working-directory:        server
 
-    # Currently build takes place on the box
+    # NOTE:                     Build takes place on the box
     # - name:                   🔨 Build Project  (SERV)
     #   run:                    npm run build:staging
     #   env:

@@ -28,12 +28,12 @@ jobs:
       run:                  npm run lint:ts && npm run lint
       working-directory:    client
 
-    - name:                 🔨 Build Project
-      run:                  INLINE_RUNTIME_CHUNK=false npm run build
-      working-directory:    client
-
     - name:                 🧪 Test Build
       run:                  npm test
+      working-directory:    client
+
+    - name:                 🔨 Build Project
+      run:                  INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:    client
 
     - name:                 📂 Sync files
