@@ -29,9 +29,9 @@ import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
 
 import NoteStore from '../Services/Database/NoteStore';
+import { showGatedFeatures } from '../Services/ReactUtils';
 export const noteStore = new NoteStore();
 
-const showGatedFeatures = process.env.NODE_ENV === 'development';
 const drawerWidth = 240;
 
 const useStyles = (darkMode: boolean) => makeStyles(theme => ({

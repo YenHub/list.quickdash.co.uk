@@ -1,11 +1,13 @@
 export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
 
+export const showGatedFeatures = process.env.NODE_ENV === 'development' || process.env.REACT_APP_BETA === 'true';
+
 export const getBoolSetting = (setting: Setting): boolean => {
     if (window.localStorage.getItem(setting)) {
         return window.localStorage.getItem(setting) === 'true';
     }
 
-    if (process.env.REACT_APP_BETA === 'true' && setting === 'mdMode') {
+    if (showGatedFeatures && setting === 'mdMode') {
         return true;
     }
 

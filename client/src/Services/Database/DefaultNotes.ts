@@ -1,4 +1,5 @@
 import { NoteItem } from './NoteStore';
+import { showGatedFeatures } from '../ReactUtils';
 
 const DefaultNotes: NoteItem[] = [{
     id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
@@ -26,7 +27,7 @@ const DefaultNotes: NoteItem[] = [{
     secondary: 'Head on over to settings to enable the feature 😎',
 }];
 
-if (process.env.REACT_APP_BETA === 'true') {
+if (showGatedFeatures) {
     const betaWarning: NoteItem = {
         id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
         primary: 'QUICKLIST BETA',
