@@ -5,6 +5,10 @@ export const getBoolSetting = (setting: Setting): boolean => {
         return window.localStorage.getItem(setting) === 'true';
     }
 
+    if (process.env.REACT_APP_BETA === 'true' && setting === 'mdMode') {
+        return true;
+    }
+
     return setting !== 'mdMode';
 };
 
