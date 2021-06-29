@@ -160,7 +160,7 @@ export const ImportButton: FC = () => {
             return getWord();
         };
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < random(15); i++) {
             newNotes.push({
                 secondary: generateSecondary(),
                 primary: generatePrimary(),
