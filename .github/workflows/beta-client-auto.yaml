@@ -33,7 +33,7 @@ jobs:
       working-directory:    client
 
     - name:                 🔨 Build Project (CLIENT)
-      run:                  INLINE_RUNTIME_CHUNK=false npm run build
+      run:                  INLINE_RUNTIME_CHUNK=false npm run build:beta
       working-directory:    client
 
     - name:                 📂 Sync Client
