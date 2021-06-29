@@ -31,10 +31,11 @@ if (showGatedFeatures) {
     const betaWarning: NoteItem = {
         id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
         primary: 'QUICKLIST BETA',
-        secondary: '## WARNING: You are currently in the beta environment\n\n---\n\n' +
+        secondary: '## WARNING\n\n' +
+            'You are currently in the beta environment\n\n' +
             'Visit the [live site here](https://list.quickdash.co.uk)',
     };
-    DefaultNotes.splice(0, DefaultNotes.length - 1, betaWarning).reverse();
+    DefaultNotes.splice(0, DefaultNotes.length, betaWarning).reverse();
 }
 
 export { DefaultNotes };
