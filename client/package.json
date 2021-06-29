@@ -40,6 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:beta": "cross-env REACT_APP_BETA=true react-scripts start",
     "build": "react-scripts build",
     "build:beta": "cross-env REACT_APP_BETA=true react-scripts build",
     "test": "react-scripts test --verbose",

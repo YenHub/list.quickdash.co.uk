@@ -5,11 +5,6 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { StateProvider } from './Services/State/Store';
-import { initialiseStaging } from './stagingHelper';
-
-if (process.env.REACT_APP_BETA === 'true') {
-    initialiseStaging();
-}
 
 const app = (
     <React.StrictMode>
