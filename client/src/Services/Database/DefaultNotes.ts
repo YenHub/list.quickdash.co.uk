@@ -27,12 +27,14 @@ const DefaultNotes: NoteItem[] = [{
 }];
 
 if (process.env.REACT_APP_BETA === 'true') {
+    localStorage.mdMode = true;
     const betaWarning: NoteItem = {
         id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
         primary: 'QUICKLIST BETA',
-        secondary: 'WARNING: You are currently in the beta environment',
+        secondary: '## WARNING: You are currently in the beta environment\n\n---\n\n' +
+            'Visit the [live site here](https://list.quickdash.co.uk)',
     };
-    DefaultNotes.splice(1, DefaultNotes.length - 1, betaWarning).reverse();
+    DefaultNotes.splice(0, DefaultNotes.length - 1, betaWarning).reverse();
 }
 
 export { DefaultNotes };
