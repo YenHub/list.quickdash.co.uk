@@ -1,6 +1,6 @@
 import { NoteItem } from './NoteStore';
 
-export const DefaultNotes: NoteItem[] = [{
+const DefaultNotes: NoteItem[] = [{
     id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
     primary: 'Welcome to QuickList 🚀',
     secondary: '\n  • QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
@@ -25,3 +25,14 @@ export const DefaultNotes: NoteItem[] = [{
     primary: 'UPDATE: You can now use markdown in your descriptions! 🎉',
     secondary: 'Head on over to settings to enable the feature 😎',
 }];
+
+if (process.env.REACT_APP_BETA === 'true') {
+    const betaWarning: NoteItem = {
+        id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
+        primary: 'QUICKLIST BETA',
+        secondary: 'WARNING: You are currently in the beta environment',
+    };
+    DefaultNotes.splice(1, DefaultNotes.length - 1, betaWarning).reverse();
+}
+
+export { DefaultNotes };
