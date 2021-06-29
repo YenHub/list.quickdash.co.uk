@@ -1,8 +1,8 @@
-name:                       🧪 Test & Lint | Prod
+name:                       ⚡ Prod | Client | Manual
 on:                         [workflow_dispatch]
 jobs:
   web-deploy:
-    name:                   🧪 Lint & Test 🧹
+    name:                   🎉 Manual Deploy
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
@@ -29,3 +29,11 @@ jobs:
     - name:                 🧪 Test Build
       run:                  npm test
       working-directory:    client
+
+    - name:                 📂 Sync files
+      uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server:             ${{ secrets.ftpserver }}
+        username:           ${{ secrets.ftpuser }}
+        password:           ${{ secrets.ftppass }}
+        local-dir:          ./client/build/

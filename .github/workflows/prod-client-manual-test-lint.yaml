@@ -1,8 +1,8 @@
-name:                       🚑 Emergency Deploy
+name:                       ⚡ Prod | Client | Test & Lint
 on:                         [workflow_dispatch]
 jobs:
   web-deploy:
-    name:                   🚑 EMERGENCY DEPLOY
+    name:                   🧪 Lint & Test 🧹
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
@@ -18,14 +18,14 @@ jobs:
       with:
         working-directory:  client
 
+    - name:                 🧹 Lint Build
+      run:                  npm run lint:ts
+      working-directory:    client
+
     - name:                 🔨 Build Project
       run:                  INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:    client
 
-    - name:                 📂 Sync files
-      uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server:             ${{ secrets.ftpserver }}
-        username:           ${{ secrets.ftpuser }}
-        password:           ${{ secrets.ftppass }}
-        local-dir:          ./client/build/
+    - name:                 🧪 Test Build
+      run:                  npm test
+      working-directory:    client

@@ -1,4 +1,4 @@
-name:                           🧪 Manual | Staging | Server Clean
+name:                           🧪 BETA | Server | Manual Reset
 on:                             [workflow_dispatch]
 
 jobs:
@@ -23,6 +23,7 @@ jobs:
       run:                      npm run lint:ts
       working-directory:        server
 
+    # Currently build takes place on the box
     # - name:                   🔨 Build Project  (SERV)
     #   run:                    npm run build:staging
     #   env:

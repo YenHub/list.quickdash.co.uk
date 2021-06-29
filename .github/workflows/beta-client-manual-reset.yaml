@@ -1,8 +1,9 @@
-name:                           🧪 Manual | Prod | Reset
+name:                           🧪 BETA | Client | Manual Reset
 on:                             [workflow_dispatch]
+
 jobs:
-  web-deploy:
-    name:                       🎉 Manual Clean & Deploy
+  client-deploy:
+    name:                       🎉 Deploy Client
     runs-on:                    ubuntu-latest
     steps:
     - name:                     🚚 Get latest code
@@ -13,28 +14,28 @@ jobs:
       with:
         node-version:           '14.17.1'
 
-    - name:                     💥 Install & Cache Deps
+    - name:                     💥 Install & Cache Deps (CLIENT)
       uses:                     bahmutov/npm-install@v1.4.5
       with:
         working-directory:      client
 
-    - name:                     🧹 Lint Build
+    - name:                     🧹 Lint Build (CLIENT)
       run:                      npm run lint:ts
       working-directory:        client
 
-    - name:                     🔨 Build Project
+    - name:                     🔨 Build Project (CLIENT)
       run:                      INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:        client
 
-    - name:                     🧪 Test Build
+    - name:                     🧪 Test Build (CLIENT)
       run:                      npm test
       working-directory:        client
 
-    - name:                     📂 Sync files
+    - name:                     📂 Sync Client
       uses:                     SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server:                 ${{ secrets.ftpserver }}
-        username:               ${{ secrets.ftpuser }}
-        password:               ${{ secrets.ftppass }}
+        password:               ${{ secrets.client_ftppass_staging }}
+        server:                 ${{ secrets.client_ftpserver_staging }}
+        username:               ${{ secrets.client_ftpuser_staging }}
         local-dir:              ./client/build/
         dangerous-clean-slate:  true

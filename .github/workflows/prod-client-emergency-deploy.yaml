@@ -1,14 +1,8 @@
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'client/**'
-
-name:                       🧪 Auto | Prod
+name:                       🚑 Client Emergency Deploy
+on:                         [workflow_dispatch]
 jobs:
   web-deploy:
-    name:                   🎉 Deploy
+    name:                   🚑 EMERGENCY DEPLOY
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
@@ -24,16 +18,8 @@ jobs:
       with:
         working-directory:  client
 
-    - name:                 🧹 Lint Build
-      run:                  npm run lint:ts
-      working-directory:    client
-
     - name:                 🔨 Build Project
       run:                  INLINE_RUNTIME_CHUNK=false npm run build
-      working-directory:    client
-
-    - name:                 🧪 Test Build
-      run:                  npm test
       working-directory:    client
 
     - name:                 📂 Sync files

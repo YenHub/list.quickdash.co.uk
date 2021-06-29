@@ -1,9 +1,14 @@
-name:                       🧪 Manual | Staging | Client
-on:                         [workflow_dispatch]
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'client/**'
 
+name:                       ⚡ Prod | Client | Auto
 jobs:
-  client-deploy:
-    name:                   🎉 Deploy Client
+  web-deploy:
+    name:                   🎉 Deploy
     runs-on:                ubuntu-latest
     steps:
     - name:                 🚚 Get latest code
@@ -14,27 +19,27 @@ jobs:
       with:
         node-version:       '14.17.1'
 
-    - name:                 💥 Install & Cache Deps (CLIENT)
+    - name:                 💥 Install & Cache Deps
       uses:                 bahmutov/npm-install@v1.4.5
       with:
         working-directory:  client
 
-    - name:                 🧹 Lint Build (CLIENT)
+    - name:                 🧹 Lint Build
       run:                  npm run lint:ts
       working-directory:    client
 
-    - name:                 🔨 Build Project (CLIENT)
+    - name:                 🔨 Build Project
       run:                  INLINE_RUNTIME_CHUNK=false npm run build
       working-directory:    client
 
-    - name:                 🧪 Test Build (CLIENT)
+    - name:                 🧪 Test Build
       run:                  npm test
       working-directory:    client
 
-    - name:                 📂 Sync Client
+    - name:                 📂 Sync files
       uses:                 SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        password:           ${{ secrets.client_ftppass_staging }}
-        server:             ${{ secrets.client_ftpserver_staging }}
-        username:           ${{ secrets.client_ftpuser_staging }}
+        server:             ${{ secrets.ftpserver }}
+        username:           ${{ secrets.ftpuser }}
+        password:           ${{ secrets.ftppass }}
         local-dir:          ./client/build/

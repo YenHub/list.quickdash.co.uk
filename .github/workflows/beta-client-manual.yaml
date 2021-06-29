@@ -1,11 +1,6 @@
-on:
-  push:
-    branches:
-      - feature/share-list
-    paths:
-      - 'client/**'
+name:                       🧪 BETA | Client | Manual
+on:                         [workflow_dispatch]
 
-name:                       🧪 Auto | Staging | Client
 jobs:
   client-deploy:
     name:                   🎉 Deploy Client
