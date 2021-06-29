@@ -27,7 +27,6 @@ const DefaultNotes: NoteItem[] = [{
 }];
 
 if (process.env.REACT_APP_BETA === 'true') {
-    localStorage.mdMode = true;
     const betaWarning: NoteItem = {
         id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
         primary: 'QUICKLIST BETA',
