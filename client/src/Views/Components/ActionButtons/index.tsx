@@ -8,9 +8,7 @@ import { NoteItem } from '../../../Services/Database/NoteStore';
 import ActionDialog from '../ActionDialog';
 
 import { store } from '../../../Services/State/Store';
-import NoteService, { random } from './generateNote';
-
-const { generateSecondary, generatePrimary } = NoteService;
+import generateNote, { random } from './generateNote';
 
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
     <ActionDialog
@@ -77,9 +75,10 @@ export const ImportButton: FC = () => {
         const newNotes = [];
 
         for (let i = 0; i < random(15); i++) {
+            const newNote = generateNote();
             newNotes.push({
-                secondary: generateSecondary(),
-                primary: generatePrimary(),
+                primary: newNote.primary,
+                secondary: newNote.secondary,
             });
         }
         newNotes.map(item => {
