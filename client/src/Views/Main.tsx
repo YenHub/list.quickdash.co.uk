@@ -104,7 +104,7 @@ const useStyles = (darkMode: boolean) => makeStyles(theme => ({
 
 const Main: FC = () => {
 
-    bigLog('[Render] <Main />');
+    bigLog('[RENDER] <Main />');
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
@@ -114,10 +114,6 @@ const Main: FC = () => {
     const classes = useStyles(darkMode)();
 
     const [open, setOpen] = useState<boolean>(false);
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [editNoteId, setEditNoteId] = useState<string>('');
-
-    const modalProps = { modalOpen, setModalOpen, editNoteId, setEditNoteId };
 
     const handleDrawerState = (): void => setOpen(open => !open);
 
@@ -158,7 +154,7 @@ const Main: FC = () => {
                         QuickList
                     </Typography>
 
-                    <CreateNoteModal {...modalProps}/>
+                    <CreateNoteModal />
 
                 </Toolbar>
 
@@ -249,7 +245,7 @@ const Main: FC = () => {
 
     const MainContentWindow: FC = () => (
         <main className={clsx(classes.content, { [classes.contentShift]: open })} >
-            <NotesList setEditNoteId={setEditNoteId} />
+            <NotesList />
         </main>
     );
 

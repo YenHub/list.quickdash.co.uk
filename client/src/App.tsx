@@ -65,7 +65,7 @@ const App: FC = () => {
 
     // Auto Table Sorting
     useEffect(() => {
-        bigLog('[Render] <App />');
+        bigLog('[Add Event Listeners: tableSort.js] <App />');
         window.addEventListener('click', sortTable);
 
         return () => window.removeEventListener('click', sortTable);

@@ -1,4 +1,4 @@
-import { FC, useState, useContext, Dispatch, SetStateAction, memo } from 'react';
+import { FC, useState, useContext } from 'react';
 import { store } from '../../../Services/State/Store';
 import { bigLog } from '../../../Services/ReactUtils';
 
@@ -22,6 +22,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { NoteItem } from '../../../Services/Database/NoteStore';
 import MDPreview, { MDTitle } from '../MDPreview';
 import ActionDialog from '../ActionDialog';
+import CreateNoteModal from '../CreateNoteModal';
 
 import { isMobile } from 'react-device-detect';
 
@@ -83,10 +84,6 @@ const getListItemFrags = (
     ];
 };
 
-interface INoteList {
-    setEditNoteId: Dispatch<SetStateAction<string>>;
-}
-
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
     <ActionDialog
         open={true}
@@ -100,81 +97,88 @@ const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
 interface NoteFragProps {
     item: NoteItem;
     index: number;
-    darkMode: boolean;
-    mdMode: boolean;
-    showDeleteAlert(item: NoteItem): void;
-    setEditNoteId(id: string): void;
 }
 
-const NoteFragment: FC<NoteFragProps> = ({item, index, darkMode, mdMode, showDeleteAlert, setEditNoteId}) => {
-
-    bigLog('[RENDER] <NoteFragment />');
+const NoteFragment: FC<NoteFragProps> = ({ item, index }) => {
 
     const classes = useStyles();
+    const globalState = useContext(store);
+    const { state, dispatch } = globalState;
+    const { darkMode, mdMode, noteState } = state;
+    const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null);
+
+    const showDeleteAlert = (item: NoteItem) => setDeleteNote(item);
+
+    const handleDeleteNote = () => {
+        dispatch({ type: 'SetNotes', payload: [...noteState.filter(note => note.id !== deleteNote!.id)] });
+        setDeleteNote(null);
+    };
+
+    const handleCloseAlert = () => setDeleteNote(null);
+
 
     return (
-        <Draggable key={item.id} draggableId={item.id} index={index}>
-            {(provided, snapshot) => {
-                const textStyle = getTextStyle(snapshot.isDragging);
-                const itemStyle = getItemStyle(
-                    snapshot.isDragging,
-                    provided.draggableProps.style,
-                );
-                const listItemFrags = getListItemFrags(darkMode, mdMode, item);
+        <>
+            {deleteNote && (
+                DeleteAlert(handleDeleteNote, handleCloseAlert)
+            )}
+            <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided, snapshot) => {
+                    const textStyle = getTextStyle(snapshot.isDragging);
+                    const itemStyle = getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style,
+                    );
+                    const listItemFrags = getListItemFrags(darkMode, mdMode, item);
 
-                return (
-                    <ListItem
-                        className={classes.secondaryAction}
-                        ContainerComponent={(<li />).type}
-                        // ContainerProps={{ ref: provided.innerRef }}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={itemStyle}
-                    >
-                        <ListItemIcon>
-                            <NotesIcon style={textStyle} />
-                        </ListItemIcon>
-                        <ListItemText
-                            disableTypography={mdMode ? true : false}
-                            primary={listItemFrags[0]}
-                            primaryTypographyProps={{ style: { ...textStyle } }}
-                            secondary={listItemFrags[1]}
-                            secondaryTypographyProps={{ style: { ...textStyle, whiteSpace: 'pre-wrap' } }}
-                        />
-                        <ListItemIcon onClick={() => setEditNoteId(item.id)}>
-                            <IconButton>
-                                <EditIcon color="primary" />
-                            </IconButton>
-                        </ListItemIcon>
-                        <ListItemIcon
-                            role="deleteNote"
-                            onClick={() => showDeleteAlert(item)}
+                    return (
+                        <ListItem
+                            className={classes.secondaryAction}
+                            ContainerComponent={(<li />).type}
+                            // ContainerProps={{ ref: provided.innerRef }}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={itemStyle}
                         >
-                            <IconButton>
-                                <DeleteForeverIcon color="error" />
-                            </IconButton>
-                        </ListItemIcon>
-                        <ListItemSecondaryAction />
-                    </ListItem>
-                );
-            }}
-        </Draggable>
+                            <ListItemIcon>
+                                <NotesIcon style={textStyle} />
+                            </ListItemIcon>
+                            <ListItemText
+                                disableTypography={mdMode ? true : false}
+                                primary={listItemFrags[0]}
+                                primaryTypographyProps={{ style: { ...textStyle } }}
+                                secondary={listItemFrags[1]}
+                                secondaryTypographyProps={{ style: { ...textStyle, whiteSpace: 'pre-wrap' } }}
+                            />
+                            <ListItemIcon>
+                                <CreateNoteModal editingNoteID={item.id} ActionButton={<EditIcon color="primary" />}/>
+                                </ListItemIcon>
+                            <ListItemIcon
+                                role="deleteNote"
+                                onClick={() => showDeleteAlert(item)}
+                            >
+                                <IconButton>
+                                    <DeleteForeverIcon color="error" />
+                                </IconButton>
+                            </ListItemIcon>
+                            <ListItemSecondaryAction />
+                        </ListItem>
+                    );
+                }}
+            </Draggable>
+        </>
     );
 
 };
 
-const MemoItem = memo(NoteFragment);
+const NoteList: FC = () => {
 
-const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
-
-    bigLog('[Render] <NotesList />');
+    bigLog('[RENDER] <NotesList />');
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
     const { darkMode, mdMode, noteState } = state;
-
-    const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null);
 
     const classes = useStyles();
 
@@ -193,23 +197,12 @@ const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
         dispatch({ type: 'SetNotes', payload: items });
     };
 
-    const handleDeleteNote = () => {
-        dispatch({ type: 'SetNotes', payload: [...noteState.filter(note => note.id !== deleteNote!.id)] });
-        setDeleteNote(null);
-    };
-
-    const handleCloseAlert = () => setDeleteNote(null);
-    const showDeleteAlert = (item: NoteItem) => setDeleteNote(item);
-
     if (noteState === null) {
         return null;
     } else {
 
         return (
             <div className={classes.root}>
-                {deleteNote && (
-                    DeleteAlert(handleDeleteNote, handleCloseAlert)
-                )}
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="droppable">
                         {(provided, snapshot) => (
@@ -217,10 +210,10 @@ const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
                                 <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
                                     {noteState.map((item, index) => {
 
-                                        const props = {item, index, darkMode, mdMode, showDeleteAlert, setEditNoteId};
+                                        const props = { item, index, darkMode, mdMode, dispatch };
 
                                         return (
-                                            <MemoItem key={item.id} {...props}/>
+                                            <NoteFragment key={item.id} {...props} />
                                         );
                                     })}
                                     {provided.placeholder}
@@ -234,4 +227,4 @@ const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
     }
 };
 
-export default NotesList;
+export default NoteList;

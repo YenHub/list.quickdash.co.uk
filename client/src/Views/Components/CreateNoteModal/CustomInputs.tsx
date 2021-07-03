@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { isMobile } from 'react-device-detect';
 import { SetStateAction, ChangeEventHandler, Dispatch } from 'react';
@@ -9,13 +10,13 @@ interface ICustomInputs {
     darkMode: boolean;
     setNoteDesc: Dispatch<SetStateAction<string>>;
     createNote(evt: any): void;
-    editNoteId: string;
+    editingNoteID?: string;
     handleClose(): void;
 }
 
-export const TitleInput = (
-    { noteTitle, setNoteTitle }: Pick<ICustomInputs, 'noteTitle' | 'setNoteTitle'>,
-): JSX.Element => {
+export const TitleInput: FC<Pick<ICustomInputs, 'noteTitle' | 'setNoteTitle'>> = (
+    { noteTitle, setNoteTitle },
+) => {
 
     const handleTitleChange: ChangeEventHandler<HTMLInputElement> = evt => setNoteTitle(evt.target.value);
 
@@ -32,9 +33,9 @@ export const TitleInput = (
     );
 };
 
-export const DescInput = (
-    { noteDesc, setNoteDesc }: Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>,
-): JSX.Element => {
+export const DescInput: FC<Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>> = (
+    { noteDesc, setNoteDesc },
+) => {
 
     const handleDescChange: ChangeEventHandler<HTMLInputElement> = evt => setNoteDesc(evt.target.value);
 
@@ -53,10 +54,10 @@ export const DescInput = (
     );
 };
 
-export const SubmitButton = (
-    { createNote, noteTitle, editNoteId, noteDesc }: Pick<ICustomInputs, 'createNote' | 'noteTitle' | 'editNoteId' | 'noteDesc'>,
-): JSX.Element => {
-    const noteLabel = `${editNoteId ? 'Update' : 'Create'}`;
+export const SubmitButton: FC<Pick<ICustomInputs, 'createNote' | 'noteTitle' | 'editingNoteID' | 'noteDesc'>> = (
+    { createNote, noteTitle, editingNoteID, noteDesc },
+) => {
+    const noteLabel = `${editingNoteID ? 'Update' : 'Create'}`;
 
     return (
         <Button
@@ -73,8 +74,9 @@ export const SubmitButton = (
     );
 };
 
-export const CloseButton = (
-    { handleClose, editNoteId, darkMode }: Pick<ICustomInputs, 'handleClose' | 'editNoteId' | 'darkMode'>) => {
+export const CloseButton: FC<Pick<ICustomInputs, 'handleClose' | 'editingNoteID' | 'darkMode'>> = (
+    { handleClose, editingNoteID, darkMode },
+) => {
     return (
         <Button
             aria-label={'Close Note'}
@@ -85,7 +87,7 @@ export const CloseButton = (
             color={darkMode ? 'default' : 'primary'}
             style={{ color: `${darkMode ? 'lightGrey' : 'black'}`, width: '48%', marginRight: '2%' }}
         >
-            {editNoteId ? 'Cancel' : 'Close'}
+            {editingNoteID ? 'Cancel' : 'Close'}
         </Button>
     );
 };

@@ -1,7 +1,5 @@
 import {
-    SetStateAction,
     ChangeEventHandler,
-    Dispatch,
     FormEvent,
     useState,
     useContext,
@@ -51,19 +49,12 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
 };
 
-interface ICreateNoteModal {
-    modalOpen: boolean;
-    setModalOpen: Dispatch<SetStateAction<boolean>>;
-    editNoteId: string;
-    setEditNoteId: Dispatch<SetStateAction<string>>;
+interface INoteModal {
+    editingNoteID?: string;
+    ActionButton?: JSX.Element;
 }
 
-const CreateNoteModal: React.FC<ICreateNoteModal> = ({
-    modalOpen,
-    setModalOpen,
-    editNoteId,
-    setEditNoteId,
-}) => {
+const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) => {
 
     bigLog('[RENDER] <CreateNoteModal />');
 
@@ -71,21 +62,16 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     const { state, dispatch } = globalState;
     const { darkMode, mdMode, previewMode, noteState } = state;
 
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+
     const [wideView, toggleWideView] = useState<boolean>(false);
     const [showPreview, togglePreview] = useState<boolean>(previewMode);
 
     const classes = useStyles(wideView)();
 
-    const getNoteDetail = (detail: 'primary' | 'secondary'): string => {
-        let editingNote, editingNoteIndex;
+    const editingNote = noteState.find((note: NoteItem) => note.id === editingNoteID);
 
-        if (editNoteId) {
-            editingNoteIndex = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
-            editingNote = noteState[editingNoteIndex];
-        }
-
-        return editingNote?.[detail] || '';
-    };
+    const getNoteDetail = (detail: 'primary' | 'secondary'): string => editingNote?.[detail] || '';
 
     const [noteDesc, setNoteDesc] = useState<string>(getNoteDetail('secondary'));
     const descProps = { noteDesc, setNoteDesc };
@@ -96,15 +82,18 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     const handleOpen = (): void => setModalOpen(true);
     const handleClose = (): void => {
         setModalOpen(false);
-        setEditNoteId('');
     };
 
-    const noteButtonProps = { handleClose, editNoteId, darkMode };
+    const noteButtonProps = { handleClose, editingNoteID, darkMode };
 
-    const editExistingNote = (editNoteId: string): void => {
-        const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editNoteId);
+    const editExistingNote = (editingNoteID: string): void => {
+        const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteID);
         const newNotes = [...noteState];
-        newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: `${noteDesc}` };
+        const newNote = { id: editingNoteID, primary: noteTitle, secondary: noteDesc };
+        if(JSON.stringify(editingNote) === JSON.stringify(newNote)) {
+            return;
+        }
+        newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: noteDesc };
         dispatch({ type: 'SetNotes', payload: newNotes });
     };
 
@@ -114,17 +103,23 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         switch (true) {
             case !noteTitle && !noteDesc:
                 // NO NOTE: Just close modal
-                return handleClose();
-            case !!editNoteId:
+                return;
+            case editingNoteID !== undefined && editingNoteID !== '':
+                bigLog(`Editing Existing ${editingNoteID}`);
+
                 // HAS NOTE: Edit existing
-                return editExistingNote(editNoteId);
+                return editExistingNote(editingNoteID as string);
             case !!noteState?.length :
+                bigLog('Adding new note');
+
                 // HAS NOTES: Prepend new note
                 return dispatch({
                     type: 'SetNotes',
                     payload: [{ id: getUniqueId(noteState), primary: noteTitle, secondary: `${noteDesc}` }, ...noteState],
                 });
             default:
+                bigLog('First Ever Note');
+
                 // FIRST NOTE: Set initial state
                 return dispatch({
                     type: 'SetNotes',
@@ -133,19 +128,19 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         }
     };
 
-    const submitButtonProps = { noteTitle, createNote, editNoteId, noteDesc };
+    const submitButtonProps = { noteTitle, createNote, editingNoteID, noteDesc };
 
     const CreateNoteButton = (): JSX.Element => (
         <IconButton
-            data-testid="create-note-button"
+            data-testid={`${ActionButton ? 'edit' : 'create'}-note-button`}
             aria-label="Create New Note"
             edge="end"
             onClick={handleOpen}
         >
-            <AddCircleOutlineIcon
+            {ActionButton ? ActionButton : <AddCircleOutlineIcon
                 color="primary"
                 fontSize="large"
-            />
+            />}
         </IconButton>
     );
 
@@ -223,7 +218,7 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         <div>
             <CreateNoteButton />
             <Modal
-                open={!!editNoteId || modalOpen}
+                open={modalOpen}
                 onClose={handleClose}
                 aria-labelledby="new-note-modal"
                 aria-describedby="new-note-modal-desc-description"
