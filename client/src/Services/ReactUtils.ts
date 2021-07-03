@@ -15,3 +15,27 @@ export const getBoolSetting = (setting: Setting): boolean => {
 };
 
 export const setBoolSetting = (setting: Setting, value: boolean): void => localStorage.setItem(setting, value.toString());
+
+export const bigLog = (msg: string): void => {
+
+    if (!showGatedFeatures) {
+        return;
+    }
+
+    console.log(`
+
+            ${msg}
+
+        `);
+};
+
+export const groupLog = (name: string, msg: any): void => {
+
+    if (!showGatedFeatures) {
+        return;
+    }
+
+    console.group(name);
+    console.log(msg);
+    console.groupEnd();
+};
