@@ -11,6 +11,8 @@ import { store } from './Services/State/Store';
 import { bigLog, setBoolSetting } from './Services/ReactUtils';
 import { sortTable } from './Services/BrowserUtils';
 
+import { isMobile } from 'react-device-detect';
+
 const getTheme = (darkMode: boolean) => createMuiTheme({
     overrides: {
         // StyleSheet Name
@@ -92,6 +94,7 @@ const App: FC = () => {
                 display: 'flex',
                 height: 'calc(100vh)',
                 overflow: 'hidden',
+                paddingTop: isMobile ? '56px' : '64px',
             }}
         >
             <MuiThemeProvider theme={theme}>

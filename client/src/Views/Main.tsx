@@ -91,6 +91,7 @@ const useStyles = (darkMode: boolean) => makeStyles(theme => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
+        paddingTop: 0,
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
@@ -134,12 +135,6 @@ const Main: FC = () => {
 
     const AppHeader: FC = () => {
 
-        const AppHeaderLogo: FC = () => (
-            <Typography variant="h1" noWrap className={classes.title}>
-                QuickList
-            </Typography>
-        );
-
         return (
             <AppBar
                 position="fixed"
@@ -147,6 +142,7 @@ const Main: FC = () => {
                     [classes.appBarShift]: open,
                 })}
             >
+
                 <Toolbar className={classes.toolBar}>
                     <IconButton
                         data-testid="menu-button"
@@ -158,10 +154,14 @@ const Main: FC = () => {
                         <SettingsIcon fontSize="large" />
                     </IconButton>
 
-                    <AppHeaderLogo />
+                    <Typography variant="h1" noWrap className={classes.title}>
+                        QuickList
+                    </Typography>
 
-                    <CreateNoteModal {...modalProps} />
+                    <CreateNoteModal {...modalProps}/>
+
                 </Toolbar>
+
             </AppBar>
         );
 
@@ -249,7 +249,6 @@ const Main: FC = () => {
 
     const MainContentWindow: FC = () => (
         <main className={clsx(classes.content, { [classes.contentShift]: open })} >
-            <div className={classes.drawerHeader} />
             <NotesList setEditNoteId={setEditNoteId} />
         </main>
     );
