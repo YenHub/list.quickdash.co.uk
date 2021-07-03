@@ -29,7 +29,7 @@ import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
 
 import NoteStore from '../Services/Database/NoteStore';
-import { showGatedFeatures } from '../Services/ReactUtils';
+import { bigLog, groupLog, showGatedFeatures } from '../Services/ReactUtils';
 export const noteStore = new NoteStore();
 
 const drawerWidth = 240;
@@ -103,6 +103,8 @@ const useStyles = (darkMode: boolean) => makeStyles(theme => ({
 
 const Main: FC = () => {
 
+    bigLog('[Render] <Main />');
+
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
     const { darkMode, mdMode, previewMode } = state;
@@ -119,7 +121,11 @@ const Main: FC = () => {
     const handleDrawerState = (): void => setOpen(open => !open);
 
     const attemptImport = (): void => {
-        getNotes().then(storedNotes => dispatch({ type: 'SetNotes', payload: storedNotes }));
+        bigLog('<Main /> attemptImport()');
+        getNotes().then(storedNotes => {
+            groupLog('[Stored Notes]', storedNotes);
+            dispatch({ type: 'SetNotes', payload: storedNotes });
+        });
     };
 
     // Were using this emtpy [] purposefully and with intent

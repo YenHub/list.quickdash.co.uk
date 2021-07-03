@@ -14,6 +14,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
 import { NoteItem } from '../../../Services/Database/NoteStore';
+import { bigLog } from '../../../Services/ReactUtils';
 import { getUniqueId } from '../../../Services/UUID';
 
 import MDPreview from '../MDPreview';
@@ -63,6 +64,8 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
     editNoteId,
     setEditNoteId,
 }) => {
+
+    bigLog('[RENDER] <CreateNoteModal />');
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;

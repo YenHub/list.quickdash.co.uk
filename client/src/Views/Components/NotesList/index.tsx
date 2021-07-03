@@ -1,5 +1,6 @@
 import { FC, useState, useContext, Dispatch, SetStateAction } from 'react';
 import { store } from '../../../Services/State/Store';
+import { bigLog } from '../../../Services/ReactUtils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -97,6 +98,8 @@ const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
 );
 
 const NotesList: FC<INoteList> = ({ setEditNoteId }) => {
+
+    bigLog('[Render] <NotesList />');
 
     const globalState = useContext(store);
     const { state, dispatch } = globalState;
