@@ -154,10 +154,10 @@ const CreateNoteModal: React.FC<ICreateNoteModal> = ({
         return (
             <div style={{
                 border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
-                borderRadius: '4px', paddingRight: '0.3rem'}}
-            >
-                <Scrollbars hideTracksWhenNotNeeded autoHeight autoHeightMax={`calc(40vh)`} style={{margin: '0.8rem 0'}} >
-                    <div style={{padding: '1em 1em', marginRight: '1rem'}}>
+                borderRadius: '4px', paddingRight: '0.3rem',
+            }}>
+                <Scrollbars hideTracksWhenNotNeeded autoHeight autoHeightMax={`calc(40vh)`} style={{ margin: '0.8rem 0' }} >
+                    <div style={{ padding: '1em 1em', marginRight: '1rem' }}>
                         <FormGroup row className={classes.formGroup}>
                             <FormControlLabel
                                 labelPlacement="start"
