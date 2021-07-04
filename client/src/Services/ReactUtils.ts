@@ -39,3 +39,5 @@ export const groupLog = (name: string, msg: any): void => {
     console.log(msg);
     console.groupEnd();
 };
+
+export const shallowCompareIdentical = (objA: any, objB: any): boolean => !Object.keys(objA).some( key => objA[key] !== objB[key]);
