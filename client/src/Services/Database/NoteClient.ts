@@ -38,7 +38,7 @@ class NoteClient {
         return storedNotes;
     }
 
-    public setNotes = (notes: NoteItem[]): Promise<NoteItem[]> => Store.setItem(noteStore, notes);
+    public setNotes = async (notes: NoteItem[]): Promise<NoteItem[]> => Store.setItem(noteStore, notes);
 
     public deleteNotes = (): Promise<void> => Store.clear();
 
