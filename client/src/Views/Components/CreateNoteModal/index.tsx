@@ -12,7 +12,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
 import { NoteItem } from '../../../Services/Database/NoteStore';
-import { bigLog } from '../../../Services/ReactUtils';
+import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
 import { getUniqueId } from '../../../Services/UUID';
 
 import MDPreview from '../MDPreview';
@@ -87,12 +87,15 @@ const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) =>
     const noteButtonProps = { handleClose, editingNoteID, darkMode };
 
     const editExistingNote = (editingNoteID: string): void => {
-        const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteID);
-        const newNotes = [...noteState];
         const newNote = { id: editingNoteID, primary: noteTitle, secondary: noteDesc };
-        if(JSON.stringify(editingNote) === JSON.stringify(newNote)) {
+        if(shallowCompareIdentical(editingNote, newNote)) {
+
             return;
         }
+
+        const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteID);
+        const newNotes = [...noteState];
+        bigLog('None Matching Note');
         newNotes[indOfNote] = { ...newNotes[indOfNote], primary: noteTitle, secondary: noteDesc };
         dispatch({ type: 'SetNotes', payload: newNotes });
     };
