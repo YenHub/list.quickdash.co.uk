@@ -4,10 +4,11 @@ import Button from '@material-ui/core/Button';
 
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
-import { NoteItem } from '../../../Services/Database/NoteStore';
+import { NoteItem } from '../../../Services/Database/NoteClient';
 import ActionDialog from '../ActionDialog';
 
 import { store } from '../../../Services/State/Store';
+import generateNote, { random } from './generateNote';
 
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
     <ActionDialog
@@ -33,8 +34,8 @@ const CustomButton = (props: any) => (
 export const DeleteNotes: FC = () => {
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { noteState } = state;
+    const { state: { noteState }, dispatch } = globalState;
+
     const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false);
 
     const clearNotes = (): void => {
@@ -66,24 +67,27 @@ export const DeleteNotes: FC = () => {
 export const ImportButton: FC = () => {
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { noteState } = state;
+    const { state: { noteState }, dispatch } = globalState;
 
     const importNotes = (noteState: NoteItem[]) => {
         const currentNotes = [...noteState];
-        [
-            { primary: 'test', secondary: 'More Text' },
-            { primary: 'test Two', secondary: 'More Text again' },
-            { primary: 'Three', secondary: '' },
-            { primary: 'Four', secondary: 'A bigger description' },
-        ].map(item => {
+        const newNotes = [];
+
+        for (let i = 0; i < random(15); i++) {
+            const newNote = generateNote();
+            newNotes.push({
+                primary: newNote.primary,
+                secondary: newNote.secondary,
+            });
+        }
+        newNotes.map(item => {
             return currentNotes.push({ ...item, id: getUniqueId(currentNotes) });
         });
         dispatch({ type: 'SetNotes', payload: currentNotes });
     };
 
     const buttonProps = {
-        'aria-label': 'Import Notes',
+        'aria-label': 'CREATE RANDOM NOTES',
         onClick: () => importNotes(noteState),
         disabled: !noteState,
         type: 'secondary',
@@ -96,8 +100,7 @@ export const ImportButton: FC = () => {
 export const ExportButton: FC = () => {
 
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { noteState } = state;
+    const { state: { noteState } } = globalState;
 
     const exportNotes = (noteState: NoteItem[]): void => {
         const exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));
@@ -105,7 +108,7 @@ export const ExportButton: FC = () => {
     };
 
     const buttonProps = {
-        'aria-label': 'Export Notes',
+        'aria-label': 'EXPORT NOTES',
         onClick: () => exportNotes(noteState),
         disabled: noteState?.length === 0,
         type: 'default',

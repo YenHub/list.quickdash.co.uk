@@ -1,6 +1,7 @@
-import { NoteItem } from './NoteStore';
+import { NoteItem } from './NoteClient';
+import { showGatedFeatures } from '../ReactUtils';
 
-export const DefaultNotes: NoteItem[] = [{
+const DefaultNotes: NoteItem[] = [{
     id: '4a11b44b-3f04-4f56-b468-ea36c091b03d',
     primary: 'Welcome to QuickList 🚀',
     secondary: '\n  • QuickList is a simple clutter free tool designed to help organise chaos using a good old fashioned list 😎\n' +
@@ -25,3 +26,16 @@ export const DefaultNotes: NoteItem[] = [{
     primary: 'UPDATE: You can now use markdown in your descriptions! 🎉',
     secondary: 'Head on over to settings to enable the feature 😎',
 }];
+
+if (showGatedFeatures) {
+    const betaWarning: NoteItem = {
+        id: '4a11b44b-3f04-4f56-b468-ea36c091b04g',
+        primary: 'QUICKLIST BETA',
+        secondary: '## WARNING\n\n' +
+            'You are currently in the beta environment\n\n' +
+            'Visit the [live site here](https://list.quickdash.co.uk)',
+    };
+    DefaultNotes.splice(0, DefaultNotes.length, betaWarning).reverse();
+}
+
+export { DefaultNotes };

@@ -8,8 +8,10 @@ import { useContext, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { store } from './Services/State/Store';
 
-import { setBoolSetting } from './Services/ReactUtils';
+import { bigLog, setBoolSetting } from './Services/ReactUtils';
 import { sortTable } from './Services/BrowserUtils';
+
+import { isMobile } from 'react-device-detect';
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
     overrides: {
@@ -55,12 +57,14 @@ const getTheme = (darkMode: boolean) => createMuiTheme({
 
 const App: FC = () => {
 
+    bigLog('[Render] <App />');
+
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { darkMode, mdMode, previewMode } = state;
+    const { state: { darkMode, mdMode, previewMode } } = globalState;
 
     // Auto Table Sorting
     useEffect(() => {
+        bigLog('[Add Event Listeners: tableSort.js] <App />');
         window.addEventListener('click', sortTable);
 
         return () => window.removeEventListener('click', sortTable);
@@ -89,6 +93,7 @@ const App: FC = () => {
                 display: 'flex',
                 height: 'calc(100vh)',
                 overflow: 'hidden',
+                paddingTop: isMobile ? '56px' : '64px',
             }}
         >
             <MuiThemeProvider theme={theme}>

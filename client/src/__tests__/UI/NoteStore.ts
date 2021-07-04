@@ -1,9 +1,9 @@
 import { initApp, getNoteCount } from '../../test-helpers';
 
-import { noteStore } from '../../Views/Main';
+import { noteClient } from '../../Views/Main';
 
 beforeEach(async () => {
-    await noteStore.createNote({id: 'note-0', primary: 'Do this thing', secondary: 'This is not overly important but should get to it soon'});
+    await noteClient.createNote({id: 'note-0', primary: 'Do this thing', secondary: 'This is not overly important but should get to it soon'});
     await initApp();
 });
 

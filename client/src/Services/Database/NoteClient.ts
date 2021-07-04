@@ -13,7 +13,7 @@ const Store = localForage.createInstance({
     name: 'toDos',
 });
 
-class NoteStore {
+class NoteClient {
 
     public createNote = async (note: NoteItem) => {
         if (note) {
@@ -55,4 +55,4 @@ class NoteStore {
 
 // myStore.createNote('One Final Things');
 
-export default NoteStore;
+export default NoteClient;
