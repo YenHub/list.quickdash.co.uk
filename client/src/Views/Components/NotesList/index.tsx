@@ -102,9 +102,10 @@ interface NoteFragProps {
 const NoteFragment: FC<NoteFragProps> = ({ item, index }) => {
 
     const classes = useStyles();
+
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { darkMode, mdMode, noteState } = state;
+    const { state: { darkMode, mdMode, noteState }, dispatch } = globalState;
+
     const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null);
 
     const showDeleteAlert = (item: NoteItem) => setDeleteNote(item);
@@ -177,8 +178,7 @@ const NoteList: FC = () => {
     bigLog('[RENDER] <NotesList />');
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { darkMode, mdMode, noteState } = state;
+    const { state: { darkMode, mdMode, noteState }, dispatch } = globalState;
 
     const classes = useStyles();
 

@@ -37,9 +37,9 @@ const Main: FC = () => {
     bigLog('[RENDER] <Main />');
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { darkMode, mdMode, previewMode } = state;
-    const { getNotes } = noteStore;
+    const { state: { darkMode, mdMode, previewMode }, dispatch } = globalState;
+
+    const { getNotes } = noteClient;
 
     const classes = useStyles(darkMode)();
 

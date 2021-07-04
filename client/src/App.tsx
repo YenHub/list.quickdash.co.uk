@@ -60,8 +60,7 @@ const App: FC = () => {
     bigLog('[Render] <App />');
 
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { darkMode, mdMode, previewMode } = state;
+    const { state: { darkMode, mdMode, previewMode } } = globalState;
 
     // Auto Table Sorting
     useEffect(() => {

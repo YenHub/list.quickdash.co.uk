@@ -34,8 +34,8 @@ const CustomButton = (props: any) => (
 export const DeleteNotes: FC = () => {
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { noteState } = state;
+    const { state: { noteState }, dispatch } = globalState;
+
     const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false);
 
     const clearNotes = (): void => {
@@ -67,8 +67,7 @@ export const DeleteNotes: FC = () => {
 export const ImportButton: FC = () => {
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { noteState } = state;
+    const { state: { noteState }, dispatch } = globalState;
 
     const importNotes = (noteState: NoteItem[]) => {
         const currentNotes = [...noteState];
@@ -101,8 +100,7 @@ export const ImportButton: FC = () => {
 export const ExportButton: FC = () => {
 
     const globalState = useContext(store);
-    const { state } = globalState;
-    const { noteState } = state;
+    const { state: { noteState } } = globalState;
 
     const exportNotes = (noteState: NoteItem[]): void => {
         const exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })));

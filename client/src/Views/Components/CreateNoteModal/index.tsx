@@ -59,8 +59,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) =>
     bigLog('[RENDER] <CreateNoteModal />');
 
     const globalState = useContext(store);
-    const { state, dispatch } = globalState;
-    const { darkMode, mdMode, previewMode, noteState } = state;
+    const { state: { darkMode, mdMode, previewMode, noteState }, dispatch } = globalState;
 
     const [modalOpen, setModalOpen] = useState<boolean>(false);
 
