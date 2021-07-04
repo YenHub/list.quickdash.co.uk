@@ -60,6 +60,7 @@ export const useStyles = (darkMode: boolean) => makeStyles(theme => ({
         }),
         marginLeft: -drawerWidth,
         paddingTop: 0,
+        paddingBottom: isMobile ? '56px' : '64px',
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
