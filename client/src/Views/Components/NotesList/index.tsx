@@ -1,6 +1,6 @@
-import { FC, useState, useContext } from 'react';
+import { FC, memo, useState, useContext } from 'react';
 import { store } from '../../../Services/State/Store';
-import { bigLog } from '../../../Services/ReactUtils';
+import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -99,7 +99,7 @@ interface NoteFragProps {
     index: number;
 }
 
-const NoteFragment: FC<NoteFragProps> = ({ item, index }) => {
+const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
 
     const classes = useStyles();
 
@@ -171,7 +171,9 @@ const NoteFragment: FC<NoteFragProps> = ({ item, index }) => {
         </>
     );
 
-};
+}, (prevProps, nextProps) => (
+    prevProps.index === nextProps.index && shallowCompareIdentical(prevProps.item, nextProps.item)
+));
 
 const NoteList: FC = () => {
 
@@ -197,6 +199,18 @@ const NoteList: FC = () => {
         dispatch({ type: 'SetNotes', payload: items });
     };
 
+    const NoteFragments = () => {
+
+        return (noteState.map((item, index) => {
+
+            const props = { item, index, darkMode, mdMode, dispatch };
+
+            return (
+                <NoteFragment key={item.id} {...props} />
+            );
+        }));
+    };
+
     if (noteState === null) {
         return null;
     } else {
@@ -208,14 +222,7 @@ const NoteList: FC = () => {
                         {(provided, snapshot) => (
                             <RootRef rootRef={provided.innerRef}>
                                 <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
-                                    {noteState.map((item, index) => {
-
-                                        const props = { item, index, darkMode, mdMode, dispatch };
-
-                                        return (
-                                            <NoteFragment key={item.id} {...props} />
-                                        );
-                                    })}
+                                    {NoteFragments()}
                                     {provided.placeholder}
                                 </List>
                             </RootRef>

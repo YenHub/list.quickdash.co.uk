@@ -173,17 +173,13 @@ const Main: FC = () => {
         );
     };
 
-    const MainContentWindow: FC = () => (
-        <main className={clsx(classes.content, { [classes.contentShift]: open })} >
-            <NotesList />
-        </main>
-    );
-
     return (
         <div className={classes.root}>
             <AppHeader />
             <AppMenuDrawer />
-            <MainContentWindow />
+            <main className={clsx(classes.content, { [classes.contentShift]: open })} >
+                <NotesList />
+            </main>
         </div>
     );
 };

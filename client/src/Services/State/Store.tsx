@@ -50,9 +50,9 @@ const StateProvider: React.FC = ({ children }: any) => {
             case 'PreviewModeToggle':
                 return { ...state, previewMode: !state.previewMode };
             case 'SetNotes':
-                noteClient.setNotes(action.payload);
+                noteClient.setNotes([...action.payload]);
 
-                return { ...state, noteState: action.payload };
+                return { ...state, noteState: [...action.payload] };
             default:
                 return { ...state };
         }
