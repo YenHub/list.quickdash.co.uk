@@ -11,7 +11,7 @@ import { Modal, IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs';
-import { NoteItem } from '../../../Services/Database/NoteStore';
+import { NoteItem } from '../../../Services/Database/NoteClient';
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
 import { getUniqueId } from '../../../Services/UUID';
 

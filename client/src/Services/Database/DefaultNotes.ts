@@ -1,4 +1,4 @@
-import { NoteItem } from './NoteStore';
+import { NoteItem } from './NoteClient';
 import { showGatedFeatures } from '../ReactUtils';
 
 const DefaultNotes: NoteItem[] = [{

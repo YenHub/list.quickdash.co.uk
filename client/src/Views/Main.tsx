@@ -28,9 +28,9 @@ import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButt
 import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
 
-import NoteStore from '../Services/Database/NoteStore';
+import NoteClient from '../Services/Database/NoteClient';
 import { bigLog, groupLog, showGatedFeatures } from '../Services/ReactUtils';
-export const noteStore = new NoteStore();
+export const noteClient = new NoteClient();
 
 const Main: FC = () => {
 

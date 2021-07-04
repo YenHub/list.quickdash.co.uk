@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import { getBoolSetting } from '../ReactUtils';
-import { NoteItem } from '../Database/NoteStore';
-import { noteStore } from '../../Views/Main';
+import { NoteItem } from '../Database/NoteClient';
+import { noteClient } from '../../Views/Main';
 
 type DarkMode = boolean;
 type MDMode = boolean;
@@ -50,7 +50,7 @@ const StateProvider: React.FC = ({ children }: any) => {
             case 'PreviewModeToggle':
                 return { ...state, previewMode: !state.previewMode };
             case 'SetNotes':
-                noteStore.setNotes(action.payload);
+                noteClient.setNotes(action.payload);
 
                 return { ...state, noteState: action.payload };
             default:

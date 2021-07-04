@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import { getUniqueId } from '../../../Services/UUID';
 import { downloadFile } from '../../../Services/BrowserUtils';
-import { NoteItem } from '../../../Services/Database/NoteStore';
+import { NoteItem } from '../../../Services/Database/NoteClient';
 import ActionDialog from '../ActionDialog';
 
 import { store } from '../../../Services/State/Store';

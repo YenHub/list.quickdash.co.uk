@@ -19,7 +19,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import { NoteItem } from '../../../Services/Database/NoteStore';
+import { NoteItem } from '../../../Services/Database/NoteClient';
 import MDPreview, { MDTitle } from '../MDPreview';
 import ActionDialog from '../ActionDialog';
 import CreateNoteModal from '../CreateNoteModal';
