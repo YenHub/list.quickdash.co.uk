@@ -111,7 +111,9 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
     const showDeleteAlert = (item: NoteItem) => setDeleteNote(item);
 
     const handleDeleteNote = () => {
-        dispatch({ type: 'SetNotes', payload: [...noteState.filter(note => note.id !== deleteNote!.id)] });
+        const newNotes = [...noteState];
+        newNotes.splice(index, 1);
+        dispatch({ type: 'SetNotes', payload: newNotes });
         setDeleteNote(null);
     };
 
