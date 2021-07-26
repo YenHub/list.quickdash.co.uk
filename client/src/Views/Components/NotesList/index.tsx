@@ -1,4 +1,4 @@
-import { FC, memo, useState, useContext } from 'react';
+import { FC, memo, useMemo, useState, useContext } from 'react';
 import { store } from '../../../Services/State/Store';
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
 
@@ -119,6 +119,7 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
 
     const handleCloseAlert = () => setDeleteNote(null);
 
+    const listItemFrags = useMemo(() => getListItemFrags(darkMode, mdMode, item), [darkMode, mdMode, item] );
 
     return (
         <>
@@ -132,7 +133,6 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
                         snapshot.isDragging,
                         provided.draggableProps.style,
                     );
-                    const listItemFrags = getListItemFrags(darkMode, mdMode, item);
 
                     return (
                         <ListItem

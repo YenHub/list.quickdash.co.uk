@@ -7,6 +7,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useContext, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { store } from './Services/State/Store';
+import { SocketIo } from './Services/SocketIo';
 
 import { bigLog, setBoolSetting } from './Services/ReactUtils';
 import { sortTable } from './Services/BrowserUtils';
@@ -60,14 +61,28 @@ const App: FC = () => {
     bigLog('[Render] <App />');
 
     const globalState = useContext(store);
-    const { state: { darkMode, mdMode, previewMode } } = globalState;
+    const { state: { darkMode, mdMode, previewMode, shareList }, dispatch } = globalState;
+
+    // Need to do this only when share list has been set
+    // Check a localStorage val here
+    // Clicking SHARE will trigger the init and call createList
+    useEffect(() => {
+        if (shareList) (() => new SocketIo(dispatch))();
+
+        return () => {
+            if (shareList) (() => SocketIo.getInstance().socket.close())();
+        };
+    }, [shareList]);
 
     // Auto Table Sorting
     useEffect(() => {
         bigLog('[Add Event Listeners: tableSort.js] <App />');
         window.addEventListener('click', sortTable);
 
-        return () => window.removeEventListener('click', sortTable);
+        return () => {
+            window.removeEventListener('click', sortTable);
+            if (shareList) (() => SocketIo.getInstance().socket.close())();
+        };
     }, []);
 
     // Settings: Darkmode
@@ -84,6 +99,11 @@ const App: FC = () => {
     useEffect(() => {
         setBoolSetting('previewMode', previewMode);
     }, [previewMode]);
+
+    // Settings: List Is Share List
+    useEffect(() => {
+        setBoolSetting('shareList', shareList);
+    }, [shareList]);
 
     const theme = getTheme(darkMode);
 

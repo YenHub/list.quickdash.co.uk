@@ -6,29 +6,34 @@ import { noteClient } from '../../Views/Main';
 type DarkMode = boolean;
 type MDMode = boolean;
 type PreviewMode = boolean;
+type ShareList = boolean;
 
 interface State {
     darkMode: DarkMode;
     mdMode: MDMode;
     previewMode: PreviewMode;
+    shareList: ShareList;
     noteState: NoteItem[];
 }
 
 export enum ToggleTypes {
     MarkDownToggle = 'MarkDownToggle',
     DarkModeToggle = 'DarkModeToggle',
+    ShareListToggle = 'ShareListToggle',
     PreviewModeToggle = 'PreviewModeToggle',
 }
 
 export type Actions = { type: ToggleTypes.MarkDownToggle }
     | { type: ToggleTypes.DarkModeToggle }
     | { type: ToggleTypes.PreviewModeToggle }
+    | { type: ToggleTypes.ShareListToggle }
     | { type: 'SetNotes', payload: NoteItem[] };
 
 const initialState: State = {
     darkMode: getBoolSetting('darkMode'),
     mdMode: getBoolSetting('mdMode'),
     previewMode: getBoolSetting('previewMode'),
+    shareList: getBoolSetting('shareList'),
     noteState: [],
 };
 
@@ -49,6 +54,8 @@ const StateProvider: React.FC = ({ children }: any) => {
                 return { ...state, mdMode: !state.mdMode };
             case 'PreviewModeToggle':
                 return { ...state, previewMode: !state.previewMode };
+            case 'ShareListToggle':
+                return { ...state, shareList: !state.shareList };
             case 'SetNotes':
                 noteClient.setNotes([...action.payload]);
 

@@ -1,4 +1,4 @@
-export type Setting = 'mdMode' | 'darkMode' | 'previewMode';
+export type Setting = 'mdMode' | 'darkMode' | 'previewMode' | 'shareList';
 
 export const showGatedFeatures = process.env.NODE_ENV === 'development' || process.env.REACT_APP_BETA === 'true';
 
@@ -11,7 +11,7 @@ export const getBoolSetting = (setting: Setting): boolean => {
         return true;
     }
 
-    return setting !== 'mdMode';
+    return !['mdMode', 'shareList'].some( blacklist => setting === blacklist);
 };
 
 export const setBoolSetting = (setting: Setting, value: boolean): void => localStorage.setItem(setting, value.toString());

@@ -18,7 +18,7 @@ COPY wait-for-it.sh /usr/wait-for-it.sh
 RUN chmod +x /usr/wait-for-it.sh
 
 # Run the app
-CMD ["/usr/wait-for-it.sh", "--timeout=0", "node-mysql:3306", "--", "npm", "run", "dev"]
+CMD ["/usr/wait-for-it.sh", "--timeout=0", "node-mysql:3306", "--", "npm", "run", "serve:dev"]
 
 # docker build -t web-app .
 # WINDOWS (See this: https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10)

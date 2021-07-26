@@ -1,6 +1,8 @@
 export enum MessageSources {
     TestAPI = '[TestAPI]',
     DBClient = '[DBClient]',
+    WSClient = '[WSClient]',
+    WSController = '[WSController]',
 }
 
 export const Log = (msgSource: MessageSources) => {

@@ -1,5 +1,6 @@
 import localForage from 'localforage';
 import { DefaultNotes } from './DefaultNotes';
+import { SocketIo } from '../../Services/SocketIo';
 
 export interface NoteItem {
     id: string;
@@ -38,7 +39,14 @@ class NoteClient {
         return storedNotes;
     }
 
-    public setNotes = async (notes: NoteItem[]): Promise<NoteItem[]> => Store.setItem(noteStore, notes);
+    public setNotes = async (notes: NoteItem[]): Promise<NoteItem[]> => {
+
+        // TODO: Will need to gate this bit behind the setting flag
+        const socket = SocketIo.getInstance()?.socket;
+        socket && socket.emit('update-list', {id: localStorage.currentListID, list: notes});
+
+        return Store.setItem(noteStore, notes);
+    }
 
     public deleteNotes = (): Promise<void> => Store.clear();
 

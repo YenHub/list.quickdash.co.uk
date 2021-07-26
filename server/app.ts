@@ -5,6 +5,10 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { SocketInit } from './ws/socket-io';
+import { normalisePort } from './utils/normalisePort';
 
 import { router as indexRouter } from './routes/index';
 import { router as usersRouter } from './routes/users';
@@ -21,7 +25,7 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(cors());
 app.use(helmet());
@@ -52,6 +56,24 @@ app.use(function(err: HttpException, req: express.Request, res: express.Response
     res.render('error');
 });
 
+
+const port = normalisePort(process.env.PORT || '9000');
+app.set('port', port);
+
+const server = createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+});
+
+// TODO: Need to gate this behind SHARE LIST setting toggle
+(() => new SocketInit(io))();
+
 export {
-    app,
+    server,
+    port,
 };
