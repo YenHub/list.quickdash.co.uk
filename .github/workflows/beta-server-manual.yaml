@@ -23,18 +23,18 @@ jobs:
       run:                  npm run lint:ts
       working-directory:    server
 
-    # Currently build takes place on the box
-    # - name:               🔨 Build Project  (SERV)
-    #   run:                npm run build:staging
-    #   env:
-    #     DB_PORT:          3306
-    #     DB_USERNAME:      ${{ secrets.staging_db_user }}
-    #     DB_PASSWORD:      ${{ secrets.staging_db_pass }}
-    #     DB_DATABASE:      ${{ secrets.staging_db_database }}
-    #     DB_HOST:          ${{secrets.staging_db_host}}
-    #     DB_PREFIX:        ${{ secrets.staging_db_prefix }}
-    #     DB_TEST:          ${{ secrets.staging_db_test }}
-    #   working-directory:  server
+    # NOTE:                 Build takes place on the box. This is purely for testing.
+    - name:                 🔨 Build Project  (SERV)
+      run:                  npm run build:staging
+      env:
+        DB_PORT:            3306
+        DB_USERNAME:        ${{ secrets.staging_db_user }}
+        DB_PASSWORD:        ${{ secrets.staging_db_pass }}
+        DB_DATABASE:        ${{ secrets.staging_db_database }}
+        DB_HOST:            ${{secrets.staging_db_host}}
+        DB_PREFIX:          ${{ secrets.staging_db_prefix }}
+        DB_TEST:            ${{ secrets.staging_db_test }}
+      working-directory:    server
 
     - name:                 📂 Sync Server
       uses:                 SamKirkland/FTP-Deploy-Action@4.1.0
