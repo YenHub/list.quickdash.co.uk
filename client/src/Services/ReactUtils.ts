@@ -35,7 +35,7 @@ export const groupLog = (name: string, msg: any): void => {
         return;
     }
 
-    console.group(name);
+    console.groupCollapsed(name);
     console.log(msg);
     console.groupEnd();
 };
