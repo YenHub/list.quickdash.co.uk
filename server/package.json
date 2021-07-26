@@ -8,12 +8,13 @@
     "dev": "nodemon -L ./bin/www",
     "lint:ts": "tslint -p tsconfig.json",
     "debug": "SET DEBUG=* && npm run dev",
-    "build": "rimraf dist && gulp copy && tsc",
-    "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
+    "build:dev": "rimraf dist && gulp copy && tsc",
     "build:staging": "cross-env NODE_ENV=staging rimraf dist && gulp copy && tsc",
-    "serve:dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
-    "serve:production": "cross-env NODE_ENV=production concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
-    "preserve": "npm run build"
+    "build:production": "cross-env NODE_ENV=production rimraf dist && gulp copy && tsc",
+    "serve:dev": "concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "serve:production": "concurrently \"tsc --watch\" \"nodemon -q dist/bin/www.js\"",
+    "preserve:dev": "npm run build:dev",
+    "preserve:production": "npm run build:production"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -25,11 +26,11 @@
     "express-winston": "^4.1.0",
     "helmet": "^4.6.0",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
     "lorem-ipsum": "^2.0.3",
     "morgan": "~1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "pug": "^3.0.2",
     "sequelize": "^6.6.4",
     "winston": "^3.3.3"
   },
