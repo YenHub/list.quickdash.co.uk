@@ -209,14 +209,14 @@ docker-compose up node-mysql -d && docker-compose up server-app
 
 #### Using NPM
 ```bash
-# From the root of ./api
-cd api
+# From the root of ./server
+cd server
 
 # Install the project dependencies
 npm i
 
 # Start the App 🚀
-npm run dev
+npm run serve:dev
 ```
 
 ### Docker: Commands you can use
@@ -262,7 +262,9 @@ The pipeline is driven by three simple steps:
 
 For the front end, we `npm ci` before our `npm run build` to ensure better efficiency in the pipeline, and better dependency stability
 
-Long term, it would be desirable to implement caching of the npm modules too
+~~Long term, it would be desirable to implement caching of the npm modules too~~
+
+UPDATE: We're now using caching 😎
 
 ### Test
 
