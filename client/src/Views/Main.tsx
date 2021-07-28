@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import 'typeface-dosis';
 import clsx from 'clsx';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 
 import { useStyles } from './Main.Styles';
 import { store, ToggleTypes } from '../Services/State/Store';
@@ -28,36 +28,20 @@ import { ExportButton, ImportButton, DeleteNotes } from './Components/ActionButt
 import CreateNoteModal from './Components/CreateNoteModal';
 import ShareButtons from './Components/ShareButtons';
 
-import NoteClient from '../Services/Database/NoteClient';
-import { bigLog, groupLog, showGatedFeatures } from '../Services/ReactUtils';
-export const noteClient = new NoteClient();
+import { bigLog, showGatedFeatures } from '../Services/ReactUtils';
 
 const Main: FC = () => {
 
     bigLog('[RENDER] <Main />');
 
     const globalState = useContext(store);
-    const { state: { darkMode, mdMode, previewMode }, dispatch } = globalState;
-
-    const { getNotes } = noteClient;
+    const { state: { darkMode, mdMode, previewMode } } = globalState;
 
     const classes = useStyles(darkMode)();
 
     const [open, setOpen] = useState<boolean>(false);
 
     const handleDrawerState = (): void => setOpen(open => !open);
-
-    const attemptImport = (): void => {
-        bigLog('<Main /> attemptImport()');
-        getNotes().then(storedNotes => {
-            groupLog('[Stored Notes]', storedNotes);
-            dispatch({ type: 'SetNotes', payload: storedNotes });
-        });
-    };
-
-    // Were using this emtpy [] purposefully and with intent
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(attemptImport, []);
 
     const AppHeader: FC = () => {
 
@@ -117,8 +101,8 @@ const Main: FC = () => {
 
         const MenuItems: FC = () => (
             <List>
-                {showGatedFeatures ? <ExportListItem /> : null}
-                {showGatedFeatures ? <ImportListItem /> : null}
+                {showGatedFeatures && <ExportListItem />}
+                {showGatedFeatures && <ImportListItem />}
                 <ListItem>
                     <DeleteNotes />
                 </ListItem>

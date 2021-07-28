@@ -79,9 +79,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) =>
     const titleProps = { noteTitle, setNoteTitle };
 
     const handleOpen = (): void => setModalOpen(true);
-    const handleClose = (): void => {
-        setModalOpen(false);
-    };
+    const handleClose = (): void => setModalOpen(false);
 
     const noteButtonProps = { handleClose, editingNoteID, darkMode };
 

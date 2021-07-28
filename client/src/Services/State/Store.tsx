@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import { getBoolSetting } from '../ReactUtils';
 import { NoteItem } from '../Database/NoteClient';
-import { noteClient } from '../../Views/Main';
+import { noteClient } from '../../Views/Components/NotesList';
 
 type DarkMode = boolean;
 type MDMode = boolean;

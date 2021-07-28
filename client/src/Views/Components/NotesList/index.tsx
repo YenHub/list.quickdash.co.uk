@@ -1,6 +1,6 @@
-import { FC, memo, useState, useContext } from 'react';
 import { store } from '../../../Services/State/Store';
-import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
+import { FC, memo, useState, useContext, useEffect } from 'react';
+import { bigLog, groupLog, shallowCompareIdentical } from '../../../Services/ReactUtils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -19,7 +19,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-import { NoteItem } from '../../../Services/Database/NoteClient';
+import NoteClient, { NoteItem } from '../../../Services/Database/NoteClient';
 import MDPreview, { MDTitle } from '../MDPreview';
 import ActionDialog from '../ActionDialog';
 import CreateNoteModal from '../CreateNoteModal';
@@ -119,7 +119,6 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
 
     const handleCloseAlert = () => setDeleteNote(null);
 
-
     return (
         <>
             {deleteNote && (
@@ -177,7 +176,22 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
     prevProps.index === nextProps.index && shallowCompareIdentical(prevProps.item, nextProps.item)
 ));
 
+export const noteClient = new NoteClient();
+
 const NoteList: FC = () => {
+
+    const { getNotes } = noteClient;
+
+    const attemptImport = (): void => {
+        bigLog('<NotesList /> attemptImport()');
+        getNotes().then(storedNotes => {
+            groupLog('[Stored Notes]', storedNotes);
+            dispatch({ type: 'SetNotes', payload: storedNotes });
+        });
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(attemptImport, []);
 
     bigLog('[RENDER] <NotesList />');
 
