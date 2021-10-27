@@ -37,7 +37,7 @@ jobs:
       working-directory:        server
 
     - name:                     📂 Sync Server
-      uses:                     SamKirkland/FTP-Deploy-Action@4.0.0
+      uses:                     SamKirkland/FTP-Deploy-Action@4.1.0
       with:
         password:               ${{ secrets.server_ftppass_staging }}
         server:                 ${{ secrets.server_ftpserver_staging }}
