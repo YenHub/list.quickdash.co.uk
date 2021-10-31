@@ -1,0 +1,46 @@
+{
+  "env":                               {
+    "browser":                         true,
+    "commonjs":                        true,
+    "es6":                             true,
+    "jest":                            true,
+    "node":                            true,
+  },
+  "parser":                            "@typescript-eslint/parser",
+  "plugins":                           [
+    "@typescript-eslint"
+  ],
+  "extends":                           [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "globals":                           {
+    "IMatch":                          false,
+    "IMatchTranslate":                 false,
+    "IMWS":                            false,
+    "JSX":                             "readonly",
+    "ol":                              false,
+  },
+  "parserOptions":                     {
+    "ecmaFeatures":                    {
+      "experimentalObjectRestSpread":  true,
+      "jsx":                           true,
+    },
+    "ecmaVersion":                     2021,
+    "sourceType":                      "module",
+  },
+  "rules":                             {
+    "constructor-super":               "warn",
+    "no-const-assign":                 "warn",
+    "no-this-before-super":            "warn",
+    "no-undef":                        "warn",
+    "no-unreachable":                  "warn",
+    "no-unused-vars":                  "off",
+    "quotes":                          ["error","single", { "allowTemplateLiterals": true }],
+    "semi":                            ["error", "always"],
+    "semi-style":                      ["error"],
+    "valid-typeof":                    "warn",
+    "comma-dangle":                    ["error", "always-multiline"],
+  }
+}
