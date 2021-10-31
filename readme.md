@@ -1,8 +1,22 @@
-# QuickList
+<h1 align="center">QuickList</h1>
 
-![Author] ![React Version] ![ExpressJS Version] ![Repo Size] ![Beer Money]
+<p align="center">
+    &nbsp;<img src="https://img.shields.io/badge/made%20by-YenHub%20💙-blue" />
+    &nbsp;<img src="https://badgen.net/badge/icon/typescript?icon=typescript&label" />
+    &nbsp;<img src="https://badgen.net/badge/icon/atom?icon=atom&label" />
+    &nbsp;<img src="https://badgen.net/badge/icon/github?icon=github&label" />
+    &nbsp;<img src="https://img.shields.io/badge/React-17.0.1-important" />
+    &nbsp;<img src="https://img.shields.io/badge/ExpressJS-4.17.1-blueviolet" />
+</p>
 
-![Site Status] ![Build Status] ![Last Commit] ![MozScore] ![Open Issues]
+<p align="center">
+    &nbsp;<img src="https://img.shields.io/github/workflow/status/YenHub/list.quickdash.co.uk/🚀%20Deploy%20website%20on%20push" />
+    &nbsp;<img src="https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish" />
+    &nbsp;<img src="https://img.shields.io/website?down_color=red&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Flist.quickdash.co.uk" />
+    &nbsp;<img src="https://img.shields.io/github/last-commit/YenHub/list.quickdash.co.uk" />
+    &nbsp;<img src="https://img.shields.io/github/issues-raw/YenHub/list.quickdash.co.uk" />
+    &nbsp;<img src="https://img.shields.io/github/repo-size/YenHub/list.quickdash.co.uk" />
+</p>
 
 ## TOC
 <details>
@@ -387,18 +401,14 @@ The database is defined in `./docker-compose.yml`
 The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
 
 <!-- Doc Links -->
-[Author]: https://img.shields.io/badge/made%20by-YenHub%20❤-blue
-[React Version]:https://img.shields.io/badge/React-17.0.1-important
-[ExpressJS Version]:https://img.shields.io/badge/ExpressJS-4.17.1-blueviolet
-[Beer Money]:https://img.shields.io/badge/beer%20money-$0-ff69b4
-[Build Status]: https://img.shields.io/github/workflow/status/YenHub/list.quickdash.co.uk/🚀%20Deploy%20website%20on%20push
-[MozScore]: https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish
-[Site Status]: https://img.shields.io/website?down_color=red&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Flist.quickdash.co.uk
-
-[Last Commit]: https://img.shields.io/github/last-commit/YenHub/list.quickdash.co.uk
-[Open Issues]:https://img.shields.io/github/issues-raw/YenHub/list.quickdash.co.uk
-[Repo Size]: https://img.shields.io/github/repo-size/YenHub/list.quickdash.co.uk
-
 [demoImage]: ./web-app.png
 [Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
 [test drive here]: https://list.quickdash.co.uk/
+
+<h2 align="center">Author Stats: YenHub</h2>
+
+<p align="center">
+    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YenHub&theme=blue-green" /><br>
+    <img src="https://github-readme-streak-stats.herokuapp.com/?user=YenHub&theme=blue-green" /><br>
+    <img src="https://github-profile-trophy.vercel.app/?username=YenHub&theme=discord" />
+</p>
