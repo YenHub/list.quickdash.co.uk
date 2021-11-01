@@ -400,11 +400,6 @@ The database is defined in `./docker-compose.yml`
 
 The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
 
-<!-- Doc Links -->
-[demoImage]: ./web-app.png
-[Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
-[test drive here]: https://list.quickdash.co.uk/
-
 <!-- About The Author -->
 <h2 align="center">Author Stats: YenHub</h2>
 
@@ -413,3 +408,8 @@ The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitig
     <img src="https://github-readme-streak-stats.herokuapp.com/?user=YenHub&theme=blue-green" /><br>
     <img src="https://github-profile-trophy.vercel.app/?username=YenHub&theme=discord" />
 </p>
+
+<!-- Doc Links -->
+[demoImage]: ./web-app.png
+[Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
+[test drive here]: https://list.quickdash.co.uk/
