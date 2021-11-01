@@ -3,7 +3,7 @@ import './RootCSS.css';
 import 'typeface-roboto';
 import Main from './Views/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { useContext, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { store } from './Services/State/Store';
@@ -13,7 +13,7 @@ import { sortTable } from './Services/BrowserUtils';
 
 import { isMobile } from 'react-device-detect';
 
-const getTheme = (darkMode: boolean) => createMuiTheme({
+const getTheme = (darkMode: boolean) => createTheme({
     overrides: {
         // StyleSheet Name
         MuiInputBase: {

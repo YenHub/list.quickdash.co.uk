@@ -86,7 +86,7 @@ const CreateNoteModal: FC<INoteModal> = ({ editingNoteID, ActionButton }) => {
 
     const editExistingNote = (editingNoteID: string): void => {
         const newNote = { id: editingNoteID, primary: noteTitle, secondary: noteDesc };
-        if (shallowCompareIdentical(editingNote, newNote)) {
+        if (shallowCompareIdentical(editingNote!, newNote)) {
             bigLog(`No changes made to note: ${editingNoteID}`);
 
             return;

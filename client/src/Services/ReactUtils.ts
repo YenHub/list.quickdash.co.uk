@@ -44,4 +44,4 @@ export const groupLog = (name: string, msg: string): void => {
 export const shallowCompareIdentical = (
     objA: NoteItem,
     objB: NoteItem,
-): boolean => !Object.keys(objA).some(key => objA[key as keyof NoteItem] !== objB[key as keyof NoteItem]);
+): boolean => !Object.keys(objA || {}).some(key => objA[key as keyof NoteItem] !== objB[key as keyof NoteItem]);
