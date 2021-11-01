@@ -9,7 +9,7 @@ interface ICustomInputs {
     noteDesc: string;
     darkMode: boolean;
     setNoteDesc: Dispatch<SetStateAction<string>>;
-    createNote(evt: any): void;
+    createNote(evt: unknown): void;
     editingNoteID?: string;
     handleClose(): void;
 }

@@ -46,7 +46,7 @@ const reorder = (
     return noteState;
 };
 
-const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+const getItemStyle = (isDragging: boolean, draggableStyle: Record<string, unknown>) => ({
     // styles we need to apply on draggables
     ...draggableStyle,
 
@@ -154,8 +154,8 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
                                 secondaryTypographyProps={{ style: { ...textStyle, whiteSpace: 'pre-wrap' } }}
                             />
                             <ListItemIcon>
-                                <CreateNoteModal editingNoteID={item.id} ActionButton={<EditIcon color="primary" />}/>
-                                </ListItemIcon>
+                                <CreateNoteModal editingNoteID={item.id} ActionButton={<EditIcon color="primary" />} />
+                            </ListItemIcon>
                             <ListItemIcon
                                 role="deleteNote"
                                 onClick={() => showDeleteAlert(item)}
@@ -190,7 +190,6 @@ const NoteList: FC = () => {
         });
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(attemptImport, []);
 
     bigLog('[RENDER] <NotesList />');
@@ -200,7 +199,8 @@ const NoteList: FC = () => {
 
     const classes = useStyles();
 
-    const onDragEnd = (result: any) => {
+    // eslint-disable-next-line
+    const onDragEnd = (result: Record<string, any>) => {
         // Drop zone is outside of the list
         if (!result.destination) {
             return;

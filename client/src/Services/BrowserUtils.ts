@@ -3,10 +3,12 @@ const isIE = () => navigator.userAgent.indexOf('MISE ') !== -1 || !!navigator.us
 export const downloadFile = (content: string): void => {
     const _fileName = `QuickList-${new Date().toLocaleDateString().replace(/\//g, '-')}.txt`;
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+    // eslint-disable-next-line
     if (isIE() && (window as any).navigator.msSaveOrOpenBlob) {
         // for IE versions 10+
         const blobObject = new Blob([content]);
         // Download using MS msSaveOrOpenBlob
+        // eslint-disable-next-line
         (window as any).navigator.msSaveOrOpenBlob(blobObject, _fileName);
     } else {
         // All other browsers
@@ -21,7 +23,7 @@ export const downloadFile = (content: string): void => {
     }
 };
 
-export const sortTable = (e: MouseEvent) => {
+export const sortTable = (e: MouseEvent): void => {
     // Identify the index of the column clicked
     const element = e.target as HTMLElement;
     if (element.tagName !== 'TH') {

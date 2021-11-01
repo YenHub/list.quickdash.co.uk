@@ -39,7 +39,7 @@ const store = createContext<{
 
 const { Provider } = store;
 
-const StateProvider: React.FC = ({ children }: any) => {
+const StateProvider: React.FC = ({ children }) => {
 
     const stateReducer = (state: State, action: Actions): State => {
         switch (action.type) {

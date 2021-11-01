@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { isMobile } from 'react-device-detect';
 
 const drawerWidth = 240;
+// eslint-disable-next-line
 export const useStyles = (darkMode: boolean) => makeStyles(theme => ({
     root: {
         display: 'flex',

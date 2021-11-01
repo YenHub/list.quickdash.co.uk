@@ -3,6 +3,7 @@ import {
     FormEvent,
     useState,
     useContext,
+    FC,
 } from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -54,7 +55,7 @@ interface INoteModal {
     ActionButton?: JSX.Element;
 }
 
-const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) => {
+const CreateNoteModal: FC<INoteModal> = ({ editingNoteID, ActionButton }) => {
 
     bigLog('[RENDER] <CreateNoteModal />');
 
@@ -85,7 +86,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({editingNoteID, ActionButton}) =>
 
     const editExistingNote = (editingNoteID: string): void => {
         const newNote = { id: editingNoteID, primary: noteTitle, secondary: noteDesc };
-        if(shallowCompareIdentical(editingNote, newNote)) {
+        if (shallowCompareIdentical(editingNote, newNote)) {
             bigLog(`No changes made to note: ${editingNoteID}`);
 
             return;

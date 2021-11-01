@@ -20,6 +20,7 @@ const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
     />
 );
 
+// eslint-disable-next-line
 const CustomButton = (props: any) => (
     <Button
         {...props}

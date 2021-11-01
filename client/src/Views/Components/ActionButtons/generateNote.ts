@@ -2,7 +2,8 @@
 import faker from 'faker';
 import { NoteItem } from '../../../Services/Database/NoteClient';
 
-export const random = (n: number) => Math.min(Math.floor(Math.random() * n));
+
+export const random = (n: number): number => Math.min(Math.floor(Math.random() * n));
 export const properCase = (str: string): string => {
     return str.replace(/\w\S*/g, (txt: string) => {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();

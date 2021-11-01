@@ -15,7 +15,7 @@ const Store = localForage.createInstance({
 
 class NoteClient {
 
-    public createNote = async (note: NoteItem) => {
+    public createNote = async (note: NoteItem): Promise<void> => {
         if (note) {
             const notes = await Store.getItem<NoteItem[]>(noteStore);
             if (notes) {
