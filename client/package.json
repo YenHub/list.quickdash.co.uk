@@ -2,6 +2,16 @@
   "name": "client",
   "version": "2.3.4",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "start:beta": "cross-env REACT_APP_BETA=true react-scripts start",
+    "build": "react-scripts build",
+    "build:beta": "cross-env REACT_APP_BETA=true react-scripts build",
+    "test": "react-scripts test --verbose",
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lint:ts": "tslint -p tsconfig.json"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -38,16 +48,6 @@
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "start:beta": "cross-env REACT_APP_BETA=true react-scripts start",
-    "build": "react-scripts build",
-    "build:beta": "cross-env REACT_APP_BETA=true react-scripts build",
-    "test": "react-scripts test --verbose",
-    "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:ts": "tslint -p tsconfig.json"
   },
   "eslintConfig": {
     "extends": [
