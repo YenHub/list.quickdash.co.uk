@@ -23,7 +23,7 @@
     "cyclomatic-complexity": [true, 11],
     "eofline": true,
     "import-spacing": true,
-    "indent": [true, "spaces", 4],
+    "indent": [true, "spaces", 2],
     "interface-over-type-literal": true,
     "jsx-boolean-value": false,
     "jsx-no-lambda": false,
@@ -63,7 +63,7 @@
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
-    "no-unexpected-multiline": true,
+    "no-unexpected-multiline": false,
     "no-unsafe-finally": true,
     "no-unused-expression": [true, "allow-fast-null-checks"],
     "no-var-keyword": true,
@@ -88,7 +88,7 @@
     "prefer-method-signature": true,
     "quotemark": [true, "single", "jsx-double"],
     "radix": true,
-    "semicolon": [true, "always"],
+    "semicolon": [true, "never"],
     "space-before-function-paren": [
       true,
       {
@@ -103,7 +103,7 @@
     "ter-arrow-spacing": true,
     "ter-indent": [
       true,
-      4,
+      2,
       {
         "SwitchCase": 1
       }

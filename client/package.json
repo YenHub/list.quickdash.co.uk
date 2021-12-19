@@ -47,7 +47,7 @@
     "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "lint:ts": "tslint -p tsconfig.json"
+    "lint:ts": "tslint --fix -p tsconfig.json"
   },
   "eslintConfig": {
     "extends": [
