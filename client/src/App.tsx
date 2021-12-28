@@ -1,17 +1,17 @@
-import { FC } from 'react'
-import './RootCSS.css'
+import { FC, useContext, useEffect } from 'react'
+
+import { Scrollbars } from 'react-custom-scrollbars'
+import { isMobile } from 'react-device-detect'
 import 'typeface-roboto'
-import Main from './Views/Main'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
-import { useContext, useEffect } from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
-import { store } from './Services/State/Store'
-
-import { bigLog, setBoolSetting } from './Services/ReactUtils'
+import './RootCSS.css'
 import { sortTable } from './Services/BrowserUtils'
+import { bigLog, setBoolSetting } from './Services/ReactUtils'
+import { store } from './Services/State/Store'
+import Main from './Views/Main'
 
-import { isMobile } from 'react-device-detect'
 
 const getTheme = (darkMode: boolean) => createMuiTheme({
   overrides: {

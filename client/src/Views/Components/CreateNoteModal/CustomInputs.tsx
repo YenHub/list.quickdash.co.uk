@@ -1,7 +1,8 @@
-import { FC } from 'react'
-import { TextField, Button } from '@material-ui/core'
+import { ChangeEventHandler, Dispatch, FC, SetStateAction } from 'react'
+
 import { isMobile } from 'react-device-detect'
-import { SetStateAction, ChangeEventHandler, Dispatch } from 'react'
+
+import { Button, TextField } from '@material-ui/core'
 
 interface ICustomInputs {
   noteTitle: string

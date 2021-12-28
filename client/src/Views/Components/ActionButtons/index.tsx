@@ -2,14 +2,12 @@ import { FC, useContext, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
 
-import { getUniqueId } from '../../../Services/UUID'
 import { downloadFile } from '../../../Services/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import ActionDialog from '../ActionDialog'
-
 import { store } from '../../../Services/State/Store'
+import { getUniqueId } from '../../../Services/UUID'
+import ActionDialog from '../ActionDialog'
 import generateNote, { random } from './generateNote'
-
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
   <ActionDialog
     open={true}

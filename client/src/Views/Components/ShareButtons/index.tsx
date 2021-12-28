@@ -3,8 +3,8 @@ import {
   FacebookShareButton,
   PinterestIcon,
   PinterestShareButton,
-  WhatsappShareButton,
   WhatsappIcon,
+  WhatsappShareButton,
 } from 'react-share'
 
 import { isMobile } from 'react-device-detect'

@@ -1,6 +1,7 @@
-import { render, fireEvent, screen } from './test-utils'
-import App from './App'
 import { act } from 'react-dom/test-utils'
+
+import App from './App'
+import { fireEvent, render, screen } from './test-utils'
 
 // DOM Helpers
 export const initApp = () => act(async () => { render(<App />) })

@@ -1,13 +1,13 @@
-import { fireEvent, screen } from '../../test-utils'
+import { Setting } from '../../Services/ReactUtils'
 import {
   initApp,
-  toggleMD,
-  toggleDarkMode,
-  toggleMDPreview,
   openNoteModal,
   setNoteDesc,
+  toggleDarkMode,
+  toggleMD,
+  toggleMDPreview,
 } from '../../test-helpers'
-import { Setting } from '../../Services/ReactUtils'
+import { fireEvent, screen } from '../../test-utils'
 
 const checkBoolIsTruthy = (storageKey: Setting): boolean =>
   window.localStorage.getItem(storageKey) === 'true'

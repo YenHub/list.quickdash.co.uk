@@ -11,7 +11,7 @@ export const downloadFile = (content: string): void => {
     // for IE versions 10+
     const blobObject = new Blob([content])
     // Download using MS msSaveOrOpenBlob
-    // tslint:disable-next-line: align
+    // tslint:disable-next-line
     ;(window.navigator as any).msSaveOrOpenBlob(blobObject, _fileName)
   } else {
     // All other browsers

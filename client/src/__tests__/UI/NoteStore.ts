@@ -1,4 +1,4 @@
-import { initApp, getNoteCount } from '../../test-helpers'
+import { getNoteCount, initApp } from '../../test-helpers'
 
 import { noteClient } from '../../Views/Main'
 

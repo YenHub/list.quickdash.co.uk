@@ -1,5 +1,7 @@
 import { FC, ReactElement, ReactNode } from 'react'
+
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
+
 import { StateProvider } from './Services/State/Store'
 
 interface ProviderProps {

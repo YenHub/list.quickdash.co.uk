@@ -1,9 +1,9 @@
 import ReactMarkdown from 'react-markdown'
-import gfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import gfm from 'remark-gfm'
 
-import style from './markdown-styles.module.css'
 import darkStyle from './markdown-styles-dark.module.css'
+import style from './markdown-styles.module.css'
 
 interface IMDPreview {
   darkMode: boolean

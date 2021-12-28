@@ -1,27 +1,26 @@
 import {
   ChangeEventHandler,
   FormEvent,
-  useState,
   useContext,
+  useState,
 } from 'react'
+
+import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
 
+import { IconButton, Modal } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 import { makeStyles } from '@material-ui/core/styles'
-import { Modal, IconButton } from '@material-ui/core'
+import Switch from '@material-ui/core/Switch'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
 
-import { TitleInput, DescInput, SubmitButton, CloseButton } from './CustomInputs'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
-import { getUniqueId } from '../../../Services/UUID'
-
-import MDPreview from '../MDPreview'
-import { Scrollbars } from 'react-custom-scrollbars'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-
 import { store } from '../../../Services/State/Store'
+import { getUniqueId } from '../../../Services/UUID'
+import MDPreview from '../MDPreview'
+import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
 
 const useStyles = (wideView: boolean) => makeStyles(theme => ({
   root: {

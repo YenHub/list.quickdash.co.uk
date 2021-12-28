@@ -1,30 +1,29 @@
-import { FC, memo, useState, useContext } from 'react'
-import { store } from '../../../Services/State/Store'
-import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
+import { FC, memo, useContext, useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { isMobile } from 'react-device-detect'
+
 import {
+  IconButton,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-  IconButton,
   ListItemSecondaryAction,
+  ListItemText,
 } from '@material-ui/core'
-
 import RootRef from '@material-ui/core/RootRef'
-import NotesIcon from '@material-ui/icons/Notes'
-import EditIcon from '@material-ui/icons/Edit'
+import { makeStyles } from '@material-ui/core/styles'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import EditIcon from '@material-ui/icons/Edit'
+import NotesIcon from '@material-ui/icons/Notes'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import MDPreview, { MDTitle } from '../MDPreview'
+import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
+import { store } from '../../../Services/State/Store'
 import ActionDialog from '../ActionDialog'
 import CreateNoteModal from '../CreateNoteModal'
+import MDPreview, { MDTitle } from '../MDPreview'
 
-import { isMobile } from 'react-device-detect'
 
 const useStyles = makeStyles(() => ({
   root: {

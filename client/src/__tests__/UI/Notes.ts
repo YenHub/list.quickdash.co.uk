@@ -1,13 +1,14 @@
 import { screen } from '@testing-library/react'
+
 import {
+  closeNoteModal,
+  deleteAllNotes,
+  deleteLastNote,
+  getNoteCount,
   initApp,
   openNoteModal,
-  setNoteTitle,
   setNoteDesc,
-  deleteLastNote,
-  deleteAllNotes,
-  closeNoteModal,
-  getNoteCount,
+  setNoteTitle,
   submitNote,
   toggleMD,
 } from '../../test-helpers'
