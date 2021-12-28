@@ -1,47 +1,44 @@
-import localForage from 'localforage';
-import { DefaultNotes } from './DefaultNotes';
+import localForage from 'localforage'
+import { DefaultNotes } from './DefaultNotes'
 
 export interface NoteItem {
-    id: string;
-    primary?: string;
-    secondary?: string;
+  id: string
+  primary?: string
+  secondary?: string
 }
 
-const noteStore = 'notes';
+const noteStore = 'notes'
 
 const Store = localForage.createInstance({
-    name: 'toDos',
-});
+  name: 'toDos',
+})
 
 class NoteClient {
-
-    public createNote = async (note: NoteItem) => {
-        if (note) {
-            const notes = await Store.getItem<NoteItem[]>(noteStore);
-            if (notes) {
-                note.id = `note-${++notes.length}`;
-                Store.setItem(noteStore, [...notes, note]);
-            } else {
-                note.id = `note-0`;
-                Store.setItem(noteStore, [note]);
-            }
-        }
+  public createNote = async (note: NoteItem) => {
+    if (note) {
+      const notes = await Store.getItem<NoteItem[]>(noteStore)
+      if (notes) {
+        note.id = `note-${++notes.length}`
+        Store.setItem(noteStore, [...notes, note])
+      } else {
+        note.id = `note-0`
+        Store.setItem(noteStore, [note])
+      }
     }
+  }
 
-    public getNotes = async (): Promise<NoteItem[]> => {
-        const storedNotes = await Store.getItem<NoteItem[]>(noteStore) || [];
+  public getNotes = async (): Promise<NoteItem[]> => {
+    const storedNotes = (await Store.getItem<NoteItem[]>(noteStore)) || []
 
-        if (!storedNotes.length) {
-            return DefaultNotes;
-        }
+    if (!storedNotes.length) return DefaultNotes
 
-        return storedNotes;
-    }
+    return storedNotes
+  }
 
-    public setNotes = async (notes: NoteItem[]): Promise<NoteItem[]> => Store.setItem(noteStore, notes);
+  public setNotes = async (notes: NoteItem[]): Promise<NoteItem[]> =>
+    Store.setItem(noteStore, notes)
 
-    public deleteNotes = (): Promise<void> => Store.clear();
-
+  public deleteNotes = (): Promise<void> => Store.clear()
 }
 
 // const myStore = new NoteStore();
@@ -55,4 +52,4 @@ class NoteClient {
 
 // myStore.createNote('One Final Things');
 
-export default NoteClient;
+export default NoteClient
