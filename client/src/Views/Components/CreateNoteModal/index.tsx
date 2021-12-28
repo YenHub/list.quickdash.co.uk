@@ -55,8 +55,6 @@ interface INoteModal {
 
 const CreateNoteModal: React.FC<INoteModal> = ({ editingNoteID, ActionButton }) => {
 
-  bigLog('[RENDER] <CreateNoteModal />')
-
   const globalState = useContext(store)
   const { state: { darkMode, mdMode, previewMode, noteState }, dispatch } = globalState
 

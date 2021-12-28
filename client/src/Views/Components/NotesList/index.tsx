@@ -18,7 +18,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import NotesIcon from '@material-ui/icons/Notes'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
+import { bigLog } from '../../../Services/ReactUtils'
 import { store } from '../../../Services/State/Store'
 import ActionDialog from '../ActionDialog'
 import CreateNoteModal from '../CreateNoteModal'
@@ -83,7 +83,10 @@ const getListItemFrags = (
   ]
 }
 
-const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
+const DeleteAlert: FC<{
+  handleAccept(): void;
+  handleClose(): void;
+}> = ({ handleAccept, handleClose }) => (
   <ActionDialog
     open={true}
     title="Delete Note"
@@ -99,6 +102,8 @@ interface NoteFragProps {
 }
 
 const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
+
+  bigLog('[RENDER] <NoteFragment />')
 
   const classes = useStyles()
 
@@ -118,11 +123,10 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
 
   const handleCloseAlert = () => setDeleteNote(null)
 
-
   return (
     <>
       {deleteNote && (
-        DeleteAlert(handleDeleteNote, handleCloseAlert)
+        <DeleteAlert handleAccept={handleDeleteNote} handleClose={handleCloseAlert} />
       )}
       <Draggable key={item.id} draggableId={item.id} index={index}>
         {(provided, snapshot) => {
@@ -172,24 +176,20 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }) => {
     </>
   )
 
-}, (prevProps, nextProps) => (
-  prevProps.index === nextProps.index && shallowCompareIdentical(prevProps.item, nextProps.item)
-))
+})
 
 const NoteList: FC = () => {
 
   bigLog('[RENDER] <NotesList />')
 
   const globalState = useContext(store)
-  const { state: { darkMode, mdMode, noteState }, dispatch } = globalState
+  const { state: { darkMode, noteState }, dispatch } = globalState
 
   const classes = useStyles()
 
   const onDragEnd = (result: any) => {
     // Drop zone is outside of the list
-    if (!result.destination) {
-      return
-    }
+    if (!result.destination) return
 
     const items = reorder(
       noteState,
@@ -198,18 +198,6 @@ const NoteList: FC = () => {
     )
 
     dispatch({ type: 'SetNotes', payload: items })
-  }
-
-  const NoteFragments = () => {
-
-    return (noteState.map((item, index) => {
-
-      const props = { item, index, darkMode, mdMode, dispatch }
-
-      return (
-        <NoteFragment key={item.id} {...props} />
-      )
-    }))
   }
 
   if (noteState === null) return null
@@ -221,7 +209,7 @@ const NoteList: FC = () => {
           {(provided, snapshot) => (
             <RootRef rootRef={provided.innerRef}>
               <List style={getListStyle(snapshot.isDraggingOver, darkMode)}>
-                {NoteFragments()}
+                {noteState.map((item, index) => <NoteFragment key={item.id} item={item} index={index} />)}
                 {provided.placeholder}
               </List>
             </RootRef>
