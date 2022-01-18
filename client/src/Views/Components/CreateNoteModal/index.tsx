@@ -86,7 +86,11 @@ const CreateNoteModal: React.FC<INoteModal> = ({
 
   const handleOpen = (): void => setModalOpen(true)
   const handleClose = (): void => {
+    // HACK: This should not really be many instances of a modal
+    // This hould be hung from the parent container just once
     setModalOpen(false)
+    setNoteDesc('')
+    setNoteTitle('')
   }
 
   const noteButtonProps = { handleClose, editingNoteID, darkMode }
@@ -182,9 +186,8 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     return (
       <div
         style={{
-          border: `solid 1px rgba(${
-            darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
-          })`,
+          border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
+            })`,
           borderRadius: '4px',
           paddingRight: '0.3rem',
         }}
