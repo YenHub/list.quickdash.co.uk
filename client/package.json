@@ -38,6 +38,9 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
+  "optionalDependencies": {
+    "fsevents": "2.1.2"
+  },
   "scripts": {
     "start": "react-scripts start",
     "start:beta": "cross-env REACT_APP_BETA=true react-scripts start",
