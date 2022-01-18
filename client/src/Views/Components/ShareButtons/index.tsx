@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const ShareButtons = (): JSX.Element => {
-
   const classes = useStyles()
 
   const { title, url, size } = {
@@ -37,8 +36,12 @@ const ShareButtons = (): JSX.Element => {
 
   return (
     <div className={classes.shareIcons}>
-
-      <WhatsappShareButton title={title} separator=":: " url={url} className={classes.icon}>
+      <WhatsappShareButton
+        title={title}
+        separator=":: "
+        url={url}
+        className={classes.icon}
+      >
         <WhatsappIcon size={size} round />
       </WhatsappShareButton>
 

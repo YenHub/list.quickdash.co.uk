@@ -19,20 +19,17 @@ const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
 )
 
 const CustomButton = (props: any) => (
-  <Button
-    {...props}
-    edge="end"
-    variant="outlined"
-    fullWidth
-  >
+  <Button {...props} edge="end" variant="outlined" fullWidth>
     {props['aria-label']}
   </Button>
 )
 
 export const DeleteNotes: FC = () => {
-
   const globalState = useContext(store)
-  const { state: { noteState }, dispatch } = globalState
+  const {
+    state: { noteState },
+    dispatch,
+  } = globalState
 
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
@@ -54,18 +51,18 @@ export const DeleteNotes: FC = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      {showDeleteAlert && (
-        DeleteAlert(clearNotes, handleDeleteCancel)
-      )}
+      {showDeleteAlert && DeleteAlert(clearNotes, handleDeleteCancel)}
       <CustomButton {...buttonProps} />
     </div>
   )
 }
 
 export const ImportButton: FC = () => {
-
   const globalState = useContext(store)
-  const { state: { noteState }, dispatch } = globalState
+  const {
+    state: { noteState },
+    dispatch,
+  } = globalState
 
   const importNotes = (noteState: NoteItem[]) => {
     const currentNotes = [...noteState]
@@ -92,16 +89,21 @@ export const ImportButton: FC = () => {
   }
 
   return <CustomButton {...buttonProps} />
-
 }
 
 export const ExportButton: FC = () => {
-
   const globalState = useContext(store)
-  const { state: { noteState } } = globalState
+  const {
+    state: { noteState },
+  } = globalState
 
   const exportNotes = (noteState: NoteItem[]): void => {
-    const exportContent = JSON.stringify(noteState.map(note => ({ primary: note.primary, secondary: note.secondary })))
+    const exportContent = JSON.stringify(
+      noteState.map(note => ({
+        primary: note.primary,
+        secondary: note.secondary,
+      })),
+    )
     downloadFile(exportContent)
   }
 

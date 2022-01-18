@@ -1,11 +1,6 @@
 import { FC, useContext } from 'react'
 
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@material-ui/core'
+import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 
 import SettingsIcon from '@material-ui/icons/Settings'
@@ -15,12 +10,13 @@ import { useStyles } from '../../Main.Styles'
 import CreateNoteModal from '../CreateNoteModal'
 
 export const AppHeader: FC<{
-  open: boolean;
-  handleDrawerState(): void;
+  open: boolean
+  handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-
   const globalState = useContext(store)
-  const { state: { darkMode } } = globalState
+  const {
+    state: { darkMode },
+  } = globalState
 
   const classes = useStyles(darkMode)()
 
@@ -31,7 +27,6 @@ export const AppHeader: FC<{
         [classes.appBarShift]: open,
       })}
     >
-
       <Toolbar className={classes.toolBar}>
         <IconButton
           data-testid="menu-button"
@@ -48,10 +43,7 @@ export const AppHeader: FC<{
         </Typography>
 
         <CreateNoteModal />
-
       </Toolbar>
-
     </AppBar>
   )
-
 }
