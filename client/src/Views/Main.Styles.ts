@@ -1,7 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { isMobile } from 'react-device-detect'
 
-const drawerWidth = 240
+import { DRAWER_WIDTH } from '../Services/constants'
+
 export const useStyles = (darkMode: boolean) =>
   makeStyles(theme => ({
     root: {
@@ -14,12 +15,12 @@ export const useStyles = (darkMode: boolean) =>
       }),
     },
     appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100% - ${DRAWER_WIDTH}px)`,
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: drawerWidth,
+      marginLeft: DRAWER_WIDTH,
     },
     title: {
       margin: 'auto', // Center Logo
@@ -35,11 +36,11 @@ export const useStyles = (darkMode: boolean) =>
       display: 'none',
     },
     drawer: {
-      width: drawerWidth,
+      width: DRAWER_WIDTH,
       flexShrink: 0,
     },
     drawerPaper: {
-      width: isMobile ? '100%' : drawerWidth,
+      width: isMobile ? '100%' : DRAWER_WIDTH,
     },
     drawerHeader: {
       display: 'flex',
@@ -56,7 +57,7 @@ export const useStyles = (darkMode: boolean) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: -drawerWidth,
+      marginLeft: -DRAWER_WIDTH,
       paddingTop: 0,
       paddingBottom: isMobile ? '56px' : '64px',
     },
