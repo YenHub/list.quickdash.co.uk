@@ -86,11 +86,13 @@ const CreateNoteModal: React.FC<INoteModal> = ({
 
   const handleOpen = (): void => setModalOpen(true)
   const handleClose = (): void => {
+    setModalOpen(false)
     // HACK: This should not really be many instances of a modal
     // This hould be hung from the parent container just once
-    setModalOpen(false)
-    setNoteDesc('')
-    setNoteTitle('')
+    if (!editingNoteID) {
+      setNoteDesc('')
+      setNoteTitle('')
+    }
   }
 
   const noteButtonProps = { handleClose, editingNoteID, darkMode }
