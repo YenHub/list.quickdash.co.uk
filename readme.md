@@ -11,7 +11,7 @@
 
 <p align="center">
     &nbsp;<img src="https://img.shields.io/github/workflow/status/YenHub/list.quickdash.co.uk/🚀%20Deploy%20website%20on%20push" />
-    &nbsp;<img src="https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish" />
+    &nbsp;<img src="https://img.shields.io/mozilla-observatory/grade-score/list.quickdash.co.uk?publish&v=1" />
     &nbsp;<img src="https://img.shields.io/website?down_color=red&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Flist.quickdash.co.uk" />
     &nbsp;<img src="https://img.shields.io/github/last-commit/YenHub/list.quickdash.co.uk" />
     &nbsp;<img src="https://img.shields.io/github/issues-raw/YenHub/list.quickdash.co.uk" />
