@@ -22,7 +22,6 @@ const ActionDialog: FC<Props> = ({
   onAccept,
   onCancel,
 }) => {
-
   const handleClose = (accept: boolean) => {
     if (accept) {
       onAccept && onAccept()
@@ -47,11 +46,20 @@ const ActionDialog: FC<Props> = ({
         </DialogContent>
         <DialogActions>
           {onCancel && (
-            <Button data-testid="action-dialog-cancel" onClick={onCancel} color="primary">
+            <Button
+              data-testid="action-dialog-cancel"
+              onClick={onCancel}
+              color="primary"
+            >
               CANCEL
             </Button>
           )}
-          <Button data-testid="action-dialog-accept" onClick={onAccept} color="primary" autoFocus>
+          <Button
+            data-testid="action-dialog-accept"
+            onClick={onAccept}
+            color="primary"
+            autoFocus
+          >
             OK
           </Button>
         </DialogActions>

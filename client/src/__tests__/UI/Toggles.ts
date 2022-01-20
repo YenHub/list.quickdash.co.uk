@@ -1,3 +1,4 @@
+import { fireEvent, screen } from '@testing-library/react'
 import { Setting } from '../../Services/ReactUtils'
 import {
   initApp,
@@ -7,7 +8,6 @@ import {
   toggleMD,
   toggleMDPreview,
 } from '../../test-helpers'
-import { fireEvent, screen } from '../../test-utils'
 
 const checkBoolIsTruthy = (storageKey: Setting): boolean =>
   window.localStorage.getItem(storageKey) === 'true'

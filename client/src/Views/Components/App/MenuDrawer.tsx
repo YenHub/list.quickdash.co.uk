@@ -1,12 +1,6 @@
 import { FC, useContext } from 'react'
 
-import {
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-} from '@material-ui/core'
+import { Divider, Drawer, IconButton, List, ListItem } from '@material-ui/core'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import { isMobile } from 'react-device-detect'
 
@@ -18,12 +12,13 @@ import ShareButtons from '../ShareButtons'
 import MenuToggle from '../Toggles'
 
 export const AppMenuDrawer: FC<{
-  open: boolean;
-  handleDrawerState(): void;
+  open: boolean
+  handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-
   const globalState = useContext(store)
-  const { state: { darkMode, mdMode, previewMode } } = globalState
+  const {
+    state: { darkMode, mdMode, previewMode },
+  } = globalState
   const classes = useStyles(darkMode)()
 
   const DrawerHeader: FC = () => (
@@ -70,7 +65,7 @@ export const AppMenuDrawer: FC<{
           qaId="md-toggle"
         />
       </ListItem>
-      {(mdMode && !isMobile) && (
+      {mdMode && !isMobile && (
         <div>
           <Divider />
           <ListItem>

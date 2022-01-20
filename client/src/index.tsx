@@ -12,7 +12,7 @@ const app = (
   <React.StrictMode>
     <StateProvider>
       <App />
-    </ StateProvider>
+    </StateProvider>
   </React.StrictMode>
 )
 

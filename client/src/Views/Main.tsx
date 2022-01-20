@@ -13,11 +13,13 @@ import NotesList from './Components/NotesList'
 export const noteClient = new NoteClient()
 
 const Main: FC = () => {
-
   bigLog('[RENDER] <Main />')
 
   const globalState = useContext(store)
-  const { state: { darkMode }, dispatch } = globalState
+  const {
+    state: { darkMode },
+    dispatch,
+  } = globalState
 
   const { getNotes } = noteClient
 
@@ -41,7 +43,7 @@ const Main: FC = () => {
     <div className={classes.root}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
       <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
-      <main className={clsx(classes.content, { [classes.contentShift]: open })} >
+      <main className={clsx(classes.content, { [classes.contentShift]: open })}>
         <NotesList />
       </main>
     </div>
