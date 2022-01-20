@@ -1,72 +1,71 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { isMobile } from 'react-device-detect';
+import { makeStyles } from '@material-ui/core/styles'
+import { isMobile } from 'react-device-detect'
 
-const drawerWidth = 240;
-export const useStyles = (darkMode: boolean) => makeStyles(theme => ({
+import { DRAWER_WIDTH } from '../Services/constants'
+
+export const useStyles = (darkMode: boolean) =>
+  makeStyles(theme => ({
     root: {
-        display: 'flex',
+      display: 'flex',
     },
     appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
     },
     appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: drawerWidth,
+      width: `calc(100% - ${DRAWER_WIDTH}px)`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: DRAWER_WIDTH,
     },
     title: {
-        margin: 'auto', // Center Logo
-        // paddingRight: '24px', // Offset for Menu Icon
-        fontSize: '3em',
-        color: darkMode ? '#08d2ff' : '#007bff',
-        fontFamily: [
-            'Dosis',
-            'serif',
-        ].join(','),
+      margin: 'auto', // Center Logo
+      // paddingRight: '24px', // Offset for Menu Icon
+      fontSize: '3em',
+      color: darkMode ? '#08d2ff' : '#007bff',
+      fontFamily: ['Dosis', 'serif'].join(','),
     },
     toolBar: {
-        backgroundColor: darkMode ? '#303030' : 'white',
+      backgroundColor: darkMode ? '#303030' : 'white',
     },
     hide: {
-        display: 'none',
+      display: 'none',
     },
     drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
+      width: DRAWER_WIDTH,
+      flexShrink: 0,
     },
     drawerPaper: {
-        width: isMobile ? '100%' : drawerWidth,
+      width: isMobile ? '100%' : DRAWER_WIDTH,
     },
     drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.spacing(0, 1),
+      // necessary for content to be below app bar
+      ...theme.mixins.toolbar,
+      justifyContent: 'flex-end',
     },
     content: {
-        flexGrow: 1,
-        padding: isMobile ? 0 : theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: -drawerWidth,
-        paddingTop: 0,
-        paddingBottom: isMobile ? '56px' : '64px',
+      flexGrow: 1,
+      padding: isMobile ? 0 : theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginLeft: -DRAWER_WIDTH,
+      paddingTop: 0,
+      paddingBottom: isMobile ? '56px' : '64px',
     },
     contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
     },
-}));
+  }))
