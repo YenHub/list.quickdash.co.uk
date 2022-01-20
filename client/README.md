@@ -37,11 +37,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Tests can be found at [client/src/\_\_tests\_\_](/client/src/__tests__)
 
-### `npm run lint:ts`
+### `npm run lint`
 
-Lint the codebase using the TSLint config provided.
+Lint the codebase using the ESLint config provided.
 
-You can see the rules here [/client/tslint.json](/client/tslint.json)
+You can see the rules here [/client/.eslintrc.js](/client/.eslintrc.js)
 
 ### `npm run build`
 

@@ -21,7 +21,7 @@ class NoteClient {
         note.id = `note-${++notes.length}`
         Store.setItem(noteStore, [...notes, note])
       } else {
-        note.id = `note-0`
+        note.id = 'note-0'
         Store.setItem(noteStore, [note])
       }
     }

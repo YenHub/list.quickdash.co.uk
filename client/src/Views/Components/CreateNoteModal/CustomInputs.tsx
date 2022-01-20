@@ -78,22 +78,20 @@ export const SubmitButton: FC<
 
 export const CloseButton: FC<
   Pick<ICustomInputs, 'handleClose' | 'editingNoteID' | 'darkMode'>
-> = ({ handleClose, editingNoteID, darkMode }) => {
-  return (
-    <Button
-      aria-label={'Close Note'}
-      onClick={handleClose}
-      variant="outlined"
-      data-testid="create-note-close"
-      // color="primary"
-      color={darkMode ? 'default' : 'primary'}
-      style={{
-        color: `${darkMode ? 'lightGrey' : 'black'}`,
-        width: '48%',
-        marginRight: '2%',
-      }}
-    >
-      {editingNoteID ? 'Cancel' : 'Close'}
-    </Button>
-  )
-}
+> = ({ handleClose, editingNoteID, darkMode }) => (
+  <Button
+    aria-label={'Close Note'}
+    onClick={handleClose}
+    variant="outlined"
+    data-testid="create-note-close"
+    // color="primary"
+    color={darkMode ? 'default' : 'primary'}
+    style={{
+      color: `${darkMode ? 'lightGrey' : 'black'}`,
+      width: '48%',
+      marginRight: '2%',
+    }}
+  >
+    {editingNoteID ? 'Cancel' : 'Close'}
+  </Button>
+)
