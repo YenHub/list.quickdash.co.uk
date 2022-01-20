@@ -75,9 +75,9 @@ export const ImportButton: FC = () => {
         secondary: newNote.secondary,
       })
     }
-    newNotes.map(item => {
-      return currentNotes.push({ ...item, id: getUniqueId(currentNotes) })
-    })
+    newNotes.forEach(item =>
+      currentNotes.push({ ...item, id: getUniqueId(currentNotes) }),
+    )
     dispatch({ type: 'SetNotes', payload: currentNotes })
   }
 

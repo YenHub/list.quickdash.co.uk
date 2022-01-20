@@ -57,7 +57,7 @@ interface INoteModal {
 const CreateNoteModal: React.FC<INoteModal> = ({
   editingNoteID,
   ActionButton,
-}) => {
+}: INoteModal) => {
   const globalState = useContext(store)
   const {
     state: { darkMode, mdMode, previewMode, noteState },
@@ -188,8 +188,9 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     return (
       <div
         style={{
-          border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
-            })`,
+          border: `solid 1px rgba(${
+            darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
+          })`,
           borderRadius: '4px',
           paddingRight: '0.3rem',
         }}
@@ -197,7 +198,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
         <Scrollbars
           hideTracksWhenNotNeeded
           autoHeight
-          autoHeightMax={`calc(40vh)`}
+          autoHeightMax={'calc(40vh)'}
           style={{ margin: '0.8rem 0' }}
         >
           <div style={{ padding: '1em 1em', marginRight: '1rem' }}>
@@ -233,7 +234,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
               )}
             </FormGroup>
             {showPreview && (
-              <MDPreview children={noteDesc} darkMode={darkMode} />
+              <MDPreview darkMode={darkMode}>{noteDesc}</MDPreview>
             )}
           </div>
         </Scrollbars>

@@ -24,7 +24,7 @@ const getTheme = (darkMode: boolean) =>
             width: 7,
           },
           '&::-webkit-scrollbar-track': {
-            boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
             visibility: 'hidden',
           },
           '&::-webkit-scrollbar-thumb': {
@@ -95,11 +95,7 @@ const App: FC = () => {
       }}
     >
       <MuiThemeProvider theme={theme}>
-        <Scrollbars
-          autoHeight
-          autoHeightMin={`calc(100vh)`}
-          hideTracksWhenNotNeeded
-        >
+        <Scrollbars autoHeight autoHeightMin={'calc(100vh)'} hideTracksWhenNotNeeded>
           <CssBaseline />
           <Main /> <br />
         </Scrollbars>
