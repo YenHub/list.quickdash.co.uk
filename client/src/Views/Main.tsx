@@ -3,21 +3,23 @@ import { FC, useContext, useEffect, useState } from 'react'
 import 'typeface-dosis'
 
 import { store } from '../Services/State/Store'
-import { useStyles } from './Main.Styles'
 
 import NoteClient from '../Services/Database/NoteClient'
 import { bigLog, groupLog } from '../Services/ReactUtils'
+import { useStyles } from './Main.Styles'
 import { AppHeader } from './Components/App/Header'
 import { AppMenuDrawer } from './Components/App/MenuDrawer'
 import NotesList from './Components/NotesList'
 export const noteClient = new NoteClient()
 
 const Main: FC = () => {
-
   bigLog('[RENDER] <Main />')
 
   const globalState = useContext(store)
-  const { state: { darkMode }, dispatch } = globalState
+  const {
+    state: { darkMode },
+    dispatch,
+  } = globalState
 
   const { getNotes } = noteClient
 
@@ -41,7 +43,7 @@ const Main: FC = () => {
     <div className={classes.root}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
       <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
-      <main className={clsx(classes.content, { [classes.contentShift]: open })} >
+      <main className={clsx(classes.content, { [classes.contentShift]: open })}>
         <NotesList />
       </main>
     </div>

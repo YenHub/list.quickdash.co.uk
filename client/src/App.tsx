@@ -4,63 +4,61 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
 import 'typeface-roboto'
 
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
+import { CssBaseline } from '@material-ui/core'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import './RootCSS.css'
 import { sortTable } from './Services/BrowserUtils'
 import { bigLog, setBoolSetting } from './Services/ReactUtils'
 import { store } from './Services/State/Store'
 import Main from './Views/Main'
 
-
-const getTheme = (darkMode: boolean) => createMuiTheme({
-  overrides: {
-    // StyleSheet Name
-    MuiInputBase: {
-      // Rule Name
-      inputMultiline: {
-        // Custom CSS Override
-        '&::-webkit-scrollbar': {
-          width: 7,
-        },
-        '&::-webkit-scrollbar-track': {
-          boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
-          visibility: 'hidden',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(0, 0, 0, 0.2)',
-          borderRadius: '10px',
+const getTheme = (darkMode: boolean) =>
+  createMuiTheme({
+    overrides: {
+      // StyleSheet Name
+      MuiInputBase: {
+        // Rule Name
+        inputMultiline: {
+          // Custom CSS Override
+          '&::-webkit-scrollbar': {
+            width: 7,
+          },
+          '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+            visibility: 'hidden',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            borderRadius: '10px',
+          },
         },
       },
     },
-  },
-  palette: {
-    type: darkMode ? 'dark' : 'light',
-    primary: {
-      main: darkMode ? '#08d2ff' : '#007bff',
+    palette: {
+      type: darkMode ? 'dark' : 'light',
+      primary: {
+        main: darkMode ? '#08d2ff' : '#007bff',
+      },
+      secondary: {
+        main: '#66ffde',
+      },
+      error: {
+        main: '#ff0000',
+      },
     },
-    secondary: {
-      main: '#66ffde',
+    typography: {
+      fontSize: 13,
+      fontFamily: ['Roboto', 'serif'].join(','),
     },
-    error: {
-      main: '#ff0000',
-    },
-  },
-  typography: {
-    fontSize: 13,
-    fontFamily: [
-      'Roboto',
-      'serif',
-    ].join(','),
-  },
-})
+  })
 
 const App: FC = () => {
-
   bigLog('[Render] <App />')
 
   const globalState = useContext(store)
-  const { state: { darkMode, mdMode, previewMode } } = globalState
+  const {
+    state: { darkMode, mdMode, previewMode },
+  } = globalState
 
   // Auto Table Sorting
   useEffect(() => {
@@ -97,11 +95,7 @@ const App: FC = () => {
       }}
     >
       <MuiThemeProvider theme={theme}>
-        <Scrollbars
-          autoHeight
-          autoHeightMin={`calc(100vh)`}
-          hideTracksWhenNotNeeded
-        >
+        <Scrollbars autoHeight autoHeightMin={'calc(100vh)'} hideTracksWhenNotNeeded>
           <CssBaseline />
           <Main /> <br />
         </Scrollbars>

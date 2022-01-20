@@ -13,8 +13,12 @@ interface ToggleProps {
   qaId: string
 }
 
-export const MenuToggle: FC<ToggleProps> = ({ state, dispatchType, label, qaId }) => {
-
+export const MenuToggle: FC<ToggleProps> = ({
+  state,
+  dispatchType,
+  label,
+  qaId,
+}) => {
   const globalState = useContext(store)
   const { dispatch } = globalState
 
@@ -24,9 +28,14 @@ export const MenuToggle: FC<ToggleProps> = ({ state, dispatchType, label, qaId }
     <Fragment>
       <FormGroup>
         <FormControlLabel
-          control={(
-            <Switch data-testid={qaId} checked={state} onChange={toggleChecked} color="primary" />
-          )}
+          control={
+            <Switch
+              data-testid={qaId}
+              checked={state}
+              onChange={toggleChecked}
+              color="primary"
+            />
+          }
           label={label}
         />
       </FormGroup>
