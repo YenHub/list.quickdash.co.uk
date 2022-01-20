@@ -21,10 +21,11 @@ export enum ToggleTypes {
   PreviewModeToggle = 'PreviewModeToggle',
 }
 
-export type Actions = { type: ToggleTypes.MarkDownToggle }
+export type Actions =
+  | { type: ToggleTypes.MarkDownToggle }
   | { type: ToggleTypes.DarkModeToggle }
   | { type: ToggleTypes.PreviewModeToggle }
-  | { type: 'SetNotes', payload: NoteItem[] }
+  | { type: 'SetNotes'; payload: NoteItem[] }
 
 const initialState: State = {
   darkMode: getBoolSetting('darkMode'),
@@ -34,14 +35,13 @@ const initialState: State = {
 }
 
 const store = createContext<{
-  state: State,
-  dispatch: React.Dispatch<Actions>,
+  state: State
+  dispatch: React.Dispatch<Actions>
 }>({ state: initialState, dispatch: () => undefined })
 
 const { Provider } = store
 
 const StateProvider: React.FC = ({ children }: any) => {
-
   const stateReducer = (state: State, action: Actions): State => {
     switch (action.type) {
       case 'DarkModeToggle':

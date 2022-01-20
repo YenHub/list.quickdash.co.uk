@@ -3,22 +3,22 @@ const isIE = () =>
   !!navigator.userAgent.match(/Trident.*rv:11\./)
 
 export const downloadFile = (content: string): void => {
-  const _fileName = `QuickList-${new Date()
-    .toLocaleDateString()
-    .replace(/\//g, '-')}.txt`
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' })
+  const date = new Date().toLocaleDateString().replace(/\//g, '-')
+  const filename = `QuickList-${date}.txt`
+  const blob = new Blob([content], {
+    type: 'text/plain;charset=utf-8;',
+  })
   if (isIE() && (window.navigator as any).msSaveOrOpenBlob) {
     // for IE versions 10+
     const blobObject = new Blob([content])
     // Download using MS msSaveOrOpenBlob
-    // tslint:disable-next-line
-    ;(window.navigator as any).msSaveOrOpenBlob(blobObject, _fileName)
+    ;(window.navigator as any).msSaveOrOpenBlob(blobObject, filename)
   } else {
     // All other browsers
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     link.setAttribute('href', url)
-    link.setAttribute('download', _fileName)
+    link.setAttribute('download', filename)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
@@ -46,12 +46,8 @@ export const sortTable = (e: MouseEvent) => {
       /* Assume we don't need to switch */
       shouldSwitch = false
       /* Get the text for the cells we want to compare */
-      const textX = rows[i]
-        .getElementsByTagName('TD')
-        [columnInd].innerHTML.toString()
-      const textY = rows[i + 1]
-        .getElementsByTagName('TD')
-        [columnInd].innerHTML.toString()
+      const textX = rows[i].getElementsByTagName('TD')[columnInd].innerHTML.toString()
+      const textY = rows[i + 1].getElementsByTagName('TD')[columnInd].innerHTML.toString()
       const triggerSwitch = sortAsc
         ? textX.localeCompare(textY) < 0
         : textX.localeCompare(textY) > 0

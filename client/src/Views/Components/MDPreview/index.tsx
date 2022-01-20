@@ -16,8 +16,9 @@ const MDPreview = ({ darkMode, children = '' }: IMDPreview): JSX.Element => (
       linkTarget="_blank"
       rehypePlugins={[rehypeRaw]}
       remarkPlugins={[gfm]}
-      children={children}
-    />
+    >
+      {children}
+    </ReactMarkdown>
   </div>
 )
 

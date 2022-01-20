@@ -3,11 +3,11 @@ import faker from 'faker'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 
 export const random = (n: number) => Math.min(Math.floor(Math.random() * n))
-export const properCase = (str: string): string => {
-  return str.replace(/\w\S*/g, (txt: string) => {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  })
-}
+export const properCase = (str: string): string =>
+  str.replace(
+    /\w\S*/g,
+    (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+  )
 
 const getWords = (count?: number): string =>
   properCase(
@@ -26,6 +26,7 @@ const generatePrimary = (): string | undefined => {
 }
 
 /* tslint:disable */
+// eslint-disable-next-line complexity
 const generateSecondary = (): string | undefined => {
   const testVal = random(100)
 
@@ -38,7 +39,7 @@ const generateSecondary = (): string | undefined => {
         `- ${getWords()}\n\n` +
         `${random(10) > 5 ? '' : ' '}- ${getWords()}\n\n` +
         `- ${getWords()}\n\n` +
-        `\n\n---\n\n` +
+        '\n\n---\n\n' +
         `### ${properCase(faker.random.words(random(5)))}\n\n` +
         `- ${getWords()}\n\n` +
         `${random(10) > 5 ? '' : ' '}- ${getWords()}\n\n` +
@@ -68,13 +69,13 @@ const generateSecondary = (): string | undefined => {
       `- ${getWords()}\n\n` +
       `${random(10) > 5 ? '' : ' '}- ${getWords()}\n\n` +
       `- ${getWords()}\n\n` +
-      `\n\n---\n\n` +
+      '\n\n---\n\n' +
       `### ${getWords(2)}\n\n` +
       `${getWords()}\n\n` +
       `${random(10) > 5 ? '' : ' '}- ${getWords()}\n\n` +
       `- ${getWords()}\n\n\n\n` +
       `${getWord()} | ${getWords(5)}\n` +
-      `-- | --\n` +
+      '-- | --\n' +
       `${getWords(2)} | ${getWords(5)}\n` +
       `${getWord()} | ${getWords(2)}\n` +
       `${getWord()} | ${getWord()}\n` +
@@ -86,11 +87,9 @@ const generateSecondary = (): string | undefined => {
 }
 /* tslint:enable */
 
-export const generateNotes = (): Partial<NoteItem> => {
-  return {
-    primary: generatePrimary(),
-    secondary: generateSecondary(),
-  }
-}
+export const generateNotes = (): Partial<NoteItem> => ({
+  primary: generatePrimary(),
+  secondary: generateSecondary(),
+})
 
 export default generateNotes

@@ -1,3 +1,5 @@
+import { makeStyles } from '@material-ui/core/styles'
+import { isMobile } from 'react-device-detect'
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -7,16 +9,14 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-import { isMobile } from 'react-device-detect'
-
-import { makeStyles } from '@material-ui/core/styles'
+import { DRAWER_WIDTH } from '../../../Services/constants'
 
 const useStyles = makeStyles(() => ({
   shareIcons: {
     position: 'fixed',
     display: 'flex',
     justifyContent: 'space-between',
-    width: isMobile ? '100%' : '240px',
+    width: isMobile ? '100%' : `${DRAWER_WIDTH}px`,
     padding: `0 ${isMobile ? '30%' : '2.5em'}`,
     bottom: '10px',
   },
@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const ShareButtons = (): JSX.Element => {
-
   const classes = useStyles()
 
   const { title, url, size } = {
@@ -37,8 +36,12 @@ const ShareButtons = (): JSX.Element => {
 
   return (
     <div className={classes.shareIcons}>
-
-      <WhatsappShareButton title={title} separator=":: " url={url} className={classes.icon}>
+      <WhatsappShareButton
+        title={title}
+        separator=":: "
+        url={url}
+        className={classes.icon}
+      >
         <WhatsappIcon size={size} round />
       </WhatsappShareButton>
 

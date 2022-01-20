@@ -19,6 +19,7 @@
 </p>
 
 ## TOC
+
 <details>
   <summary>Click to see the table of contents</summary>
 
@@ -28,17 +29,17 @@
 - [Future Development](#future-development)
 - [What does it do?](#what-does-it-do)
 - [Quick Start Usage](#quick-start-usage)
-    - [Prerequisites](#prerequisites)
-    - [Create a .env config](#create-a-env-config)
-    - [Run the solution using Docker 🐳](#run-the-solution-using-docker)
-    - [What now?](#what-now)
-    - [Where is everything?](#where-is-everything)
+  - [Prerequisites](#prerequisites)
+  - [Create a .env config](#create-a-env-config)
+  - [Run the solution using Docker 🐳](#run-the-solution-using-docker)
+  - [What now?](#what-now)
+  - [Where is everything?](#where-is-everything)
 - [Development Info](#development-info)
-    - [Running the front end standalone](#running-fe-standalone)
-    - [Running the back end standalone](#running-api-standalone)
-    - [Running the entire system](#start-the-solution)
-    - [Backing up your database](#backing-up-your-database)
-    - [Docker Tips & Commands](#docker-commands-you-can-use)
+  - [Running the front end standalone](#running-fe-standalone)
+  - [Running the back end standalone](#running-api-standalone)
+  - [Running the entire system](#start-the-solution)
+  - [Backing up your database](#backing-up-your-database)
+  - [Docker Tips & Commands](#docker-commands-you-can-use)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [Project To-Do](#project-to-do)
@@ -83,15 +84,15 @@ There is even a pre-configured phpMyAdmin instance to compliment the setup.
 Long term I plan to add lots of new functionality, including:-
 
 - Server Side Features
-    - Ability to share lists via URL
-    - Share & collaborate live on a list
-    - Ability to embed a list as a html plugin
+  - Ability to share lists via URL
+  - Share & collaborate live on a list
+  - Ability to embed a list as a html plugin
 - Front End Features
-    - Custom UI Colour Scheme
-    - List Item Colour Schemes
-    - List Item Dates
-        - Expires
-        - Due Date (inc Countdown)
+  - Custom UI Colour Scheme
+  - List Item Colour Schemes
+  - List Item Dates
+    - Expires
+    - Due Date (inc Countdown)
 
 Just to mention a few... 😄
 
@@ -134,7 +135,7 @@ _This file is .gitignored_
 
 ```.env
 DB_PORT=3306
-DB_USERNAME=root    
+DB_USERNAME=root
 DB_SERVICE_USER=NodeUser
 DB_SERVICE_USER_PASSWORD=Node@User_Pass2021
 DB_PASSWORD=NodeUserPassword
@@ -157,6 +158,7 @@ docker-compose up
 ```
 
 #### Stop the solution (Ctrl+C)
+
 ```bash
 docker-compose down
 ```
@@ -172,12 +174,15 @@ Once you have the solution up and running, simply visit http://localhost/TestAPI
 ### Where is everything?
 
 #### ./client:
+
 http://localhost
 
 #### ./server
+
 http://localhost:9000
 
 #### phpMyAdmin
+
 http://localhost:8080
 
 ## Development Info
@@ -189,13 +194,16 @@ The React front end is happy to run standalone from it's root `./client`.
 You have two options, the recommended approach is to use Docker, but you can always bail out if needed and simply call npm as you would usually for a React project.
 
 #### Using Docker
+
 ```bash
 # From the root of the project
 docker-compose up client-app
 ```
+
 Access the front end at http://localhost
 
 #### Using NPM
+
 ```bash
 # From the root of ./client
 cd client
@@ -216,12 +224,14 @@ You can access the front end at http://localhost:3000/
 Whether using Docker or npm, you can access the API on http://localhost:9000
 
 #### Using Docker
+
 ```bash
 # From the root of the project
 docker-compose up node-mysql -d && docker-compose up server-app
 ```
 
 #### Using NPM
+
 ```bash
 # From the root of ./server
 cd server
@@ -290,9 +300,9 @@ If the pipeline fails at this stage, we don't push the code live
 
 ### Lint
 
-We now run a lint check against the code base using `npm run lint:ts`
+We now run a lint check against the code base using `npm run lint`
 
-This will enforce the TSLint config against the codebase, again failing to deploy if anything doesn't check out here.
+This will enforce the ESLint config against the codebase, again failing to deploy if anything doesn't check out here.
 
 ### Sync
 
@@ -328,63 +338,63 @@ Any contributions you make are **greatly appreciated** 🤗
   <summary>Click to see the project to-do list</summary>
 
 - [ ] Make it better
-    - In progress... forever™
-    - Betterize the bad bits
+  - In progress... forever™
+  - Betterize the bad bits
 - [x] Dockerize Solution
-    - [x] Isolate Networks
-        - server-network
-        - client-network
-    - [x] Front End
-        - [x] React
-            - http://localhost
-    - [x] Backend End
-        - [x] MySQL
-            - http://localhost:3306
-        - [x] phpMyAdmin
-            - http://localhost:8080
-        - [x] API
-            - http://localhost:9000
+  - [x] Isolate Networks
+    - server-network
+    - client-network
+  - [x] Front End
+    - [x] React
+      - http://localhost
+  - [x] Backend End
+    - [x] MySQL
+      - http://localhost:3306
+    - [x] phpMyAdmin
+      - http://localhost:8080
+    - [x] API
+      - http://localhost:9000
 - [ ] Front End
-    - [ ] Views
-        - [x] TestAPI
-            - http://localhost/TestAPI
-        - [ ] User Admin
-            - http://localhost/Admin/Users
-    - [ ] Gubbins
-        - [ ] ~~Redux~~
-        - [x] Custom State Management
-            - A custom hooks context/reducer implementation has been added 🎉😎 See [The Store](/client/src/Services/State/Store.tsx)
-        - [x] TypeScript
-        - [x] Jest tests
-        - [x] Service Workers
-        - [ ] Auth
-            - [ ] JWT
-            - [ ] Basic User management
-                - [ ] View
-                - [ ] Edit / Delete
-    - [ ] UI/UX
-        - [x] Interaction Modal
-            - [x] Delete Modal
-            - [x] Close/Cancel Button
-        - [x] List Items
-            - [x] Add edit note functionality
-            - [x] Add MD Ability for list item text secondary
-        - [ ] Menu Items
-            - [x] Delete all notes button
-            - [ ] Add colour picker for UI
-    - [ ] Logic
-        - [ ] Add HOC Error Boundary
-- [ ] Back End
-    - [ ] Endpoints
-        - [x] API Status Test
-            - http://localhost:9000/testAPI/
-            - http://localhost:9000/testAPI/payload
-        - [ ] User Controllers CRUD
+  - [ ] Views
+    - [x] TestAPI
+      - http://localhost/TestAPI
+    - [ ] User Admin
+      - http://localhost/Admin/Users
+  - [ ] Gubbins
+    - [ ] ~~Redux~~
+    - [x] Custom State Management
+      - A custom hooks context/reducer implementation has been added 🎉😎 See [The Store](/client/src/Services/State/Store.tsx)
+    - [x] TypeScript
+    - [x] Jest tests
+    - [x] Service Workers
     - [ ] Auth
-        - [ ] JWT
-        - [ ] Basic User management CRUD
-            - [ ] Roles
-            - [ ] Permissions
+      - [ ] JWT
+      - [ ] Basic User management
+        - [ ] View
+        - [ ] Edit / Delete
+  - [ ] UI/UX
+    - [x] Interaction Modal
+      - [x] Delete Modal
+      - [x] Close/Cancel Button
+    - [x] List Items
+      - [x] Add edit note functionality
+      - [x] Add MD Ability for list item text secondary
+    - [ ] Menu Items
+      - [x] Delete all notes button
+      - [ ] Add colour picker for UI
+  - [ ] Logic
+    - [ ] Add HOC Error Boundary
+- [ ] Back End
+  - [ ] Endpoints
+    - [x] API Status Test
+      - http://localhost:9000/testAPI/
+      - http://localhost:9000/testAPI/payload
+    - [ ] User Controllers CRUD
+  - [ ] Auth
+    - [ ] JWT
+    - [ ] Basic User management CRUD
+      - [ ] Roles
+      - [ ] Permissions
 
 </details>
 
@@ -401,8 +411,9 @@ The database is defined in `./docker-compose.yml`
 The MySQL instance is volume bound to: `./docker-volumes` and is also in `.gitignore`
 
 <!-- Doc Links -->
-[demoImage]: ./web-app.png
-[Bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
+
+[demoimage]: ./web-app.png
+[bootstrap 3.0]: https://getbootstrap.com/docs/3.3/
 [test drive here]: https://list.quickdash.co.uk/
 
 <h2 align="center">Author Stats: YenHub</h2>
