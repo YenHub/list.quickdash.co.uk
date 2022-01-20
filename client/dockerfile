@@ -1,5 +1,5 @@
 # --- Build React App ---
-FROM node:14.18-buster-slim as builder
+FROM node:14.18.2-buster-slim as builder
 
 # Create working directory
 RUN mkdir /app
