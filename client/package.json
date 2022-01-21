@@ -52,7 +52,8 @@
     "build:beta": "cross-env REACT_APP_BETA=true react-scripts build",
     "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix.",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "prettier": "prettier --write **/*.{ts,tsx}"
   },
   "browserslist": {
