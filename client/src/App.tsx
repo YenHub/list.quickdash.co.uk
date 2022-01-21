@@ -30,14 +30,14 @@ const getTheme = (darkMode: boolean) =>
         main: '#ff0000',
       },
       neutral: {
-        main: '#303030',
+        main: '#c7c7c7',
       },
     },
     typography: {
       fontSize: 13,
       fontFamily: ['Roboto', 'serif'].join(','),
     },
-  }))
+  })
 
 const App: FC = () => {
   bigLog('[Render] <App />')

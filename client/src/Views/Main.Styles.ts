@@ -24,9 +24,8 @@ export const useStyles = (darkMode: boolean) =>
       marginLeft: DRAWER_WIDTH,
     },
     title: {
-      margin: 'auto', // Center Logo
-      // paddingRight: '24px', // Offset for Menu Icon
-      fontSize: '3em',
+      margin: 'auto',
+      fontSize: '2.5rem',
       color: darkMode ? '#08d2ff' : '#007bff',
       fontFamily: ['Dosis', 'serif'].join(','),
     },
