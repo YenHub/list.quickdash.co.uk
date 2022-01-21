@@ -3,27 +3,23 @@ import { ChangeEventHandler, FormEvent, useContext, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
 
-import { IconButton, Modal } from '@material-ui/core'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import { makeStyles } from '@material-ui/core/styles'
-import Switch from '@material-ui/core/Switch'
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
+import { IconButton, Modal } from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import makeStyles from '@mui/styles/makeStyles'
+import Switch from '@mui/material/Switch'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
+import { Theme } from '@mui/system'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
 import { store } from '../../../Services/State/Store'
 import { getUniqueId } from '../../../Services/UUID'
 import MDPreview from '../MDPreview'
-import {
-  CloseButton,
-  DescInput,
-  SubmitButton,
-  TitleInput,
-} from './CustomInputs'
+import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
-  makeStyles(theme => ({
+  makeStyles<Theme>(theme => ({
     root: {
       '& > *': {
         marginBottom: theme.spacing(2),
@@ -34,7 +30,7 @@ const useStyles = (wideView: boolean) =>
       width: isMobile ? '90%' : wideView ? '75%' : 675,
       minWidth: isMobile ? '90%' : 675,
       backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
+      boxShadow: (theme as any).shadows[1],
       padding: theme.spacing(2, 4, 1),
       borderRadius: '0.4rem',
     },
@@ -43,11 +39,12 @@ const useStyles = (wideView: boolean) =>
     },
   }))
 
-const modalStyle = {
+const modalStyle = (darkMode: boolean) => ({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-}
+  backgroundColor: darkMode ? '#424242' : '#f2f2f2',
+})
 
 interface INoteModal {
   editingNoteID?: string
@@ -71,9 +68,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
 
   const classes = useStyles(wideView)()
 
-  const editingNote = noteState.find(
-    (note: NoteItem) => note.id === editingNoteID,
-  )
+  const editingNote = noteState.find((note: NoteItem) => note.id === editingNoteID)
 
   const getNoteDetail = (detail: 'primary' | 'secondary'): string =>
     editingNote?.[detail] || ''
@@ -110,9 +105,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     }
 
     bigLog(`Updated note: ${editingNoteID}`)
-    const indOfNote = noteState.findIndex(
-      (note: NoteItem) => note.id === editingNoteID,
-    )
+    const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteID)
     const newNotes = [...noteState]
     newNotes[indOfNote] = {
       ...newNotes[indOfNote],
@@ -155,9 +148,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
         // FIRST NOTE: Set initial state
         return dispatch({
           type: 'SetNotes',
-          payload: [
-            { id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` },
-          ],
+          payload: [{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }],
         })
     }
   }
@@ -188,9 +179,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     return (
       <div
         style={{
-          border: `solid 1px rgba(${
-            darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
-          })`,
+          border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
           borderRadius: '4px',
           paddingRight: '0.3rem',
         }}
@@ -233,9 +222,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
                 />
               )}
             </FormGroup>
-            {showPreview && (
-              <MDPreview darkMode={darkMode}>{noteDesc}</MDPreview>
-            )}
+            {showPreview && <MDPreview darkMode={darkMode}>{noteDesc}</MDPreview>}
           </div>
         </Scrollbars>
       </div>
@@ -243,7 +230,7 @@ const CreateNoteModal: React.FC<INoteModal> = ({
   }
 
   const ModalBody = (): JSX.Element => (
-    <div style={modalStyle} className={classes.paper}>
+    <div style={modalStyle(darkMode)} className={classes.paper}>
       <form
         style={{ marginTop: '1em' }}
         className={classes.root}

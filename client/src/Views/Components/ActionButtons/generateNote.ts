@@ -10,9 +10,7 @@ export const properCase = (str: string): string =>
   )
 
 const getWords = (count?: number): string =>
-  properCase(
-    random(100) > 50 ? faker.random.words(count) : faker.lorem.words(count),
-  )
+  properCase(random(100) > 50 ? faker.random.words(count) : faker.lorem.words(count))
 
 const getWord = (): string =>
   properCase(random(100) > 40 ? faker.random.word() : faker.lorem.word())
@@ -56,11 +54,7 @@ const generateSecondary = (): string | undefined => {
   }
 
   if (testVal < 70) {
-    return (
-      `## ${getWord()}\n\n` +
-      `- ${getWords(random(4))}\n\n` +
-      `- ${getWord()}\n\n`
-    )
+    return `## ${getWord()}\n\n- ${getWords(random(4))}\n\n- ${getWord()}\n\n`
   }
 
   if (testVal < 80) {

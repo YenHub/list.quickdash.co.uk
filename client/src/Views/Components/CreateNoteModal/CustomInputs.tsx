@@ -1,8 +1,13 @@
-import { ChangeEventHandler, Dispatch, FC, SetStateAction } from 'react'
+import {
+  ChangeEventHandler,
+  Dispatch,
+  FC,
+  SetStateAction,
+} from 'react'
 
 import { isMobile } from 'react-device-detect'
 
-import { Button, TextField } from '@material-ui/core'
+import { Button, TextField } from '@mui/material'
 
 interface ICustomInputs {
   noteTitle: string
@@ -18,8 +23,9 @@ interface ICustomInputs {
 export const TitleInput: FC<
   Pick<ICustomInputs, 'noteTitle' | 'setNoteTitle'>
 > = ({ noteTitle, setNoteTitle }) => {
-  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = evt =>
-    setNoteTitle(evt.target.value)
+  const handleTitleChange: ChangeEventHandler<
+    HTMLInputElement
+  > = evt => setNoteTitle(evt.target.value)
 
   return (
     <TextField
@@ -34,12 +40,12 @@ export const TitleInput: FC<
   )
 }
 
-export const DescInput: FC<Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>> = ({
-  noteDesc,
-  setNoteDesc,
-}) => {
-  const handleDescChange: ChangeEventHandler<HTMLInputElement> = evt =>
-    setNoteDesc(evt.target.value)
+export const DescInput: FC<
+  Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>
+> = ({ noteDesc, setNoteDesc }) => {
+  const handleDescChange: ChangeEventHandler<
+    HTMLInputElement
+  > = evt => setNoteDesc(evt.target.value)
 
   return (
     <TextField
@@ -57,7 +63,10 @@ export const DescInput: FC<Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>> = ({
 }
 
 export const SubmitButton: FC<
-  Pick<ICustomInputs, 'createNote' | 'noteTitle' | 'editingNoteID' | 'noteDesc'>
+  Pick<
+    ICustomInputs,
+    'createNote' | 'noteTitle' | 'editingNoteID' | 'noteDesc'
+  >
 > = ({ createNote, noteTitle, editingNoteID, noteDesc }) => {
   const noteLabel = `${editingNoteID ? 'Update' : 'Create'}`
 
@@ -84,8 +93,7 @@ export const CloseButton: FC<
     onClick={handleClose}
     variant="outlined"
     data-testid="create-note-close"
-    // color="primary"
-    color={darkMode ? 'default' : 'primary'}
+    color={darkMode ? 'neutral' : 'primary'}
     style={{
       color: `${darkMode ? 'lightGrey' : 'black'}`,
       width: '48%',

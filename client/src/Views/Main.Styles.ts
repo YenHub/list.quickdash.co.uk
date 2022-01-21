@@ -1,10 +1,11 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { Theme } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import { isMobile } from 'react-device-detect'
 
 import { DRAWER_WIDTH } from '../Services/constants'
 
 export const useStyles = (darkMode: boolean) =>
-  makeStyles(theme => ({
+  makeStyles((theme: Theme) => ({
     root: {
       display: 'flex',
     },
@@ -41,12 +42,12 @@ export const useStyles = (darkMode: boolean) =>
     },
     drawerPaper: {
       width: isMobile ? '100%' : DRAWER_WIDTH,
+      backgroundColor: darkMode ? '#424242' : '#fff',
     },
     drawerHeader: {
       display: 'flex',
       alignItems: 'center',
       padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: 'flex-end',
     },
