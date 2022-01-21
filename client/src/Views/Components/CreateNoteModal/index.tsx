@@ -1,22 +1,29 @@
-import { ChangeEventHandler, FormEvent, useContext, useState } from 'react'
+import {
+  ChangeEventHandler,
+  FormEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
 
-import { IconButton, Modal } from '@mui/material'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
+import { FormControlLabel, FormGroup, Modal, Switch } from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
-import Switch from '@mui/material/Switch'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-
 import { Theme } from '@mui/system'
+
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
 import { store } from '../../../Services/State/Store'
 import { getUniqueId } from '../../../Services/UUID'
 import MDPreview from '../MDPreview'
-import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
+import {
+  CloseButton,
+  DescInput,
+  SubmitButton,
+  TitleInput,
+} from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
   makeStyles<Theme>(theme => ({
@@ -46,71 +53,68 @@ const modalStyle = (darkMode: boolean) => ({
   backgroundColor: darkMode ? '#424242' : '#f2f2f2',
 })
 
-interface INoteModal {
-  editingNoteID?: string
-  ActionButton?: JSX.Element
-}
-
-const CreateNoteModal: React.FC<INoteModal> = ({
-  editingNoteID,
-  ActionButton,
-}: INoteModal) => {
+const CreateNoteModal: React.FC = () => {
   const globalState = useContext(store)
   const {
-    state: { darkMode, mdMode, previewMode, noteState },
+    state: {
+      darkMode,
+      mdMode,
+      previewMode,
+      noteState,
+      modalState: { editingNoteId, open },
+    },
     dispatch,
   } = globalState
-
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const [wideView, toggleWideView] = useState<boolean>(false)
   const [showPreview, togglePreview] = useState<boolean>(previewMode)
 
   const classes = useStyles(wideView)()
 
-  const editingNote = noteState.find((note: NoteItem) => note.id === editingNoteID)
+  const editingNote = noteState.find(
+    (note: NoteItem) => note.id === editingNoteId,
+  )
 
-  const getNoteDetail = (detail: 'primary' | 'secondary'): string =>
-    editingNote?.[detail] || ''
+  const [primary, setPrimary] = useState<string>('')
+  const [secondary, setSecondary] = useState<string>('')
 
-  const [noteDesc, setNoteDesc] = useState<string>(getNoteDetail('secondary'))
-  const descProps = { noteDesc, setNoteDesc }
+  useEffect(() => {
+    setPrimary(editingNote?.primary ?? '')
+    setSecondary(editingNote?.secondary ?? '')
+  }, [editingNote])
 
-  const [noteTitle, setNoteTitle] = useState<string>(getNoteDetail('primary'))
-  const titleProps = { noteTitle, setNoteTitle }
-
-  const handleOpen = (): void => setModalOpen(true)
   const handleClose = (): void => {
-    setModalOpen(false)
-    // HACK: This should not really be many instances of a modal
-    // This hould be hung from the parent container just once
-    if (!editingNoteID) {
-      setNoteDesc('')
-      setNoteTitle('')
-    }
+    dispatch({
+      type: 'SetModalState',
+      payload: { open: false, editingNoteId: null },
+    })
   }
 
-  const noteButtonProps = { handleClose, editingNoteID, darkMode }
+  const titleProps = { setPrimary, primary }
+  const descProps = { setSecondary, secondary }
+  const noteButtonProps = { handleClose, editingNoteId, darkMode }
 
-  const editExistingNote = (editingNoteID: string): void => {
+  const editExistingNote = (editingNoteId: string): void => {
     const newNote = {
-      id: editingNoteID,
-      primary: noteTitle,
-      secondary: noteDesc,
+      id: editingNoteId,
+      primary,
+      secondary,
     }
     if (shallowCompareIdentical(editingNote, newNote)) {
-      bigLog(`No changes made to note: ${editingNoteID}`)
+      bigLog(`No changes made to note: ${editingNoteId}`)
 
       return
     }
 
-    bigLog(`Updated note: ${editingNoteID}`)
-    const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteID)
+    bigLog(`Updated note: ${editingNoteId}`)
+    const indOfNote = noteState.findIndex(
+      (note: NoteItem) => note.id === editingNoteId,
+    )
     const newNotes = [...noteState]
     newNotes[indOfNote] = {
       ...newNotes[indOfNote],
-      primary: noteTitle,
-      secondary: noteDesc,
+      primary,
+      secondary,
     }
     dispatch({ type: 'SetNotes', payload: newNotes })
   }
@@ -119,25 +123,25 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     handleClose()
     evt.preventDefault()
     switch (true) {
-      case !noteTitle && !noteDesc:
-        // NO NOTE: Just close modal
+      case !primary && !secondary:
+        /* NO NOTE: Just close modal */
         return
-      case editingNoteID !== undefined && editingNoteID !== '':
-        bigLog(`Editing Existing ${editingNoteID}`)
+      case editingNoteId !== undefined && editingNoteId !== '':
+        bigLog(`Editing Existing ${editingNoteId}`)
 
-        // HAS NOTE: Edit existing
-        return editExistingNote(editingNoteID as string)
+        /* HAS NOTE: Edit existing */
+        return editExistingNote(editingNoteId as string)
       case !!noteState?.length:
         bigLog('Adding new note')
 
-        // HAS NOTES: Prepend new note
+        /* HAS NOTES: Prepend new note */
         return dispatch({
           type: 'SetNotes',
           payload: [
             {
               id: getUniqueId(noteState),
-              primary: noteTitle,
-              secondary: `${noteDesc}`,
+              primary,
+              secondary,
             },
             ...noteState,
           ],
@@ -145,30 +149,15 @@ const CreateNoteModal: React.FC<INoteModal> = ({
       default:
         bigLog('First Ever Note')
 
-        // FIRST NOTE: Set initial state
+        /* FIRST NOTE: Set initial state */
         return dispatch({
           type: 'SetNotes',
-          payload: [{ id: getUniqueId(), primary: noteTitle, secondary: `${noteDesc}` }],
+          payload: [{ id: getUniqueId(), primary, secondary }],
         })
     }
   }
 
-  const submitButtonProps = { noteTitle, createNote, editingNoteID, noteDesc }
-
-  const CreateNoteButton = (): JSX.Element => (
-    <IconButton
-      data-testid={`${ActionButton ? 'edit' : 'create'}-note-button`}
-      aria-label="Create New Note"
-      edge="end"
-      onClick={handleOpen}
-    >
-      {ActionButton ? (
-        ActionButton
-      ) : (
-        <AddCircleOutlineIcon color="primary" fontSize="large" />
-      )}
-    </IconButton>
-  )
+  const submitButtonProps = { primary, createNote, secondary }
 
   const MDContainer = (): JSX.Element => {
     const handlePreview: ChangeEventHandler<HTMLInputElement> = event =>
@@ -179,7 +168,9 @@ const CreateNoteModal: React.FC<INoteModal> = ({
     return (
       <div
         style={{
-          border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
+          border: `solid 1px rgba(${
+            darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
+          })`,
           borderRadius: '4px',
           paddingRight: '0.3rem',
         }}
@@ -222,7 +213,9 @@ const CreateNoteModal: React.FC<INoteModal> = ({
                 />
               )}
             </FormGroup>
-            {showPreview && <MDPreview darkMode={darkMode}>{noteDesc}</MDPreview>}
+            {showPreview && (
+              <MDPreview darkMode={darkMode}>{secondary}</MDPreview>
+            )}
           </div>
         </Scrollbars>
       </div>
@@ -241,7 +234,10 @@ const CreateNoteModal: React.FC<INoteModal> = ({
         <TitleInput {...titleProps} />
         <DescInput {...descProps} />
         <CloseButton {...noteButtonProps} />
-        <SubmitButton {...submitButtonProps} />
+        <SubmitButton
+          {...submitButtonProps}
+          editingNoteID={editingNoteId ?? undefined}
+        />
         {mdMode && !isMobile && <MDContainer />}
       </form>
       <span id="new-note-modal" style={{ display: 'none' }} aria-hidden="true">
@@ -259,9 +255,8 @@ const CreateNoteModal: React.FC<INoteModal> = ({
 
   return (
     <div>
-      <CreateNoteButton />
       <Modal
-        open={modalOpen}
+        open={open}
         onClose={handleClose}
         aria-labelledby="new-note-modal"
         aria-describedby="new-note-modal-desc-description"

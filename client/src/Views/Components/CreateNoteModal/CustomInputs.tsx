@@ -1,31 +1,26 @@
-import {
-  ChangeEventHandler,
-  Dispatch,
-  FC,
-  SetStateAction,
-} from 'react'
+import { ChangeEventHandler, Dispatch, FC, SetStateAction } from 'react'
 
 import { isMobile } from 'react-device-detect'
 
 import { Button, TextField } from '@mui/material'
 
 interface ICustomInputs {
-  noteTitle: string
-  setNoteTitle: Dispatch<SetStateAction<string>>
-  noteDesc: string
   darkMode: boolean
-  setNoteDesc: Dispatch<SetStateAction<string>>
+  primary: string
+  setPrimary: Dispatch<SetStateAction<string>>
+  secondary: string
+  setSecondary: Dispatch<SetStateAction<string>>
   createNote(evt: any): void
   editingNoteID?: string
   handleClose(): void
 }
 
-export const TitleInput: FC<
-  Pick<ICustomInputs, 'noteTitle' | 'setNoteTitle'>
-> = ({ noteTitle, setNoteTitle }) => {
-  const handleTitleChange: ChangeEventHandler<
-    HTMLInputElement
-  > = evt => setNoteTitle(evt.target.value)
+export const TitleInput: FC<Pick<ICustomInputs, 'primary' | 'setPrimary'>> = ({
+  primary,
+  setPrimary,
+}) => {
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = evt =>
+    setPrimary(evt.target.value)
 
   return (
     <TextField
@@ -33,7 +28,7 @@ export const TitleInput: FC<
       fullWidth
       label="Note Title"
       variant="outlined"
-      defaultValue={noteTitle}
+      defaultValue={primary}
       onChange={handleTitleChange}
       inputProps={{ 'aria-label': 'Note Title' }}
     />
@@ -41,11 +36,10 @@ export const TitleInput: FC<
 }
 
 export const DescInput: FC<
-  Pick<ICustomInputs, 'noteDesc' | 'setNoteDesc'>
-> = ({ noteDesc, setNoteDesc }) => {
-  const handleDescChange: ChangeEventHandler<
-    HTMLInputElement
-  > = evt => setNoteDesc(evt.target.value)
+  Pick<ICustomInputs, 'secondary' | 'setSecondary'>
+> = ({ secondary, setSecondary }) => {
+  const handleDescChange: ChangeEventHandler<HTMLInputElement> = evt =>
+    setSecondary(evt.target.value)
 
   return (
     <TextField
@@ -56,18 +50,15 @@ export const DescInput: FC<
       onChange={handleDescChange}
       multiline
       rows={isMobile ? 6 : 12}
-      defaultValue={noteDesc}
+      defaultValue={secondary}
       inputProps={{ 'aria-label': 'Note Description' }}
     />
   )
 }
 
 export const SubmitButton: FC<
-  Pick<
-    ICustomInputs,
-    'createNote' | 'noteTitle' | 'editingNoteID' | 'noteDesc'
-  >
-> = ({ createNote, noteTitle, editingNoteID, noteDesc }) => {
+  Pick<ICustomInputs, 'createNote' | 'primary' | 'editingNoteID' | 'secondary'>
+> = ({ createNote, primary, editingNoteID, secondary }) => {
   const noteLabel = `${editingNoteID ? 'Update' : 'Create'}`
 
   return (
@@ -76,7 +67,7 @@ export const SubmitButton: FC<
       onClick={createNote}
       variant="outlined"
       color="primary"
-      disabled={!noteTitle.length && !noteDesc.length}
+      disabled={!primary && !secondary}
       data-testid="create-note-submit"
       style={{ width: '48%', marginLeft: '2%' }}
     >

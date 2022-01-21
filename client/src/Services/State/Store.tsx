@@ -7,12 +7,17 @@ import { getBoolSetting } from '../ReactUtils'
 type DarkMode = boolean
 type MDMode = boolean
 type PreviewMode = boolean
+interface ModalState {
+  open: boolean
+  editingNoteId?: string | null
+}
 
 interface State {
   darkMode: DarkMode
   mdMode: MDMode
   previewMode: PreviewMode
   noteState: NoteItem[]
+  modalState: ModalState
 }
 
 export enum ToggleTypes {
@@ -26,12 +31,17 @@ export type Actions =
   | { type: ToggleTypes.DarkModeToggle }
   | { type: ToggleTypes.PreviewModeToggle }
   | { type: 'SetNotes'; payload: NoteItem[] }
+  | { type: 'SetModalState'; payload: ModalState }
 
 const initialState: State = {
   darkMode: getBoolSetting('darkMode'),
   mdMode: getBoolSetting('mdMode'),
   previewMode: getBoolSetting('previewMode'),
   noteState: [],
+  modalState: {
+    open: false,
+    editingNoteId: null,
+  },
 }
 
 const store = createContext<{
@@ -50,6 +60,15 @@ const StateProvider: React.FC = ({ children }: any) => {
         return { ...state, mdMode: !state.mdMode }
       case 'PreviewModeToggle':
         return { ...state, previewMode: !state.previewMode }
+      case 'SetModalState':
+        return {
+          ...state,
+          modalState: {
+            ...state.modalState,
+            open: action.payload.open,
+            editingNoteId: action.payload.editingNoteId,
+          },
+        }
       case 'SetNotes':
         noteClient.setNotes([...action.payload])
 

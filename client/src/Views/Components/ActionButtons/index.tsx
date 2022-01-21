@@ -1,6 +1,5 @@
 import { FC, useContext, useState } from 'react'
-
-import Button from '@mui/material/Button'
+import { IconButton, Button } from '@mui/material'
 
 import { downloadFile } from '../../../Services/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
@@ -8,6 +7,7 @@ import { store } from '../../../Services/State/Store'
 import { getUniqueId } from '../../../Services/UUID'
 import ActionDialog from '../ActionDialog'
 import generateNote, { random } from './generateNote'
+
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
   <ActionDialog
     open={true}
@@ -116,3 +116,19 @@ export const ExportButton: FC = () => {
 
   return <CustomButton {...buttonProps} />
 }
+
+export const CreateNoteButton: FC<{
+  ActionButton: JSX.Element
+  testId: string
+  label: string
+  onClick(): void
+}> = ({ ActionButton, testId, onClick, label }) => (
+  <IconButton
+    data-testid={`${testId}-note-button`}
+    aria-label={label}
+    edge="end"
+    onClick={onClick}
+  >
+    {ActionButton}
+  </IconButton>
+)
