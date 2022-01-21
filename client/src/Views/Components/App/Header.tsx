@@ -1,9 +1,9 @@
 import { FC, useContext } from 'react'
 
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import clsx from 'clsx'
 
-import SettingsIcon from '@material-ui/icons/Settings'
+import SettingsIcon from '@mui/icons-material/Settings'
 
 import { store } from '../../../Services/State/Store'
 import { useStyles } from '../../Main.Styles'

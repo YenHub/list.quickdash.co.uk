@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react'
 
-import { Divider, Drawer, IconButton, List, ListItem } from '@material-ui/core'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { isMobile } from 'react-device-detect'
 
 import { showGatedFeatures } from '../../../Services/ReactUtils'

@@ -1,8 +1,8 @@
 import { FC, Fragment, useContext } from 'react'
 
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import Switch from '@mui/material/Switch'
 
 import { store, ToggleTypes } from '../../../Services/State/Store'
 

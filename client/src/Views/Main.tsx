@@ -42,8 +42,15 @@ const Main: FC = () => {
   return (
     <div className={classes.root}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
-      <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
-      <main className={clsx(classes.content, { [classes.contentShift]: open })}>
+      <AppMenuDrawer
+        open={open}
+        handleDrawerState={handleDrawerState}
+      />
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}
+      >
         <NotesList />
       </main>
     </div>
