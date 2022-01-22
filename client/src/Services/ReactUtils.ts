@@ -1,4 +1,4 @@
-export type Setting = 'mdMode' | 'darkMode' | 'previewMode'
+export type Setting = 'mdMode' | 'darkMode' | 'previewMode' | 'colours'
 
 export const showGatedFeatures =
   process.env.NODE_ENV === 'development' ||
@@ -13,6 +13,17 @@ export const getBoolSetting = (setting: Setting): boolean => {
 
   return setting !== 'mdMode'
 }
+
+export const getStringSetting = (setting: Setting): string => {
+  const string = window.localStorage.getItem(setting)
+  if (string) return string
+  if (setting === 'colours') {
+    return JSON.stringify({ primary: '#08d2ff', secondary: '#ff0000' })
+  } else return ''
+}
+
+export const setStringSetting = (setting: Setting, value: string): void =>
+  window.localStorage.setItem(setting, value)
 
 export const setBoolSetting = (setting: Setting, value: boolean): void =>
   localStorage.setItem(setting, value.toString())

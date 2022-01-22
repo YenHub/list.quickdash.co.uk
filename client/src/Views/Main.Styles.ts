@@ -26,7 +26,7 @@ export const useStyles = (darkMode: boolean) =>
     title: {
       margin: 'auto',
       fontSize: '2.5rem',
-      color: darkMode ? '#08d2ff' : '#007bff',
+      color: theme.palette.primary.main,
       fontFamily: ['Dosis', 'serif'].join(','),
     },
     toolBar: {

@@ -7,6 +7,10 @@ import { getUniqueId } from '../../../Services/UUID'
 import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
+import {
+  resetColours,
+  setColours,
+} from '../../../Services/Reducers/settingSlice'
 import generateNote, { random } from './generateNote'
 
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
@@ -103,6 +107,37 @@ export const ExportButton: FC = () => {
     'aria-label': 'EXPORT NOTES',
     onClick: () => exportNotes(noteState),
     disabled: noteState?.length === 0,
+    type: 'default',
+  }
+
+  return <CustomButton {...buttonProps} />
+}
+
+export const SaveColours: FC<{ primary: string; secondary: string }> = ({
+  primary,
+  secondary,
+}) => {
+  const dispatch = useAppDispatch()
+
+  const buttonProps = {
+    'aria-label': 'SAVE',
+    onClick: () => {
+      dispatch(setColours({ colours: { primary, secondary } }))
+    },
+    type: 'default',
+  }
+
+  return <CustomButton {...buttonProps} />
+}
+
+export const ResetColours: FC = () => {
+  const dispatch = useAppDispatch()
+
+  const buttonProps = {
+    'aria-label': 'RESET',
+    onClick: () => {
+      dispatch(resetColours())
+    },
     type: 'default',
   }
 

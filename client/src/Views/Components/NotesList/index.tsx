@@ -190,7 +190,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
                   onClick={() => showDeleteAlert(item)}
                 >
                   <IconButton>
-                    <DeleteForeverIcon color="error" />
+                    <DeleteForeverIcon color="secondary" />
                   </IconButton>
                 </ListItemIcon>
                 <ListItemSecondaryAction />
