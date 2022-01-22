@@ -129,6 +129,8 @@ const NoteFragment: FC<NoteFragProps> = memo(
 
     const handleCloseAlert = () => setDeleteNote(null)
 
+    const buttonStyle = isMobile ? { minWidth: '2.5em' } : {}
+
     return (
       <>
         {deleteNote && (
@@ -156,7 +158,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
                 {...provided.dragHandleProps}
                 style={itemStyle}
               >
-                <ListItemIcon>
+                <ListItemIcon style={buttonStyle}>
                   <NotesIcon style={textStyle} />
                 </ListItemIcon>
                 <ListItemText
@@ -168,7 +170,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
                     style: { ...textStyle, whiteSpace: 'pre-wrap' },
                   }}
                 />
-                <ListItemIcon>
+                <ListItemIcon style={buttonStyle}>
                   <CreateNoteButton
                     testId="edit"
                     label="Edit Note"
@@ -183,6 +185,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
                   />
                 </ListItemIcon>
                 <ListItemIcon
+                  style={{ ...buttonStyle, paddingRight: '0.5em' }}
                   role="deleteNote"
                   onClick={() => showDeleteAlert(item)}
                 >
