@@ -185,7 +185,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
                   />
                 </ListItemIcon>
                 <ListItemIcon
-                  style={{ ...buttonStyle, paddingRight: '0.5em' }}
+                  style={{ ...buttonStyle, marginRight: '0.5em' }}
                   role="deleteNote"
                   onClick={() => showDeleteAlert(item)}
                 >
