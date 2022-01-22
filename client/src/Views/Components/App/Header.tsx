@@ -43,7 +43,11 @@ export const AppHeader: FC<{
           testId="create"
           label="Create New Note"
           onClick={() =>
-            dispatch(setModalState({ modalState: { open: true } }))
+            dispatch(
+              setModalState({
+                modalState: { open: true, editingNoteId: null },
+              }),
+            )
           }
           ActionButton={
             <AddCircleOutlineIcon color="primary" fontSize="large" />

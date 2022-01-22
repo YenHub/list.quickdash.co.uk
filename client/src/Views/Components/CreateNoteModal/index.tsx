@@ -74,10 +74,12 @@ const CreateNoteModal: React.FC = () => {
   useEffect(() => {
     setPrimary(editingNote?.primary ?? '')
     setSecondary(editingNote?.secondary ?? '')
-  }, [editingNote])
+  }, [editingNote, open])
 
   const handleClose = (): void => {
-    dispatch(setModalState({ modalState: { open: false } }))
+    dispatch(
+      setModalState({ modalState: { open: false, editingNoteId: null } }),
+    )
   }
 
   const titleProps = { setPrimary, primary }
@@ -116,7 +118,7 @@ const CreateNoteModal: React.FC = () => {
       case !primary && !secondary:
         /* NO NOTE: Just close modal */
         return
-      case editingNoteId !== undefined && editingNoteId !== '':
+      case editingNoteId && editingNoteId !== '':
         bigLog(`Editing Existing ${editingNoteId}`)
 
         /* HAS NOTE: Edit existing */

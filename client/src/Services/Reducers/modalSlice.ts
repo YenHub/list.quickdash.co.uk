@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface ModalState {
   modalState: {
     open: boolean
-    editingNoteId?: string
+    editingNoteId: string | null
   }
 }
 
 const initialState: ModalState = {
-  modalState: { open: false },
+  modalState: { open: false, editingNoteId: null },
 }
 
 export const settingSlice = createSlice({
