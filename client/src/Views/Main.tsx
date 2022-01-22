@@ -1,25 +1,23 @@
 import clsx from 'clsx'
-import { FC, useContext, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import 'typeface-dosis'
-
-import { store } from '../Services/State/Store'
 
 import NoteClient from '../Services/Database/NoteClient'
 import { bigLog, groupLog } from '../Services/ReactUtils'
+import { useAppDispatch, useAppSelector } from '../Services/Store'
+import { setNotes } from '../Services/Reducers/noteSlice'
 import { useStyles } from './Main.Styles'
 import { AppHeader } from './Components/App/Header'
 import { AppMenuDrawer } from './Components/App/MenuDrawer'
 import NotesList from './Components/NotesList'
+
 export const noteClient = new NoteClient()
 
 const Main: FC = () => {
   bigLog('[RENDER] <Main />')
 
-  const globalState = useContext(store)
-  const {
-    state: { darkMode },
-    dispatch,
-  } = globalState
+  const { darkMode } = useAppSelector(({ settings }) => settings)
+  const dispatch = useAppDispatch()
 
   const { getNotes } = noteClient
 
@@ -33,7 +31,7 @@ const Main: FC = () => {
     bigLog('<Main /> attemptImport()')
     getNotes().then(storedNotes => {
       groupLog('[Stored Notes]', storedNotes)
-      dispatch({ type: 'SetNotes', payload: storedNotes })
+      dispatch(setNotes(storedNotes))
     })
   }
 
@@ -42,10 +40,7 @@ const Main: FC = () => {
   return (
     <div className={classes.root}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
-      <AppMenuDrawer
-        open={open}
-        handleDrawerState={handleDrawerState}
-      />
+      <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,

@@ -1,10 +1,17 @@
-import { FC, Fragment, useContext } from 'react'
+import { FC, Fragment } from 'react'
 
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
 
-import { store, ToggleTypes } from '../../../Services/State/Store'
+import { ToggleTypes } from '../../../Services/State/Store'
+import { useAppDispatch } from '../../../Services/Store'
+import {
+  toggleDarkMode,
+  toggleMdMode,
+  togglePreviewMode,
+} from '../../../Services/Reducers/settingSlice'
 
 interface ToggleProps {
   state: boolean
@@ -19,10 +26,25 @@ export const MenuToggle: FC<ToggleProps> = ({
   label,
   qaId,
 }) => {
-  const globalState = useContext(store)
-  const { dispatch } = globalState
+  const dispatch = useAppDispatch()
 
-  const toggleChecked = (): void => dispatch({ type: dispatchType })
+  let actionType: ActionCreatorWithoutPayload
+
+  switch (dispatchType) {
+    case ToggleTypes.DarkModeToggle:
+      actionType = toggleDarkMode
+      break
+    case ToggleTypes.MarkDownToggle:
+      actionType = toggleMdMode
+      break
+    case ToggleTypes.PreviewModeToggle:
+      actionType = togglePreviewMode
+      break
+    default:
+      return null
+  }
+
+  const toggleChecked = () => dispatch(actionType())
 
   return (
     <Fragment>

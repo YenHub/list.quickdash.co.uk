@@ -1,10 +1,4 @@
-import {
-  ChangeEventHandler,
-  FormEvent,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { ChangeEventHandler, FormEvent, useEffect, useState } from 'react'
 
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
@@ -15,9 +9,11 @@ import { Theme } from '@mui/system'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
-import { store } from '../../../Services/State/Store'
 import { getUniqueId } from '../../../Services/UUID'
 import MDPreview from '../MDPreview'
+import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { setNotes } from '../../../Services/Reducers/noteSlice'
+import { setModalState } from '../../../Services/Reducers/modalSlice'
 import {
   CloseButton,
   DescInput,
@@ -54,17 +50,14 @@ const modalStyle = (darkMode: boolean) => ({
 })
 
 const CreateNoteModal: React.FC = () => {
-  const globalState = useContext(store)
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
+  const { noteState } = useAppSelector(({ notes }) => notes)
   const {
-    state: {
-      darkMode,
-      mdMode,
-      previewMode,
-      noteState,
-      modalState: { editingNoteId, open },
-    },
-    dispatch,
-  } = globalState
+    modalState: { editingNoteId, open },
+  } = useAppSelector(({ modal }) => modal)
+  const dispatch = useAppDispatch()
 
   const [wideView, toggleWideView] = useState<boolean>(false)
   const [showPreview, togglePreview] = useState<boolean>(previewMode)
@@ -84,10 +77,7 @@ const CreateNoteModal: React.FC = () => {
   }, [editingNote])
 
   const handleClose = (): void => {
-    dispatch({
-      type: 'SetModalState',
-      payload: { open: false, editingNoteId: null },
-    })
+    dispatch(setModalState({ modalState: { open: false } }))
   }
 
   const titleProps = { setPrimary, primary }
@@ -116,7 +106,7 @@ const CreateNoteModal: React.FC = () => {
       primary,
       secondary,
     }
-    dispatch({ type: 'SetNotes', payload: newNotes })
+    dispatch(setNotes(newNotes))
   }
 
   const createNote = (evt: FormEvent | MouseEvent): void => {
@@ -135,25 +125,25 @@ const CreateNoteModal: React.FC = () => {
         bigLog('Adding new note')
 
         /* HAS NOTES: Prepend new note */
-        return dispatch({
-          type: 'SetNotes',
-          payload: [
+        dispatch(
+          setNotes([
             {
               id: getUniqueId(noteState),
               primary,
               secondary,
             },
             ...noteState,
-          ],
-        })
+          ]),
+        )
+
+        return
       default:
         bigLog('First Ever Note')
 
         /* FIRST NOTE: Set initial state */
-        return dispatch({
-          type: 'SetNotes',
-          payload: [{ id: getUniqueId(), primary, secondary }],
-        })
+        dispatch(setNotes([{ id: getUniqueId(), primary, secondary }]))
+
+        return
     }
   }
 

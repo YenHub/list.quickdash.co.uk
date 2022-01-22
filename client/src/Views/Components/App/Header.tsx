@@ -1,24 +1,21 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import clsx from 'clsx'
 
 import SettingsIcon from '@mui/icons-material/Settings'
 
-import { store } from '../../../Services/State/Store'
 import { useStyles } from '../../Main.Styles'
 import { CreateNoteButton } from '../ActionButtons'
-import CreateNoteModal from '../CreateNoteModal'
+import { setModalState } from '../../../Services/Reducers/modalSlice'
+import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 
 export const AppHeader: FC<{
   open: boolean
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-  const globalState = useContext(store)
-  const {
-    state: { darkMode },
-    dispatch,
-  } = globalState
+  const { darkMode } = useAppSelector(({ settings }) => settings)
+  const dispatch = useAppDispatch()
 
   const classes = useStyles(darkMode)()
 
@@ -46,13 +43,12 @@ export const AppHeader: FC<{
           testId="create"
           label="Create New Note"
           onClick={() =>
-            dispatch({ type: 'SetModalState', payload: { open: true } })
+            dispatch(setModalState({ modalState: { open: true } }))
           }
           ActionButton={
             <AddCircleOutlineIcon color="primary" fontSize="large" />
           }
         />
-        <CreateNoteModal />
       </Toolbar>
     </AppBar>
   )

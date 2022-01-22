@@ -1,20 +1,17 @@
-import { FC, useContext, useEffect } from 'react'
+import { FC, useEffect } from 'react'
+import 'typeface-roboto'
 
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
-import 'typeface-roboto'
-
 import { CssBaseline } from '@mui/material'
-import {
-  createTheme,
-  ThemeProvider,
-  StyledEngineProvider,
-} from '@mui/material'
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material'
+
 import './RootCSS.css'
 import { sortTable } from './Services/BrowserUtils'
 import { bigLog, setBoolSetting } from './Services/ReactUtils'
-import { store } from './Services/State/Store'
 import Main from './Views/Main'
+import CreateNoteModal from './Views/Components/CreateNoteModal'
+import { useAppSelector } from './Services/Store'
 
 const getTheme = (darkMode: boolean) =>
   createTheme({
@@ -42,10 +39,9 @@ const getTheme = (darkMode: boolean) =>
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const globalState = useContext(store)
-  const {
-    state: { darkMode, mdMode, previewMode },
-  } = globalState
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
 
   // Auto Table Sorting
   useEffect(() => {
@@ -91,6 +87,7 @@ const App: FC = () => {
           >
             <CssBaseline />
             <Main /> <br />
+            <CreateNoteModal />
           </Scrollbars>
         </ThemeProvider>
       </StyledEngineProvider>

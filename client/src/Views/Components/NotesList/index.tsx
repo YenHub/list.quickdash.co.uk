@@ -1,5 +1,4 @@
-import { FC, memo, useContext, useState } from 'react'
-
+import { FC, memo, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { isMobile } from 'react-device-detect'
 
@@ -16,13 +15,15 @@ import makeStyles from '@mui/styles/makeStyles'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import EditIcon from '@mui/icons-material/Edit'
 import NotesIcon from '@mui/icons-material/Notes'
+import { useAppSelector, useAppDispatch } from '../../../Services/Store'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { bigLog } from '../../../Services/ReactUtils'
-import { store } from '../../../Services/State/Store'
 import ActionDialog from '../ActionDialog'
 import MDPreview, { MDTitle } from '../MDPreview'
 import { CreateNoteButton } from '../ActionButtons'
+import { setModalState } from '../../../Services/Reducers/modalSlice'
+import { setNotes } from '../../../Services/Reducers/noteSlice'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,10 +41,11 @@ const reorder = (
   startIndex: number,
   endIndex: number,
 ): NoteItem[] => {
-  const [removed] = noteState.splice(startIndex, 1)
-  noteState.splice(endIndex, 0, removed)
+  const notes = [...noteState]
+  const [removed] = notes.splice(startIndex, 1)
+  notes.splice(endIndex, 0, removed)
 
-  return noteState
+  return notes
 }
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -110,11 +112,9 @@ const NoteFragment: FC<NoteFragProps> = memo(
 
     const classes = useStyles()
 
-    const globalState = useContext(store)
-    const {
-      state: { darkMode, mdMode, noteState },
-      dispatch,
-    } = globalState
+    const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
+    const { noteState } = useAppSelector(({ notes }) => notes)
+    const dispatch = useAppDispatch()
 
     const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
 
@@ -123,7 +123,7 @@ const NoteFragment: FC<NoteFragProps> = memo(
     const handleDeleteNote = () => {
       const newNotes = [...noteState]
       newNotes.splice(index, 1)
-      dispatch({ type: 'SetNotes', payload: newNotes })
+      dispatch(setNotes(newNotes))
       setDeleteNote(null)
     }
 
@@ -173,10 +173,11 @@ const NoteFragment: FC<NoteFragProps> = memo(
                     testId="edit"
                     label="Edit Note"
                     onClick={() =>
-                      dispatch({
-                        type: 'SetModalState',
-                        payload: { open: true, editingNoteId: item.id },
-                      })
+                      dispatch(
+                        setModalState({
+                          modalState: { open: true, editingNoteId: item.id },
+                        }),
+                      )
                     }
                     ActionButton={<EditIcon color="primary" />}
                   />
@@ -201,14 +202,12 @@ const NoteFragment: FC<NoteFragProps> = memo(
 
 const NoteList: FC = () => {
   bigLog('[RENDER] <NotesList />')
-
-  const globalState = useContext(store)
-  const {
-    state: { darkMode, noteState },
-    dispatch,
-  } = globalState
-
   const classes = useStyles()
+
+  const { darkMode } = useAppSelector(({ settings }) => settings)
+  const { noteState } = useAppSelector(({ notes }) => notes)
+
+  const dispatch = useAppDispatch()
 
   const onDragEnd = (result: any) => {
     // Drop zone is outside of the list
@@ -220,7 +219,7 @@ const NoteList: FC = () => {
       result.destination.index,
     )
 
-    dispatch({ type: 'SetNotes', payload: items })
+    dispatch(setNotes(items))
   }
 
   if (noteState === null) return null

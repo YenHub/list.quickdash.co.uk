@@ -1,24 +1,24 @@
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 
 import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { isMobile } from 'react-device-detect'
 
 import { showGatedFeatures } from '../../../Services/ReactUtils'
-import { store, ToggleTypes } from '../../../Services/State/Store'
+import { ToggleTypes } from '../../../Services/State/Store'
 import { useStyles } from '../../Main.Styles'
 import { DeleteNotes, ExportButton, ImportButton } from '../ActionButtons'
 import ShareButtons from '../ShareButtons'
 import MenuToggle from '../Toggles'
+import { useAppSelector } from '../../../Services/Store'
 
 export const AppMenuDrawer: FC<{
   open: boolean
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-  const globalState = useContext(store)
-  const {
-    state: { darkMode, mdMode, previewMode },
-  } = globalState
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
   const classes = useStyles(darkMode)()
 
   const DrawerHeader: FC = () => (

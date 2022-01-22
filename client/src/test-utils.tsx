@@ -1,15 +1,14 @@
 import { FC, ReactElement, ReactNode } from 'react'
-
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
-import { StateProvider } from './Services/State/Store'
-
+import Store from './Services/Store'
 interface ProviderProps {
   children?: NonNullable<ReactNode>
 }
 
 const Providers: FC<ProviderProps> = ({ children }) => (
-  <StateProvider>{children}</StateProvider>
+  <Provider store={Store}>{children}</Provider>
 )
 
 const customRender = (

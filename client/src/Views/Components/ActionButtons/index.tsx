@@ -1,11 +1,12 @@
-import { FC, useContext, useState } from 'react'
+import { FC, useState } from 'react'
 import { IconButton, Button } from '@mui/material'
 
 import { downloadFile } from '../../../Services/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { store } from '../../../Services/State/Store'
 import { getUniqueId } from '../../../Services/UUID'
 import ActionDialog from '../ActionDialog'
+import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { setNotes } from '../../../Services/Reducers/noteSlice'
 import generateNote, { random } from './generateNote'
 
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
@@ -25,16 +26,13 @@ const CustomButton = (props: any) => (
 )
 
 export const DeleteNotes: FC = () => {
-  const globalState = useContext(store)
-  const {
-    state: { noteState },
-    dispatch,
-  } = globalState
+  const { noteState } = useAppSelector(({ notes }) => notes)
+  const dispatch = useAppDispatch()
 
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
   const clearNotes = (): void => {
-    dispatch({ type: 'SetNotes', payload: [] })
+    dispatch(setNotes([]))
     toggleDeleteAlert(false)
   }
 
@@ -58,11 +56,8 @@ export const DeleteNotes: FC = () => {
 }
 
 export const ImportButton: FC = () => {
-  const globalState = useContext(store)
-  const {
-    state: { noteState },
-    dispatch,
-  } = globalState
+  const { noteState } = useAppSelector(({ notes }) => notes)
+  const dispatch = useAppDispatch()
 
   const importNotes = (noteState: NoteItem[]) => {
     const currentNotes = [...noteState]
@@ -78,7 +73,7 @@ export const ImportButton: FC = () => {
     newNotes.forEach(item =>
       currentNotes.push({ ...item, id: getUniqueId(currentNotes) }),
     )
-    dispatch({ type: 'SetNotes', payload: currentNotes })
+    dispatch(setNotes(currentNotes))
   }
 
   const buttonProps = {
@@ -92,10 +87,7 @@ export const ImportButton: FC = () => {
 }
 
 export const ExportButton: FC = () => {
-  const globalState = useContext(store)
-  const {
-    state: { noteState },
-  } = globalState
+  const { noteState } = useAppSelector(({ notes }) => notes)
 
   const exportNotes = (noteState: NoteItem[]): void => {
     const exportContent = JSON.stringify(
