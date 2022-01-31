@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { ColorPicker } from 'material-ui-color'
+import { ColorPicker } from 'mui-color'
 import { ListItem, useTheme } from '@mui/material'
 import { ResetColours, SaveColours } from '../ActionButtons'
 
@@ -12,7 +12,7 @@ const Picker: FC<IPicker> = ({ value, setValue }) => (
   <ColorPicker
     value={value}
     hideTextfield
-    onChange={evt => setValue(`#${evt.hex}`)}
+    onChange={color => setValue(`#${(color as { hex: string }).hex}`)}
   />
 )
 

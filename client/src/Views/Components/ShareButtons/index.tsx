@@ -11,19 +11,22 @@ import {
 
 import { DRAWER_WIDTH } from '../../../Services/constants'
 
-const useStyles = makeStyles(() => ({
-  shareIcons: {
-    position: 'fixed',
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: isMobile ? '100%' : `${DRAWER_WIDTH}px`,
-    padding: `0 ${isMobile ? '30%' : '2.5em'}`,
-    bottom: '10px',
-  },
-  icon: {
-    marginRight: '0.5em',
-  },
-}))
+const useStyles = makeStyles(
+  () => ({
+    shareIcons: {
+      position: 'fixed',
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: isMobile ? '100%' : `${DRAWER_WIDTH}px`,
+      padding: `0 ${isMobile ? '30%' : '2.5em'}`,
+      bottom: '10px',
+    },
+    icon: {
+      marginRight: '0.5em',
+    },
+  }),
+  { index: 1 },
+)
 
 const ShareButtons = (): JSX.Element => {
   const classes = useStyles()

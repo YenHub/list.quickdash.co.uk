@@ -25,16 +25,19 @@ import { CreateNoteButton } from '../ActionButtons'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 
-const useStyles = makeStyles(() => ({
-  root: {
-    width: isMobile ? '100%' : '85%',
-    maxWidth: '1250px',
-    margin: 'auto auto',
-  },
-  secondaryAction: {
-    paddingRight: '0 !important',
-  },
-}))
+const useStyles = makeStyles(
+  () => ({
+    listRoot: {
+      width: isMobile ? '100%' : '85%',
+      maxWidth: '1250px',
+      margin: 'auto auto',
+    },
+    secondaryAction: {
+      paddingRight: '0 !important',
+    },
+  }),
+  { index: 1 },
+)
 
 const reorder = (
   noteState: NoteItem[],
@@ -228,7 +231,7 @@ const NoteList: FC = () => {
   if (noteState === null) return null
 
   return (
-    <div className={classes.root}>
+    <div className={classes.listRoot}>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
