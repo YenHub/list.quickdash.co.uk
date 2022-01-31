@@ -11,6 +11,7 @@ import { DeleteNotes, ExportButton, ImportButton } from '../ActionButtons'
 import ShareButtons from '../ShareButtons'
 import MenuToggle from '../Toggles'
 import { useAppSelector } from '../../../Services/Store'
+import { ColourPicker } from './ColorPicker'
 
 export const AppMenuDrawer: FC<{
   open: boolean
@@ -48,6 +49,9 @@ export const AppMenuDrawer: FC<{
       <ListItem>
         <DeleteNotes />
       </ListItem>
+      <Divider style={{ marginTop: '0.75em' }} />
+      <ColourPicker />
+      <Divider style={{ marginTop: '0.75em' }} />
       <ListItem>
         <MenuToggle
           state={darkMode}
@@ -78,6 +82,7 @@ export const AppMenuDrawer: FC<{
           </ListItem>
         </div>
       )}
+      <Divider />
     </List>
   )
 

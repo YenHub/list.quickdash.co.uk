@@ -38,7 +38,7 @@ const Main: FC = () => {
   useEffect(attemptImport, [getNotes, dispatch])
 
   return (
-    <div className={classes.root}>
+    <div className={classes.viewsRoot}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
       <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
       <main

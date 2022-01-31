@@ -22,25 +22,28 @@ import {
 } from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
-  makeStyles<Theme>(theme => ({
-    root: {
-      '& > *': {
-        marginBottom: theme.spacing(2),
+  makeStyles<Theme>(
+    theme => ({
+      modalRoot: {
+        '& > *': {
+          marginBottom: theme.spacing(2),
+        },
       },
-    },
-    paper: {
-      position: 'absolute',
-      width: isMobile ? '90%' : wideView ? '75%' : 675,
-      minWidth: isMobile ? '90%' : 675,
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: (theme as any).shadows[1],
-      padding: theme.spacing(2, 4, 1),
-      borderRadius: '0.4rem',
-    },
-    formGroup: {
-      flexDirection: 'row-reverse',
-    },
-  }))
+      paper: {
+        position: 'absolute',
+        width: isMobile ? '90%' : wideView ? '75%' : 675,
+        minWidth: isMobile ? '90%' : 675,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: (theme as any).shadows[1],
+        padding: theme.spacing(2, 4, 1),
+        borderRadius: '0.4rem',
+      },
+      formGroup: {
+        flexDirection: 'row-reverse',
+      },
+    }),
+    { index: 1 },
+  )
 
 const modalStyle = (darkMode: boolean) => ({
   top: '50%',
@@ -218,7 +221,7 @@ const CreateNoteModal: React.FC = () => {
     <div style={modalStyle(darkMode)} className={classes.paper}>
       <form
         style={{ marginTop: '1em' }}
-        className={classes.root}
+        className={classes.modalRoot}
         onSubmit={createNote}
         noValidate
         autoComplete="off"
