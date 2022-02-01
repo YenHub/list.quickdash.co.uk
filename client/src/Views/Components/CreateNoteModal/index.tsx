@@ -65,6 +65,10 @@ const CreateNoteModal: React.FC = () => {
   const [wideView, toggleWideView] = useState<boolean>(false)
   const [showPreview, togglePreview] = useState<boolean>(previewMode)
 
+  useEffect(() => {
+    togglePreview(previewMode)
+  }, [previewMode])
+
   const classes = useStyles(wideView)()
 
   const editingNote = noteState.find(
