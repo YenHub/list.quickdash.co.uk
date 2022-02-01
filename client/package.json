@@ -59,7 +59,13 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prettier": "prettier --write **/*.{ts,tsx}"
+    "prettier": "prettier --write **/*.{ts,tsx}",
+    "refresh:staging": "git checkout staging && npm run stash:staging",
+    "stash:staging": "git stash save -k -u -m \"Staging Stash - we all make mistakes :o)\" && npm run git:reset",
+    "git:reset": "git reset --hard && npm run pull:master",
+    "pull:master": "git checkout master && git fetch -p && git pull --all && npm run branch:staging",
+    "branch:staging": "git branch -D staging && git branch staging && npm run publish:staging",
+    "publish:staging": "git push -u origin staging"
   },
   "browserslist": {
     "production": [
