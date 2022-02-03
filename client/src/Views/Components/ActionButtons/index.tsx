@@ -1,5 +1,8 @@
-import { FC, useState } from 'react'
-import { IconButton, Button } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
+import { Checkmark } from 'react-checkmark'
+import { IconButton, Button, useTheme } from '@mui/material'
+
+import './style.css'
 
 import { downloadFile } from '../../../Services/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
@@ -28,6 +31,46 @@ const CustomButton = (props: any) => (
     {props['aria-label']}
   </Button>
 )
+
+const AnimatedButton: FC<any> = (props: any) => {
+  const theme = useTheme()
+  const { animatesuccess, onClick } = props
+  const currentAnimation = () => localStorage.getItem('animateButton')
+  const [animating, setAnimating] = useState(
+    localStorage.getItem('animateButton') === animatesuccess,
+  )
+
+  useEffect(() => {
+    if (animating) {
+      localStorage.removeItem('animateButton')
+      const x = setTimeout(() => setAnimating(false), 1700)
+
+      return () => clearTimeout(x)
+    }
+  })
+
+  const handleOnClick = () => {
+    if (currentAnimation() !== null) return
+    localStorage.setItem('animateButton', animatesuccess)
+    onClick()
+  }
+
+  const buttonProps = {
+    ...props,
+    onClick: handleOnClick,
+  }
+
+  if (animatesuccess && animating) {
+    return <Checkmark size="35px" color={theme.palette.primary.main} />
+  }
+
+  return (
+    <CustomButton
+      {...buttonProps}
+      className={currentAnimation() ? '' : 'fade-in'}
+    />
+  )
+}
 
 export const DeleteNotes: FC = () => {
   const { noteState } = useAppSelector(({ notes }) => notes)
@@ -125,9 +168,10 @@ export const SaveColours: FC<{ primary: string; secondary: string }> = ({
       dispatch(setColours({ colours: { primary, secondary } }))
     },
     type: 'default',
+    animatesuccess: 'save-colours',
   }
 
-  return <CustomButton {...buttonProps} />
+  return <AnimatedButton {...buttonProps} />
 }
 
 export const ResetColours: FC = () => {
@@ -139,9 +183,10 @@ export const ResetColours: FC = () => {
       dispatch(resetColours())
     },
     type: 'default',
+    animatesuccess: 'reset-colours',
   }
 
-  return <CustomButton {...buttonProps} />
+  return <AnimatedButton {...buttonProps} />
 }
 
 export const CreateNoteButton: FC<{
