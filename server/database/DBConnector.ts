@@ -1,6 +1,6 @@
 import mysql from 'mysql'
 import dotenv from 'dotenv'
-dotenv.config() // load everything from `.env` file into the `process.env` variable
+dotenv.config()
 const { DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST } = process.env
 
 export const pool = mysql.createPool({
@@ -12,7 +12,8 @@ export const pool = mysql.createPool({
   multipleStatements: true,
 })
 
-export const getConnection = function (cb: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getConnection = function (cb: (...args: any) => void) {
   pool.getConnection(function (err, connection) {
     //if(err) throw err;
     //pass the error to the cb instead of throwing it

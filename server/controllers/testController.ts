@@ -50,7 +50,8 @@ export const reset = (_req: Request, res: Response, next: NextFunction) => {
           UPDATE testTable SET HitCount = '0' WHERE testTable.ID = 1;
           SELECT HitCount FROM testTable WHERE ID = 1`
 
-    con.query(sqlStatement, function (err, _result) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    con.query(sqlStatement, function (err, result) {
       if (err) return handleFailure(err, res, next)
 
       apiLog('RESET API CALLS')
@@ -61,6 +62,7 @@ export const reset = (_req: Request, res: Response, next: NextFunction) => {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const testPayload = (_req: Request, res: Response, _next: NextFunction) => {
   res.status(200).json({ status: 'THE API IS NOT A TEAPOT ☕' })
 }

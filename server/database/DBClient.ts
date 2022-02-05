@@ -1,9 +1,9 @@
 import { Sequelize } from 'sequelize'
 
-import { Err, Log, MessageSources } from '../utils/logger.js'
 import dotenv from 'dotenv'
+import { Err, Log, MessageSources } from '../utils/logger.js'
 
-dotenv.config() // load everything from `.env` file into the `process.env` variable
+dotenv.config()
 
 const log = Log(MessageSources.DBClient)
 const error = Err(MessageSources.DBClient)

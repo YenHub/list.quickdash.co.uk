@@ -6,10 +6,9 @@ import cookieParser from 'cookie-parser'
 import logger from 'morgan'
 import cors from 'cors'
 import dotenv from 'dotenv'
-dotenv.config() // load everything from `.env` file into the `process.env` variable
+dotenv.config()
 
 import { router as indexRouter } from './routes/index.js'
-import { router as usersRouter } from './routes/users.js'
 import { router as testRouter } from './routes/testAPI.js'
 import { router as listRouter } from './routes/listAPI.js'
 
@@ -32,7 +31,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(path.resolve(), 'public')))
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
 app.use('/testAPI', testRouter)
 app.use('/list', listRouter)
 

@@ -43,8 +43,9 @@ export const get = (req: Request, res: Response, next: NextFunction) => {
 
 // TODO: Remove for prod
 export const getAll = (_req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === 'production')
+  if (process.env.NODE_ENV === 'production') {
     return res.status(403).send(ResMsgs.Forbidden)
+  }
   List.findAll()
     .then(list => res.status(201).json(list))
     .catch(err => handleFailure(err, res, next))

@@ -3,9 +3,9 @@
 /**
  * Module dependencies.
  */
+import http from 'http'
 import debug from 'debug'
 import { app } from '../app.js'
-import http from 'http'
 
 debug('api:server')
 
@@ -53,7 +53,7 @@ function normalizePort(val: string) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onError(error: any) {
   if (error.syscall !== 'listen') throw error
 
