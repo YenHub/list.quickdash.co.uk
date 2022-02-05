@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "commonjs",
+    "module": "ES6",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "inlineSourceMap": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   },
   "exclude": ["dist", "node_modules"]
 }

@@ -11,9 +11,7 @@ const Providers: FC<ProviderProps> = ({ children }) => (
   <Provider store={Store}>{children}</Provider>
 )
 
-const customRender = (
+export const customRender = (
   ui: ReactElement,
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult => render(ui, { wrapper: Providers, ...options })
-
-export { customRender as render }

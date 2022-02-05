@@ -1,10 +1,12 @@
-import express from 'express';
-const router = express.Router();
-import { index, reset, testPayload, magicalSpam } from '../controllers/testController';
+import express from 'express'
 
-router.get('/', index);
-router.get('/payload', testPayload);
-router.get('/magicalSpam', magicalSpam);
-router.get('/reset', reset);
+import { index, reset, testPayload, magicalSpam } from '../controllers/testController.js'
 
-export { router };
+const router = express.Router()
+
+router.get('/', index)
+router.get('/payload', testPayload)
+router.get('/magicalSpam', magicalSpam)
+router.get('/reset', reset)
+
+export { router }
