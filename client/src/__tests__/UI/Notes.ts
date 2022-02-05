@@ -50,9 +50,7 @@ describe('Note Functions', () => {
   test('Cannot create blank notes', async () => {
     // Open the note modal & check the submit button is disabled
     openNoteModal()
-    expect(
-      screen.getByTestId('create-note-submit').closest('button'),
-    ).toBeDisabled()
+    expect(screen.getByTestId('create-note-submit').closest('button')).toBeDisabled()
 
     // Check count before > attempt to submit > check count after
     const expectedCount = getNoteCount()
