@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-  getBoolSetting,
-  getStringSetting,
-  setStringSetting,
-} from '../ReactUtils'
+import { getBoolSetting, getStringSetting, setStringSetting } from '../ReactUtils'
 
 interface SettingState {
   darkMode: ReturnType<typeof getBoolSetting>
@@ -19,7 +15,7 @@ const initialState: SettingState = {
   darkMode: getBoolSetting('darkMode'),
   mdMode: getBoolSetting('mdMode'),
   previewMode: getBoolSetting('previewMode'),
-  colours: JSON.parse(getStringSetting('colours')).colours,
+  colours: JSON.parse(getStringSetting('colours')),
 }
 
 export const settingSlice = createSlice({
@@ -34,10 +30,7 @@ export const settingSlice = createSlice({
 
       return { ...state, darkMode: true }
     },
-    setColours: (
-      state,
-      action: PayloadAction<Pick<SettingState, 'colours'>>,
-    ) => {
+    setColours: (state, action: PayloadAction<Pick<SettingState, 'colours'>>) => {
       setStringSetting('colours', JSON.stringify(action.payload.colours))
 
       return {

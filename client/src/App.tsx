@@ -18,8 +18,9 @@ const getTheme = (darkMode: boolean) => {
   let primaryMain = darkMode ? '#08d2ff' : '#007bff'
   let secondaryMain = '#ff0000'
   if (custTheme.length) {
-    primaryMain = JSON.parse(custTheme).primary
-    secondaryMain = JSON.parse(custTheme).secondary
+    const { primary, secondary } = JSON.parse(custTheme)
+    primaryMain = primary
+    secondaryMain = secondary
   }
 
   return createTheme({
@@ -48,9 +49,7 @@ const getTheme = (darkMode: boolean) => {
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const { darkMode, mdMode, previewMode } = useAppSelector(
-    ({ settings }) => settings,
-  )
+  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
 
   // Auto Table Sorting
   useEffect(() => {
@@ -90,11 +89,7 @@ const App: FC = () => {
     >
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <Scrollbars
-            autoHeight
-            autoHeightMin={'calc(100vh)'}
-            hideTracksWhenNotNeeded
-          >
+          <Scrollbars autoHeight autoHeightMin={'calc(100vh)'} hideTracksWhenNotNeeded>
             <CssBaseline />
             <Main /> <br />
             <CreateNoteModal />
