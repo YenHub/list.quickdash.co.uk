@@ -1,33 +1,38 @@
-import express from 'express'
+import { Router } from 'express'
+
 import {
-  cleanUp,
   createList,
-  createListItem,
-  createRandom,
-  deleteAll,
   deleteList,
-  getAll,
   getList,
   updateList,
 } from '../controllers/listController.js'
+import {
+  createListItem,
+  deleteListItem,
+  getListItems,
+  updateListItem,
+} from '../controllers/listItemController.js'
 
-const router = express.Router()
+const router = Router()
 
-// READ
-router.get('/:id', getList)
-router.get('/all', getAll) // IGDev: No prod
-
-// DELETE
-router.delete('/:id', deleteList)
-router.delete('/clean-up', cleanUp)
-router.delete('/all', deleteAll) // IGDev: No prod
-
+/* LIST */
 // CREATE
 router.post('/create', createList)
-router.post('/create-item', createListItem)
-router.post('/random', createRandom) // IGDev: No prod
-
+// READ
+router.get('/:id', getList)
 // UPDATE
 router.put('/:id/:property', updateList)
+// DELETE
+router.delete('/:id', deleteList)
+
+/* LIST ITEM */
+// CREATE ITEM
+router.post('/item/create', createListItem)
+// READ ALL ITEMS
+router.get('/item/:listId', getListItems)
+// UPDATE ITEM
+router.put('/item/:id', updateListItem)
+// DELETE ITEM
+router.delete('/item/:id', deleteListItem)
 
 export { router }

@@ -2,9 +2,38 @@ import { DataTypes, Model } from 'sequelize'
 
 import sequelize from '../database/DBClient.js'
 
-export class List extends Model {}
+interface ListAttributes {
+  id: string
+  darkMode: boolean
+  previewMode: boolean
+  mdMode: boolean
+  colours: {
+    primary: string
+    secondary: string
+  }
+  createdAt: ReturnType<Date['toISOString']>
+  updatedAt: ReturnType<Date['toISOString']>
+  deleted: boolean
+}
 
-const modelAttributes = {
+export type ListInput = Required<ListAttributes>
+export type ListOutput = Required<ListAttributes>
+
+export class List extends Model<ListAttributes, ListInput> implements ListAttributes {
+  public id!: string
+  public darkMode!: boolean
+  public previewMode!: boolean
+  public mdMode!: boolean
+  public colours!: {
+    primary: string
+    secondary: string
+  }
+  public createdAt!: ReturnType<Date['toISOString']>
+  public updatedAt!: ReturnType<Date['toISOString']>
+  public deleted!: boolean
+}
+
+const listAttributes = {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -55,7 +84,7 @@ const options = {
   ],
 }
 
-List.init(modelAttributes, options)
+List.init(listAttributes, options)
 
 // The defined model is equal to the class created
 // console.log(List === sequelize.models.List);

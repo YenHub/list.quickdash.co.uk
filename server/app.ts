@@ -6,12 +6,12 @@ import dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
 import logger from 'morgan'
-dotenv.config()
 
 import { router as indexRouter } from './routes/index.js'
 import { router as listRouter } from './routes/listAPI.js'
 import sequelize from './database/DBClient.js'
-import { router as testRouter } from './routes/testAPI.js'
+
+dotenv.config()
 
 export interface HttpException extends Error {
   status: number
@@ -32,7 +32,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(path.resolve(), 'public')))
 
 app.use('/', indexRouter)
-app.use('/testAPI', testRouter)
 app.use('/list', listRouter)
 
 // catch 404 and forward to error handler
