@@ -5,9 +5,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { isMobile } from 'react-device-detect'
 
 import { showGatedFeatures } from '../../../Services/ReactUtils'
-import { ToggleTypes } from '../../../Services/State/Store'
+import { ToggleTypes } from '../../../Services/Types'
 import { useStyles } from '../../Main.Styles'
-import { DeleteNotes, ExportButton, ImportButton } from '../ActionButtons'
+import { DeleteNotes, ExportButton, ImportButton, ShareButton } from '../ActionButtons'
 import ShareButtons from '../ShareButtons'
 import MenuToggle from '../Toggles'
 import { useAppSelector } from '../../../Services/Store'
@@ -17,9 +17,7 @@ export const AppMenuDrawer: FC<{
   open: boolean
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-  const { darkMode, mdMode, previewMode } = useAppSelector(
-    ({ settings }) => settings,
-  )
+  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
   const classes = useStyles(darkMode)()
 
   const DrawerHeader: FC = () => (
@@ -42,8 +40,15 @@ export const AppMenuDrawer: FC<{
     </ListItem>
   )
 
+  const ShareList: FC = () => (
+    <ListItem>
+      <ShareButton />
+    </ListItem>
+  )
+
   const MenuItems: FC = () => (
     <List>
+      <ShareList />
       {showGatedFeatures && <ExportListItem />}
       {showGatedFeatures && <ImportListItem />}
       <ListItem>

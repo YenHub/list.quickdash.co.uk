@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getBoolSetting, getStringSetting, setStringSetting } from '../ReactUtils'
 
-interface SettingState {
+export interface SettingState {
   webId?: string
   darkMode: ReturnType<typeof getBoolSetting>
   mdMode: ReturnType<typeof getBoolSetting>

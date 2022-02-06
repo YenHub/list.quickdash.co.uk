@@ -5,7 +5,7 @@ import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
 import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
 
-import { ToggleTypes } from '../../../Services/State/Store'
+import { ToggleTypes } from '../../../Services/Types'
 import { useAppDispatch } from '../../../Services/Store'
 import {
   toggleDarkMode,
@@ -20,12 +20,7 @@ interface ToggleProps {
   qaId: string
 }
 
-export const MenuToggle: FC<ToggleProps> = ({
-  state,
-  dispatchType,
-  label,
-  qaId,
-}) => {
+export const MenuToggle: FC<ToggleProps> = ({ state, dispatchType, label, qaId }) => {
   const dispatch = useAppDispatch()
 
   let actionType: ActionCreatorWithoutPayload

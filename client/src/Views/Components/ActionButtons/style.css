@@ -1,53 +1,53 @@
-.fade-in {
-  animation: fadeIn 0.3s;
-  -webkit-animation: fadeIn 0.3s;
-  -moz-animation: fadeIn 0.3s;
-  -o-animation: fadeIn 0.3s;
-  -ms-animation: fadeIn 0.3s;
+.fade-out {
+  animation: fadeOut 0.3s;
+  -webkit-animation: fadeOut 0.3s;
+  -moz-animation: fadeOut 0.3s;
+  -o-animation: fadeOut 0.3s;
+  -ms-animation: fadeOut 0.3s;
   animation-timing-function: cubic-bezier(0.64, 0.25, 1, 0.75);
 }
 
-@keyframes fadeIn {
+@keyframes fadeOut {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
-@-moz-keyframes fadeIn {
+@-moz-keyframes fadeOut {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
-@-webkit-keyframes fadeIn {
+@-webkit-keyframes fadeOut {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
-@-o-keyframes fadeIn {
+@-o-keyframes fadeOut {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
-@-ms-keyframes fadeIn {
+@-ms-keyframes fadeOut {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
+    opacity: 0;
   }
 }

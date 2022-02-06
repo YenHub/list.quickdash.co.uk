@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme } from '@mui/material'
+import { IconButton, Button, useTheme, CircularProgress } from '@mui/material'
 
 import './style.css'
 
@@ -10,11 +10,10 @@ import { getUniqueId } from '../../../Services/UUID'
 import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
-import {
-  resetColours,
-  setColours,
-} from '../../../Services/Reducers/settingSlice'
+import { resetColours, setColours } from '../../../Services/Reducers/settingSlice'
 import generateNote, { random } from './generateNote'
+
+const currentAnimation = () => localStorage.getItem('animateButton') !== null
 
 const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
   <ActionDialog
@@ -35,7 +34,6 @@ const CustomButton = (props: any) => (
 const AnimatedButton: FC<any> = (props: any) => {
   const theme = useTheme()
   const { animatesuccess, onClick } = props
-  const currentAnimation = () => localStorage.getItem('animateButton')
   const [animating, setAnimating] = useState(
     localStorage.getItem('animateButton') === animatesuccess,
   )
@@ -50,7 +48,7 @@ const AnimatedButton: FC<any> = (props: any) => {
   })
 
   const handleOnClick = () => {
-    if (currentAnimation() !== null) return
+    if (currentAnimation()) return
     localStorage.setItem('animateButton', animatesuccess)
     onClick()
   }
@@ -60,16 +58,11 @@ const AnimatedButton: FC<any> = (props: any) => {
     onClick: handleOnClick,
   }
 
-  if (animatesuccess && animating) {
+  if (animating) {
     return <Checkmark size="35px" color={theme.palette.primary.main} />
   }
 
-  return (
-    <CustomButton
-      {...buttonProps}
-      className={currentAnimation() ? '' : 'fade-in'}
-    />
-  )
+  return <CustomButton {...buttonProps} />
 }
 
 export const DeleteNotes: FC = () => {
@@ -128,6 +121,63 @@ export const ImportButton: FC = () => {
     onClick: () => importNotes(noteState),
     disabled: !noteState,
     type: 'secondary',
+  }
+
+  return <CustomButton {...buttonProps} />
+}
+
+export const ShareButton: FC = () => {
+  const theme = useTheme()
+  const [animating, setAnimating] = useState(
+    localStorage.getItem('animateButton') === 'share-list',
+  )
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (animating) {
+      localStorage.removeItem('animateButton')
+      const x = setTimeout(() => setAnimating(false), 1700)
+
+      return () => clearTimeout(x)
+    }
+  })
+
+  const syncList = async () => {
+    console.log('Sharing List')
+    // TODO: Implement the list sync
+    // If shared
+    //   > If in Sync > Show Link
+    //   > If not in Sync > Sync List > Show Link
+    // If not shared
+    //   > Sync List > Show Link
+    await new Promise(res => setTimeout(res, 1000))
+    setSaving(false)
+    setAnimating(true)
+  }
+
+  const handleOnClick = async () => {
+    if (currentAnimation()) return
+    setSaving(true)
+    localStorage.setItem('animateButton', 'share-list')
+    await syncList()
+  }
+
+  const buttonProps = {
+    'aria-label': 'SHARE LIST',
+    onClick: handleOnClick,
+    type: 'default',
+  }
+
+  if (saving) {
+    return (
+      <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
+        <CircularProgress size={35} />
+      </div>
+    )
+  }
+
+  if (animating) {
+    return <Checkmark size="35px" color={theme.palette.primary.main} />
   }
 
   return <CustomButton {...buttonProps} />
