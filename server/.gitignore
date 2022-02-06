@@ -3,3 +3,4 @@
 
 # production
 /dist
+/config/config.json

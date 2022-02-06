@@ -14,6 +14,16 @@
   "plugins": ["eslint-plugin-import", "@typescript-eslint"],
   "rules": {
     "linebreak-style": ["error", "unix"],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": true
+      }
+    ],
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
     "@typescript-eslint/consistent-type-definitions": "error",

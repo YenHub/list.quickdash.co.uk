@@ -1,29 +1,33 @@
 import express from 'express'
 import {
-  get,
-  getAll,
-  deleteAll,
+  cleanUp,
   createList,
-  updateList,
-  deleteList,
+  createListItem,
   createRandom,
+  deleteAll,
+  deleteList,
+  getAll,
+  getList,
+  updateList,
 } from '../controllers/listController.js'
 
 const router = express.Router()
 
 // READ
-router.get('/all', getAll)
-router.get('/:id', get)
+router.get('/:id', getList)
+router.get('/all', getAll) // IGDev: No prod
 
 // DELETE
-router.delete('/all', deleteAll)
 router.delete('/:id', deleteList)
+router.delete('/clean-up', cleanUp)
+router.delete('/all', deleteAll) // IGDev: No prod
 
 // CREATE
 router.post('/create', createList)
-router.post('/random', createRandom)
+router.post('/create-item', createListItem)
+router.post('/random', createRandom) // IGDev: No prod
 
 // UPDATE
-router.put('/update/:id', updateList)
+router.put('/:id/:property', updateList)
 
 export { router }

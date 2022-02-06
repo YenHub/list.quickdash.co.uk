@@ -1,6 +1,8 @@
-import { Response, Request, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import { DateTime } from 'luxon'
 
-import { List } from '../models/listModel.js'
+import { List } from '../models/list.js'
+import { ListItem } from '../models/listItem.js'
 import { handleFailure } from '../utils/errorHandler.js'
 import lorem from '../utils/loremIpsum.js'
 
@@ -12,13 +14,108 @@ enum ResMsgs {
   Forbidden = 'Forbidden',
 }
 
-// CREATE
+const dt = () => new DateTime()
+const dateTimeNow = () => dt().toISO()
+
+/* CREATE LIST */
 export const createList = (req: Request, res: Response, next: NextFunction) => {
-  List.create({ list: req.body.list })
-    .then(list => res.status(201).json(list))
+  let webId
+  List.create({
+    ...req.body,
+    createdAt: dateTimeNow(),
+  })
+    .then(list => {
+      webId = list.getDataValue('id')
+
+      return res.status(201).json({ webId })
+    })
     .catch(err => handleFailure(err, res, next))
 }
 
+/* CREATE LIST ITEM */
+export const createListItem = (req: Request, res: Response, next: NextFunction) => {
+  let webId
+  ListItem.create({ ...req.body })
+    .then(listItem => {
+      webId = listItem.getDataValue('id')
+
+      return res.status(201).json({ webId })
+    })
+    .catch(err => handleFailure(err, res, next))
+}
+
+/* READ LIST */
+export const getList = (req: Request, res: Response, next: NextFunction) => {
+  List.findByPk(req.params.id)
+    .then(list =>
+      list ? res.status(201).json(list) : res.status(404).send(ResMsgs.NotFound),
+    )
+    .catch(err => handleFailure(err, res, next))
+}
+
+/* UPDATE LIST */
+export const updateList = (req: Request, res: Response, next: NextFunction) => {
+  List.update(
+    {
+      [req.params.property]: req.body.payload,
+      updatedAt: dateTimeNow(),
+    },
+    { where: { id: req.params.id } },
+  )
+    .then(rs => {
+      if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
+
+      res.status(201).send(ResMsgs.Updated)
+    })
+    .catch(err => handleFailure(err, res, next))
+}
+
+/* CREATE LIST ITEM */
+export const updateListItem = (req: Request, res: Response, next: NextFunction) => {
+  ListItem.update(
+    {
+      ...req.body.payload,
+      updatedAt: dateTimeNow(),
+    },
+    { where: { id: req.params.id } },
+  )
+    .then(rs => {
+      if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
+
+      res.status(201).send(ResMsgs.Updated)
+    })
+    .catch(err => handleFailure(err, res, next))
+}
+
+/* DELETE LIST */
+export const deleteList = (req: Request, res: Response, next: NextFunction) => {
+  List.update(
+    {
+      deleted: true,
+      updatedAt: dateTimeNow(),
+    },
+    { where: { id: req.params.id } },
+  )
+    .then(() => {
+      res.status(201).send(ResMsgs.Deleted)
+    })
+    .catch(err => handleFailure(err, res, next))
+}
+
+export const hardDeleteList = (req: Request, res: Response, next: NextFunction) => {
+  destroyList(req.params.id)
+    .then(() => {
+      res.status(201).send(ResMsgs.Deleted)
+    })
+    .catch(err => handleFailure(err, res, next))
+}
+
+const destroyList = (id: string) =>
+  List.destroy({
+    where: { id },
+  })
+
+/* LEGACY CONTROLLERS */
 export const createRandom = (_req: Request, res: Response, next: NextFunction) => {
   let listItems = new Array(10).fill({})
   listItems = listItems.map(() => {
@@ -32,15 +129,6 @@ export const createRandom = (_req: Request, res: Response, next: NextFunction) =
     .catch(err => handleFailure(err, res, next))
 }
 
-// READ
-export const get = (req: Request, res: Response, next: NextFunction) => {
-  List.findByPk(req.params.id)
-    .then(list =>
-      list ? res.status(201).json(list) : res.status(404).send(ResMsgs.NotFound),
-    )
-    .catch(err => handleFailure(err, res, next))
-}
-
 // TODO: Remove for prod
 export const getAll = (_req: Request, res: Response, next: NextFunction) => {
   if (process.env.NODE_ENV === 'production') {
@@ -48,32 +136,6 @@ export const getAll = (_req: Request, res: Response, next: NextFunction) => {
   }
   List.findAll()
     .then(list => res.status(201).json(list))
-    .catch(err => handleFailure(err, res, next))
-}
-
-// UPDATE
-export const updateList = (req: Request, res: Response, next: NextFunction) => {
-  List.update({ list: req.body }, { where: { id: req.params.id } })
-    .then(rs => {
-      if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
-
-      res.status(201).send(ResMsgs.Updated)
-    })
-    .catch(err => handleFailure(err, res, next))
-}
-
-// DELETE
-export const deleteList = (req: Request, res: Response, next: NextFunction) => {
-  // TODO: Need some sort of public token associated with lists
-  // Check the token here to ensure the author using the list
-  // There will be a toggle in the front end that turns ON list sharing, not the other way around
-  // Lists can then be made private again if the user toggles that setting, thus triggering it to delete here too
-  List.destroy({
-    where: { id: req.params.id },
-  })
-    .then(() => {
-      res.status(201).send(ResMsgs.Deleted)
-    })
     .catch(err => handleFailure(err, res, next))
 }
 
@@ -85,6 +147,22 @@ export const deleteAll = (_req: Request, res: Response, next: NextFunction) => {
   List.destroy({
     where: {},
     truncate: true,
+  })
+    .then(notes => res.status(201).json(notes))
+    .catch(err => handleFailure(err, res, next))
+}
+
+export const cleanUp = (_req: Request, res: Response, next: NextFunction) => {
+  const endDate = dt().minus({ months: 3 }).toISO()
+  const startDate = dt().minus({ months: 6 }).toISO()
+  List.destroy({
+    truncate: true,
+    where: {
+      deleted: true,
+      updatedAt: {
+        $between: [startDate, endDate],
+      },
+    },
   })
     .then(notes => res.status(201).json(notes))
     .catch(err => handleFailure(err, res, next))

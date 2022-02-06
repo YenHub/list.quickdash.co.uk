@@ -3,6 +3,7 @@ import { DefaultNotes } from './DefaultNotes'
 
 export interface NoteItem {
   id: string
+  webId?: string
   primary?: string
   secondary?: string
 }

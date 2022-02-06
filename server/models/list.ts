@@ -1,0 +1,61 @@
+import { DataTypes, Model } from 'sequelize'
+
+import sequelize from '../database/DBClient.js'
+
+export class List extends Model {}
+
+const modelAttributes = {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  darkMode: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+  previewMode: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+  mdMode: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  colours: {
+    type: DataTypes.JSON,
+    defaultValue: { primary: '#08d2ff', secondary: '#ff0000' },
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+  deleted: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+}
+
+const options = {
+  sequelize, // We need to pass the connection instance
+  modelName: 'List', // We need to choose the model name
+  indexes: [
+    {
+      unique: false,
+      fields: ['updatedAt'],
+    },
+    {
+      unique: false,
+      fields: ['createdAt'],
+    },
+  ],
+}
+
+List.init(modelAttributes, options)
+
+// The defined model is equal to the class created
+// console.log(List === sequelize.models.List);
