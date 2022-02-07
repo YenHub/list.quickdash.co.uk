@@ -1,12 +1,13 @@
 import mysql from 'mysql'
 import dotenv from 'dotenv'
 dotenv.config()
-const { DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST } = process.env
+const { DB_PORT, DB_SERVICE_USER, DB_SERVICE_USER_PASSWORD, DB_DATABASE, DB_HOST } =
+  process.env
 
 export const pool = mysql.createPool({
   host: DB_HOST,
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
+  user: DB_SERVICE_USER,
+  password: DB_SERVICE_USER_PASSWORD,
   database: DB_DATABASE,
   port: Number(DB_PORT),
   multipleStatements: true,

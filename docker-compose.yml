@@ -1,34 +1,34 @@
-version:                   '3.1'
+version: '3.1'
 
 services:
- node-mysql:
-   container_name:         node-mysql
-   image:                  mysql:latest
-   command:                --default-authentication-plugin=mysql_native_password
-   restart:                unless-stopped
-   ports:
-     - 3389:3306
-   expose:
-     - 3306
-   env_file:
-     - .env
-   environment:
-     MYSQL_HOST:           localhost
-     MYSQL_ROOT_PASSWORD:  ${DB_PASSWORD}
-     MYSQL_DATABASE:       ${DB_DATABASE}
-     MYSQL_USER:           ${DB_SERVICE_USER}
-     MYSQL_PASSWORD:       ${DB_SERVICE_USER_PASSWORD}
-   networks:
-     - server-network
-   volumes:
-     - ${MYSQL_HOST_VOLUME:-./docker_volumes/var/lib/mysql}:/var/lib/mysql
-   cap_add:
-     - SYS_NICE  # CAP_SYS_NICE
+  node-mysql:
+    container_name: node-mysql
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    ports:
+      - 3389:3306
+    expose:
+      - 3306
+    env_file:
+      - .env
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_SERVICE_USER}
+      MYSQL_PASSWORD: ${DB_SERVICE_USER_PASSWORD}
+    networks:
+      - server-network
+    volumes:
+      - ${MYSQL_HOST_VOLUME:-./docker_volumes/var/lib/mysql}:/var/lib/mysql
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
 
- client-app:
-    container_name:        client-app
+  client-app:
+    container_name: client-app
     build:
-        context:           ./client
+      context: ./client
     ports:
       - 80:3000
     environment:
@@ -37,26 +37,26 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-    command:               "npm start"
-    stdin_open:            true
+    command: 'npm start'
+    stdin_open: true
     networks:
       - client-network
 
- server-app:
-    container_name:        server-app
+  server-app:
+    container_name: server-app
     build:
-        context:           ./server
+      context: ./server
     ports:
       - 9000:9000
     expose:
       - 9000
     env_file:
-        - .env
+      - .env
     environment:
       - NODE_ENV=development
       - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_SERVICE_USER}
-      - DB_PASSWORD=${DB_SERVICE_USER_PASSWORD}
+      - DB_SERVICE_USER=${DB_SERVICE_USER}
+      - DB_SERVICE_USER_PASSWORD=${DB_SERVICE_USER_PASSWORD}
     volumes:
       - ./server:/app
       - /app/node_modules
@@ -64,19 +64,19 @@ services:
       - server-network
       - client-network
 
- phpmyadmin:
+  phpmyadmin:
     depends_on:
       - node-mysql
-    image:                 phpmyadmin
-    container_name:        php-my-admin
+    image: phpmyadmin
+    container_name: php-my-admin
     environment:
-      PMA_ARBITRARY:       1
-      PMA_HOST:            node-mysql
-      PMA_USER:            ${DB_USERNAME}
-      PMA_PASSWORD:        ${DB_PASSWORD}
-    restart:               unless-stopped
+      PMA_ARBITRARY: 1
+      PMA_HOST: node-mysql
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
     ports:
-     - 8080:80
+      - 8080:80
     volumes:
       - /sessions
     networks:
@@ -87,4 +87,4 @@ services:
 networks:
   client-network:
   server-network:
-    driver:                bridge
+    driver: bridge

@@ -1,5 +1,0 @@
-DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=AnyPassword
-DB_DATABASE=nodeDB
-DB_HOST=node-mysql
