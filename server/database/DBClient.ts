@@ -8,13 +8,7 @@ dotenv.config()
 const log = Log(MessageSources.DBClient)
 const error = Err(MessageSources.DBClient)
 
-const {
-  DB_PORT = '3306',
-  DB_USERNAME = 'DBUser',
-  DB_PASSWORD = 'DBPass',
-  DB_DATABASE = 'testDB',
-  DB_HOST = 'localhost',
-} = process.env
+const { DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST } = process.env
 
 const sequelize = new Sequelize({
   database: DB_DATABASE,
@@ -34,4 +28,5 @@ sequelize
     error('Connection Failed')
     error(err)
   })
+
 export default sequelize
