@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
+import { DateTime } from 'luxon'
 
 import { List } from '../models/list.js'
 import { ListItem } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
 import { handleFailure } from '../utils/errorHandler.js'
-import { dt, dtNowISO } from '../utils/index.js'
+import { dtNowISO } from '../utils/index.js'
 
 /* CREATE LIST */
 export const createList = (req: Request, res: Response, next: NextFunction) => {
@@ -75,8 +76,9 @@ export const hardDeleteList = (req: Request, res: Response, next: NextFunction) 
 
 /* Clean up any deleted lists  */
 const cleanUp = () => {
-  const startDate = dt().minus({ weeks: 13 }).toISO()
-  const endDate = dt().minus({ weeks: 12 }).toISO()
+  const now = DateTime.now()
+  const startDate = now.minus({ weeks: 13 }).toISO()
+  const endDate = now.minus({ weeks: 12 }).toISO()
   const deleteOptions = {
     deleted: true,
     updatedAt: {
