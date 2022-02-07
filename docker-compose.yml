@@ -72,8 +72,8 @@ services:
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: node-mysql
-      PMA_USER: ${DB_USERNAME}
-      PMA_PASSWORD: ${DB_PASSWORD}
+      PMA_USER: ${DB_SERVICE_USER}
+      PMA_PASSWORD: ${DB_SERVICE_USER_PASSWORD}
     restart: unless-stopped
     ports:
       - 8080:80

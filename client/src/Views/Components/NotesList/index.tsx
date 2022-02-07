@@ -109,102 +109,97 @@ interface NoteFragProps {
   index: number
 }
 
-const NoteFragment: FC<NoteFragProps> = memo(
-  ({ item, index }: NoteFragProps) => {
-    bigLog('[RENDER] <NoteFragment />')
+const NoteFragment: FC<NoteFragProps> = memo(({ item, index }: NoteFragProps) => {
+  bigLog('[RENDER] <NoteFragment />')
 
-    const classes = useStyles()
+  const classes = useStyles()
 
-    const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
-    const { noteState } = useAppSelector(({ notes }) => notes)
-    const dispatch = useAppDispatch()
+  const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
+  const { noteState } = useAppSelector(({ notes }) => notes)
+  const dispatch = useAppDispatch()
 
-    const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
+  const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
 
-    const showDeleteAlert = (item: NoteItem) => setDeleteNote(item)
+  const showDeleteAlert = (item: NoteItem) => setDeleteNote(item)
 
-    const handleDeleteNote = () => {
-      const newNotes = [...noteState]
-      newNotes.splice(index, 1)
-      dispatch(setNotes(newNotes))
-      setDeleteNote(null)
-    }
+  const handleDeleteNote = () => {
+    const newNotes = [...noteState]
+    newNotes.splice(index, 1)
+    dispatch(setNotes(newNotes))
+    setDeleteNote(null)
+  }
 
-    const handleCloseAlert = () => setDeleteNote(null)
+  const handleCloseAlert = () => setDeleteNote(null)
 
-    const buttonStyle = isMobile ? { minWidth: '2.5em' } : {}
+  const buttonStyle = isMobile ? { minWidth: '2.5em' } : {}
 
-    return (
-      <>
-        {deleteNote && (
-          <DeleteAlert
-            handleAccept={handleDeleteNote}
-            handleClose={handleCloseAlert}
-          />
-        )}
-        <Draggable key={item.id} draggableId={item.id} index={index}>
-          {(provided, snapshot) => {
-            const textStyle = getTextStyle(snapshot.isDragging)
-            const itemStyle = getItemStyle(
-              snapshot.isDragging,
-              provided.draggableProps.style,
-            )
-            const listItemFrags = getListItemFrags(darkMode, mdMode, item)
+  return (
+    <>
+      {deleteNote && (
+        <DeleteAlert handleAccept={handleDeleteNote} handleClose={handleCloseAlert} />
+      )}
+      <Draggable key={item.id} draggableId={item.id} index={index}>
+        {(provided, snapshot) => {
+          const textStyle = getTextStyle(snapshot.isDragging)
+          const itemStyle = getItemStyle(
+            snapshot.isDragging,
+            provided.draggableProps.style,
+          )
+          const listItemFrags = getListItemFrags(darkMode, mdMode, item)
 
-            return (
-              <ListItem
-                className={classes.secondaryAction}
-                ContainerComponent={(<li />).type}
-                // ContainerProps={{ ref: provided.innerRef }}
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={itemStyle}
-              >
-                <ListItemIcon style={buttonStyle}>
-                  <NotesIcon style={textStyle} />
-                </ListItemIcon>
-                <ListItemText
-                  disableTypography={mdMode ? true : false}
-                  primary={listItemFrags[0]}
-                  primaryTypographyProps={{ style: { ...textStyle } }}
-                  secondary={listItemFrags[1]}
-                  secondaryTypographyProps={{
-                    style: { ...textStyle, whiteSpace: 'pre-wrap' },
-                  }}
+          return (
+            <ListItem
+              className={classes.secondaryAction}
+              ContainerComponent={(<li />).type}
+              // ContainerProps={{ ref: provided.innerRef }}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={itemStyle}
+            >
+              <ListItemIcon style={buttonStyle}>
+                <NotesIcon style={textStyle} />
+              </ListItemIcon>
+              <ListItemText
+                disableTypography={mdMode ? true : false}
+                primary={listItemFrags[0]}
+                primaryTypographyProps={{ style: { ...textStyle } }}
+                secondary={listItemFrags[1]}
+                secondaryTypographyProps={{
+                  style: { ...textStyle, whiteSpace: 'pre-wrap' },
+                }}
+              />
+              <ListItemIcon style={buttonStyle}>
+                <CreateNoteButton
+                  testId="edit"
+                  label="Edit Note"
+                  onClick={() =>
+                    dispatch(
+                      setModalState({
+                        modalState: { open: true, editingNoteId: item.id },
+                      }),
+                    )
+                  }
+                  ActionButton={<EditIcon color="primary" />}
                 />
-                <ListItemIcon style={buttonStyle}>
-                  <CreateNoteButton
-                    testId="edit"
-                    label="Edit Note"
-                    onClick={() =>
-                      dispatch(
-                        setModalState({
-                          modalState: { open: true, editingNoteId: item.id },
-                        }),
-                      )
-                    }
-                    ActionButton={<EditIcon color="primary" />}
-                  />
-                </ListItemIcon>
-                <ListItemIcon
-                  style={{ ...buttonStyle, paddingRight: '0.5em' }}
-                  role="deleteNote"
-                  onClick={() => showDeleteAlert(item)}
-                >
-                  <IconButton>
-                    <DeleteForeverIcon color="secondary" />
-                  </IconButton>
-                </ListItemIcon>
-                <ListItemSecondaryAction />
-              </ListItem>
-            )
-          }}
-        </Draggable>
-      </>
-    )
-  },
-)
+              </ListItemIcon>
+              <ListItemIcon
+                style={{ ...buttonStyle, paddingRight: '0.5em' }}
+                role="deleteNote"
+                onClick={() => showDeleteAlert(item)}
+              >
+                <IconButton>
+                  <DeleteForeverIcon color="secondary" />
+                </IconButton>
+              </ListItemIcon>
+              <ListItemSecondaryAction />
+            </ListItem>
+          )
+        }}
+      </Draggable>
+    </>
+  )
+})
 
 const NoteList: FC = () => {
   bigLog('[RENDER] <NotesList />')
@@ -219,11 +214,7 @@ const NoteList: FC = () => {
     // Drop zone is outside of the list
     if (!result.destination) return
 
-    const items = reorder(
-      noteState,
-      result.source.index,
-      result.destination.index,
-    )
+    const items = reorder(noteState, result.source.index, result.destination.index)
 
     dispatch(setNotes(items))
   }

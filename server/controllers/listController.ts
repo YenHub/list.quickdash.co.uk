@@ -47,7 +47,7 @@ export const updateList = (req: Request, res: Response, next: NextFunction) => {
 }
 
 /* DELETE LIST */
-export const deleteList = (req: Request, res: Response, next: NextFunction) => {
+export const softDeleteList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   const updateOptions = {
     deleted: true,

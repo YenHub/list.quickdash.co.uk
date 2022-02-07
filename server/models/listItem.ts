@@ -13,6 +13,7 @@ interface ListItemAttributes {
   index: number
   createdAt: ReturnType<Date['toISOString']>
   updatedAt: ReturnType<Date['toISOString']>
+  syncSequence: number
 }
 
 export type ListInput = Optional<ListItemAttributes, 'title' | 'body'>
@@ -31,6 +32,7 @@ export class ListItem
   public index!: number
   public createdAt!: ReturnType<Date['toISOString']>
   public updatedAt!: ReturnType<Date['toISOString']>
+  public syncSequence!: number
 }
 
 const listItemAttributes = {
@@ -75,6 +77,10 @@ const listItemAttributes = {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  syncSequence: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 }
 
 const options = {
@@ -83,7 +89,7 @@ const options = {
   indexes: [
     {
       unique: false,
-      fields: ['listId'],
+      fields: ['listId', 'syncSequence'],
     },
   ],
 }

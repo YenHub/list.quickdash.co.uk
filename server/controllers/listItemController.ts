@@ -45,7 +45,7 @@ export const updateListItem = (req: Request, res: Response, next: NextFunction) 
 }
 
 /* HARD DELETE LIST ITEM */
-export const deleteListItem = (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteListItem = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   ListItem.destroy({
     where: { id },

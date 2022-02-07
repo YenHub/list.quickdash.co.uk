@@ -6,6 +6,7 @@ export interface NoteItem {
   webId?: string
   primary?: string
   secondary?: string
+  // IGDev: Do we need to work in the index here??
 }
 
 const noteStore = 'notes'
