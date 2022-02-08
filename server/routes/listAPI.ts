@@ -3,7 +3,7 @@ import { Router } from 'express'
 import {
   createList,
   getList,
-  softDeleteList,
+  hardDeleteList,
   updateList,
 } from '../controllers/listController.js'
 import {
@@ -23,7 +23,7 @@ router.get('/:id', getList)
 // UPDATE
 router.put('/:id/:property', updateList)
 // DELETE
-router.delete('/:id', softDeleteList)
+router.delete('/:id', hardDeleteList)
 
 /* LIST ITEM */
 // CREATE ITEM

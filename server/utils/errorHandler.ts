@@ -1,4 +1,4 @@
-import { Response, NextFunction } from 'express'
+import { NextFunction, Response } from 'express'
 import { MysqlError } from 'mysql'
 
 import { apiError } from './logger.js'

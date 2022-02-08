@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express'
 
 import { ListItem } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
-import { handleFailure } from '../utils/errorHandler.js'
 import { dtNowISO } from '../utils/index.js'
+import { handleFailure } from '../utils/errorHandler.js'
 
 /* CREATE LIST ITEM */
 export const createListItem = (req: Request, res: Response, next: NextFunction) => {
