@@ -4,12 +4,15 @@ import {
   createList,
   getList,
   hardDeleteList,
+  resetDb,
+  softDeleteList,
   updateList,
 } from '../controllers/listController.js'
 import {
   createListItem,
+  getListItem,
   getListItems,
-  hardDeleteListItem,
+  softDeleteListItem,
   updateListItem,
 } from '../controllers/listItemController.js'
 
@@ -23,16 +26,20 @@ router.get('/:id', getList)
 // UPDATE
 router.put('/:id/:property', updateList)
 // DELETE
-router.delete('/:id', hardDeleteList)
+router.delete('/:id', softDeleteList)
+// DEV
+router.post('/reset', resetDb)
 
 /* LIST ITEM */
 // CREATE ITEM
 router.post('/item/create', createListItem)
+// READ ITEM
+router.get('/item/by_id/:id', getListItem)
 // READ ALL ITEMS
-router.get('/item/:listId', getListItems)
+router.get('/item/all/:listId', getListItems)
 // UPDATE ITEM
-router.put('/item/:id', updateListItem)
+router.put('/item', updateListItem)
 // DELETE ITEM
-router.delete('/item/:id', hardDeleteListItem)
+router.delete('/item/:id/:listId', softDeleteListItem)
 
 export { router }

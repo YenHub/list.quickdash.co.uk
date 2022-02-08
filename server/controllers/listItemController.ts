@@ -4,19 +4,35 @@ import { ListItem } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
 import { dtNowISO } from '../utils/index.js'
 import { handleFailure } from '../utils/errorHandler.js'
+import { getNextSyncSequence, updateListSyncSequence } from './listController.js'
 
 /* CREATE LIST ITEM */
-export const createListItem = (req: Request, res: Response, next: NextFunction) => {
+export const createListItem = async (req: Request, res: Response, next: NextFunction) => {
   const { listItem } = req.body
-  ListItem.create(listItem)
-    .then(listItem => res.status(201).json({ webId: listItem.getDataValue('id') }))
+  const { listId } = listItem
+  if (!listId) return res.status(404).send(ResMsgs.NotFound)
+
+  const syncSequence = await getNextSyncSequence(listId)
+  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+
+  ListItem.create({ ...listItem, syncSequence })
+    .then(({ listId, id, syncSequence }) =>
+      updateListSyncSequence(listId, syncSequence).then(() =>
+        res.status(201).json({ webId: id, syncSequence }),
+      ),
+    )
     .catch(err => handleFailure(err, res, next))
 }
 
 /* READ LIST ITEMS */
 export const getListItems = (req: Request, res: Response, next: NextFunction) => {
   const { listId } = req.params
-  ListItem.findAll({ where: { listId } })
+  /**
+   * We only soft delete note items. The later plan is to open up list item history.
+   *
+   * There is a clean-up routine to handle stale items after 3 months of inactivity.
+   */
+  ListItem.findAll({ where: { listId, deleted: false } })
     .then(listItems =>
       listItems
         ? res.status(201).json(listItems)
@@ -25,33 +41,66 @@ export const getListItems = (req: Request, res: Response, next: NextFunction) =>
     .catch(err => handleFailure(err, res, next))
 }
 
-/* UPDATE LIST ITEM */
-export const updateListItem = (req: Request, res: Response, next: NextFunction) => {
-  const { payload } = req.body
+/* READ LIST ITEMS */
+export const getListItem = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
+  ListItem.findByPk(id)
+    .then(listItem =>
+      listItem ? res.status(201).json(listItem) : res.status(404).send(ResMsgs.NotFound),
+    )
+    .catch(err => handleFailure(err, res, next))
+}
+
+/* UPDATE LIST ITEM */
+export const updateListItem = async (req: Request, res: Response, next: NextFunction) => {
+  const { listItem } = req.body
+  const { listId, id } = listItem
+  if (!listId) return res.status(404).send(ResMsgs.NotFound)
+
+  const syncSequence = await getNextSyncSequence(listId)
+  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+
   ListItem.update(
     {
-      ...payload,
+      ...listItem,
       updatedAt: dtNowISO(),
+      syncSequence,
     },
     { where: { id } },
   )
     .then(rs => {
       if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
-
-      res.status(201).send(ResMsgs.Updated)
+      updateListSyncSequence(listId, syncSequence).then(() =>
+        res.status(201).json({ syncSequence }),
+      )
     })
     .catch(err => handleFailure(err, res, next))
 }
 
 /* HARD DELETE LIST ITEM */
-export const hardDeleteListItem = (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params
-  ListItem.destroy({
-    where: { id },
-  })
+export const softDeleteListItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { id, listId } = req.params
+  const syncSequence = await getNextSyncSequence(listId)
+  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+
+  ListItem.update(
+    {
+      deleted: true,
+      updatedAt: dtNowISO(),
+      syncSequence,
+    },
+    {
+      where: { id },
+    },
+  )
     .then(() => {
-      res.status(201).send(ResMsgs.Deleted)
+      updateListSyncSequence(listId, syncSequence).then(() =>
+        res.status(201).json({ syncSequence }),
+      )
     })
     .catch(err => handleFailure(err, res, next))
 }

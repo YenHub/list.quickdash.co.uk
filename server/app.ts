@@ -51,7 +51,7 @@ app.use(function (err: HttpException, req: express.Request, res: express.Respons
 })
 
 // sequelize.sync()
-sequelize.sync({ force: true })
+sequelize.sync({ force: false })
 // if (process.env.NODE_ENV === 'production') sequelize.sync()
 // else sequelize.sync({ force: true })
 
