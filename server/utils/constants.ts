@@ -4,4 +4,5 @@ export enum ResMsgs {
   Updated = 'List Updated',
   Deleted = 'List Deleted',
   Forbidden = 'Forbidden',
+  DbReset = 'The database has been reset 🪄',
 }

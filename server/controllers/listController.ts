@@ -7,21 +7,39 @@ import { ResMsgs } from '../utils/constants.js'
 import { handleFailure } from '../utils/errorHandler.js'
 import { dtNowISO, getCleanupQueryObject } from '../utils/index.js'
 
-/* CREATE LIST */
+/**
+ * CREATE LIST
+ *
+ * Returns the webId for the list & the syncSequence, which always starts at 1
+ * when a new list record gets created at the DB level.
+ */
 export const createList = (req: Request, res: Response, next: NextFunction) => {
   const { list } = req.body
   List.create(list)
-    .then(list => res.status(201).json({ webId: list.getDataValue('id') }))
+    .then(list =>
+      res.status(201).json({ webId: list.getDataValue('id'), syncSequence: 1 }),
+    )
     .catch(err => handleFailure(err, res, next))
 }
 
-/* READ LIST */
+/**
+ * READ LIST
+ *
+ * Returns the top level list item, which contains various settings,
+ * but most importantly the syncSequence we use to efficiently sync ListItems
+ *
+ * A List can be soft deleted, meaning, someone pulled the cord to delete the list.
+ * We give the ability to recover if we find a list in this state, otherwise, it's a genuine 404
+ */
 export const getList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   List.findByPk(id)
     .then(list => {
       // IGDev: Handle list.deleted -vs- list absent (e.g. perma-deleted)
-      if (!list || list.deleted) return res.status(404).send(ResMsgs.NotFound)
+      if (!list) return res.status(404).send(ResMsgs.NotFound)
+
+      // IGDev: WE ARE HERE
+      if (list.deleted) console.log('List Deleted')
 
       return res.status(201).json(list)
     })
@@ -114,7 +132,7 @@ export const resetDb = (_req: Request, res: Response) => {
   if (process.env.NODE_ENV === 'development') {
     sequelize.sync({ force: true })
 
-    return res.status(201).send(ResMsgs.Deleted)
+    return res.status(201).send(ResMsgs.DbReset)
   }
   res.status(404).send(ResMsgs.NotFound)
 }
