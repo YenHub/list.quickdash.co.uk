@@ -4,7 +4,11 @@ import { ListItem } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
 import { dtNowISO } from '../utils/index.js'
 import { handleFailure } from '../utils/errorHandler.js'
-import { getNextSyncSequence, updateListSyncSequence } from './listController.js'
+import {
+  getListStatus,
+  getNextSyncSequence,
+  updateListSyncSequence,
+} from './listController.js'
 
 /* CREATE LIST ITEM */
 export const createListItem = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,6 +18,7 @@ export const createListItem = async (req: Request, res: Response, next: NextFunc
 
   const syncSequence = await getNextSyncSequence(listId)
   if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+  if (syncSequence === 0) return res.status(410).send(ResMsgs.Deleted)
 
   ListItem.create({ ...listItem, syncSequence })
     .then(({ listId, id, syncSequence }) =>
@@ -25,8 +30,16 @@ export const createListItem = async (req: Request, res: Response, next: NextFunc
 }
 
 /* READ LIST ITEMS */
-export const getListItems = (req: Request, res: Response, next: NextFunction) => {
+export const getListItems = async (req: Request, res: Response, next: NextFunction) => {
   const { listId } = req.params
+  if (!listId) return res.status(404).send(ResMsgs.NotFound)
+  const listStatus = await getListStatus(listId)
+  const { canRecover, deleted } = listStatus
+  if (deleted) {
+    if (canRecover) return res.status(410).send(ResMsgs.Deleted)
+
+    return res.status(404).send(ResMsgs.NotFound)
+  }
   /**
    * We only soft delete note items. The later plan is to open up list item history.
    *
@@ -43,7 +56,7 @@ export const getListItems = (req: Request, res: Response, next: NextFunction) =>
 
 /* READ LIST ITEMS */
 export const getListItem = (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params
+  const { id } = req.body
   ListItem.findByPk(id)
     .then(listItem =>
       listItem ? res.status(201).json(listItem) : res.status(404).send(ResMsgs.NotFound),

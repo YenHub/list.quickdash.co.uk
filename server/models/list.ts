@@ -15,6 +15,7 @@ interface ListAttributes {
   updatedAt: ReturnType<Date['toISOString']>
   deleted: boolean
   syncSequence: number
+  version: number
 }
 
 export type ListInput = Required<ListAttributes>
@@ -33,6 +34,7 @@ export class List extends Model<ListAttributes, ListInput> implements ListAttrib
   public updatedAt!: ReturnType<Date['toISOString']>
   public deleted!: boolean
   public syncSequence!: number
+  public version!: number
 }
 
 const listAttributes = {
@@ -70,6 +72,10 @@ const listAttributes = {
     defaultValue: false,
   },
   syncSequence: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+  },
+  version: {
     type: DataTypes.INTEGER,
     defaultValue: 1,
   },

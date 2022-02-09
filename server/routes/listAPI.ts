@@ -3,7 +3,6 @@ import { Router } from 'express'
 import {
   createList,
   getList,
-  hardDeleteList,
   resetDb,
   softDeleteList,
   updateList,
@@ -34,7 +33,7 @@ router.post('/reset', resetDb)
 // CREATE ITEM
 router.post('/item/create', createListItem)
 // READ ITEM
-router.get('/item/by_id/:id', getListItem)
+router.get('/item', getListItem)
 // READ ALL ITEMS
 router.get('/item/all/:listId', getListItems)
 // UPDATE ITEM

@@ -91,6 +91,10 @@ const options = {
       fields: ['syncSequence'],
     },
     {
+      name: 'id_by_list_id',
+      fields: ['listId', 'id'],
+    },
+    {
       name: 'deleted_by_updated_at',
       fields: ['deleted', 'updatedAt'],
       where: {

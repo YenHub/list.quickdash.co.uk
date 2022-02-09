@@ -17,7 +17,9 @@ export const createList = (req: Request, res: Response, next: NextFunction) => {
   const { list } = req.body
   List.create(list)
     .then(list =>
-      res.status(201).json({ webId: list.getDataValue('id'), syncSequence: 1 }),
+      res
+        .status(201)
+        .json({ webId: list.getDataValue('id'), syncSequence: 1, version: 1 }),
     )
     .catch(err => handleFailure(err, res, next))
 }
@@ -35,39 +37,43 @@ export const getList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   List.findByPk(id)
     .then(list => {
-      // IGDev: Handle list.deleted -vs- list absent (e.g. perma-deleted)
       if (!list) return res.status(404).send(ResMsgs.NotFound)
-
-      // IGDev: WE ARE HERE
-      if (list.deleted) console.log('List Deleted')
+      if (list.deleted) return res.status(410).send(ResMsgs.Deleted)
 
       return res.status(201).json(list)
     })
     .catch(err => handleFailure(err, res, next))
 }
 
-/* UPDATE LIST */
+/**
+ * UPDATE LIST
+ *
+ * For every write action, we should always check there has been no superseding delete action
+ * if not we bump the version and write the change
+ *
+ * The version is used in the signal to indicate to other clients they need to update
+ * This also means the same client receiving the signal will ignore it
+ */
 export const updateList = async (req: Request, res: Response, next: NextFunction) => {
   const { property, id } = req.params
   const { value } = req.body
-  const syncSequence = await getNextSyncSequence(id)
-  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+  /* {0: deleted, -1: not found, 1+: version} */
+  const version = await getNextVersion(id)
+  if (version < 0) return res.status(404).send(ResMsgs.NotFound)
+  if (version === 0) return res.status(410).send(ResMsgs.Deleted)
+  // TODO: Validation
   List.update(
     {
       [property]: value,
       updatedAt: dtNowISO(),
-      syncSequence,
+      version,
     },
-    { where: { id, deleted: false } },
+    { where: { id } },
   )
     .then(rs => {
-      // IGDev: Handle list.deleted -vs- list absent (e.g. perma-deleted)
-      // Probably client side for updating a list,
-      // e.g. try to update, you're offered to clone the list and merge in diff
-      // Any local changes outside content are dropped
       if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
 
-      res.status(201).send({ syncSequence })
+      res.status(201).send({ version })
     })
     .catch(err => handleFailure(err, res, next))
 }
@@ -75,8 +81,15 @@ export const updateList = async (req: Request, res: Response, next: NextFunction
 /* DELETE LIST */
 export const softDeleteList = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
+
   const syncSequence = await getNextSyncSequence(id)
   if (syncSequence < 0) res.status(404).send(ResMsgs.NotFound)
+  if (syncSequence === 0) res.status(410).send(ResMsgs.Deleted)
+
+  const version = await getNextVersion(id)
+  if (version < 0) return res.status(404).send(ResMsgs.NotFound)
+  if (version === 0) return res.status(410).send(ResMsgs.Deleted)
+
   const updateOptions = {
     deleted: true,
     updatedAt: dtNowISO(),
@@ -94,7 +107,7 @@ export const softDeleteList = async (req: Request, res: Response, next: NextFunc
    * Later this can be either cleaned up or restored by a user revisiting the list
    */
   Promise.all([
-    List.update(updateOptions, { where: { id } }),
+    List.update({ ...updateOptions, version }, { where: { id } }),
     ListItem.update(updateOptions, { where: { listId: id } }),
   ])
     /**
@@ -144,6 +157,7 @@ export const resetDb = (_req: Request, res: Response) => {
  * The idea here being we will periodically over-time maintain the size of the database
  *
  * // TODO: We might want to throttle or similar here if performance becomes an question
+ * We are indexing basing on these options though..
  */
 const cleanUp = () => {
   const deleteOptions = getCleanupQueryObject()
@@ -169,12 +183,33 @@ const getListById = async (listId: string) => await List.findByPk(listId)
  * The parent list always points to the greatest syncSequence
  * Every new operation bumps the sync sequence for that record
  * This allows for simple client side sync basing on the current syncSequence
+ *
+ * If no list is found we simply return -1 to indicate the absence of the resource
+ * If the list has been deleted, we will signal this with a 0
  */
 export const getNextSyncSequence = async (listId: string) => {
   const list = await getListById(listId)
   if (!list) return -1
+  if (list.deleted) return 0
 
   return list.syncSequence + 1
+}
+
+/**
+ * The list carries its own version number, in effect a sync sequence
+ *
+ * The client listens out on websockets for the UpdateSettings signal,
+ * comparing the payload with this version
+ *
+ * If no list is found we simply return -1 to indicate the absence of the resource
+ * If the list has been deleted, we will signal this with a 0
+ * */
+const getNextVersion = async (listId: string) => {
+  const list = await getListById(listId)
+  if (!list) return -1
+  if (list.deleted) return 0
+
+  return list.version + 1
 }
 
 export const getListStatus = async (
