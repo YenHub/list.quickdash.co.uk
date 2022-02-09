@@ -13,12 +13,12 @@ import {
 /* CREATE LIST ITEM */
 export const createListItem = async (req: Request, res: Response, next: NextFunction) => {
   const { listItem } = req.body
+
   const { listId } = listItem
   if (!listId) return res.status(404).send(ResMsgs.NotFound)
 
   const syncSequence = await getNextSyncSequence(listId)
-  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
-  if (syncSequence === 0) return res.status(410).send(ResMsgs.Deleted)
+  if (syncSequence <= 0) return res.status(404).send(ResMsgs.NotFound)
 
   ListItem.create({ ...listItem, syncSequence })
     .then(({ listId, id, syncSequence }) =>
@@ -35,11 +35,9 @@ export const getListItems = async (req: Request, res: Response, next: NextFuncti
   if (!listId) return res.status(404).send(ResMsgs.NotFound)
   const listStatus = await getListStatus(listId)
   const { canRecover, deleted } = listStatus
-  if (deleted) {
-    if (canRecover) return res.status(410).send(ResMsgs.Deleted)
+  // IGDev: We can revisit this later when we look at enabling history
+  if (deleted && !canRecover) return res.status(404).send(ResMsgs.NotFound)
 
-    return res.status(404).send(ResMsgs.NotFound)
-  }
   /**
    * We only soft delete note items. The later plan is to open up list item history.
    *
@@ -48,7 +46,7 @@ export const getListItems = async (req: Request, res: Response, next: NextFuncti
   ListItem.findAll({ where: { listId, deleted: false } })
     .then(listItems =>
       listItems
-        ? res.status(201).json(listItems)
+        ? res.status(deleted ? 410 : 201).json(listItems) // IGDev: We could enable note history here later
         : res.status(404).send(ResMsgs.NotFound),
     )
     .catch(err => handleFailure(err, res, next))
@@ -58,9 +56,14 @@ export const getListItems = async (req: Request, res: Response, next: NextFuncti
 export const getListItem = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.body
   ListItem.findByPk(id)
-    .then(listItem =>
-      listItem ? res.status(201).json(listItem) : res.status(404).send(ResMsgs.NotFound),
-    )
+    .then(listItem => {
+      // IGDev: We could enable note history here later
+      // The idea is we only want to support fetching when someone is trying to restore a whole
+      // list, e.g. with only the URL, therefore, don't have a copy on the client
+      if (!listItem || listItem.deleted) return res.status(404).send(ResMsgs.NotFound)
+
+      return res.status(201).json(listItem)
+    })
     .catch(err => handleFailure(err, res, next))
 }
 
@@ -70,19 +73,24 @@ export const updateListItem = async (req: Request, res: Response, next: NextFunc
   const { listId, id } = listItem
   if (!listId) return res.status(404).send(ResMsgs.NotFound)
 
-  const syncSequence = await getNextSyncSequence(listId)
-  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
+  const listStatus = await getListStatus(listId)
+  const { deleted, canRecover } = listStatus
+  // IGDev: We can revisit this later when we look at enabling history
+  if (deleted && !canRecover) return res.status(404).send(ResMsgs.NotFound)
+  if (deleted) return res.status(410).send(ResMsgs.ListDeleted)
 
-  ListItem.update(
-    {
+  const item = await ListItem.findByPk(id)
+  if (!item || item.deleted) return res.status(410).send(ResMsgs.ItemDeleted)
+
+  const syncSequence = await getNextSyncSequence(listId)
+
+  item
+    .update({
       ...listItem,
       updatedAt: dtNowISO(),
       syncSequence,
-    },
-    { where: { id } },
-  )
-    .then(rs => {
-      if (rs[0] === 0) return res.status(404).send(ResMsgs.NotFound)
+    })
+    .then(() => {
       updateListSyncSequence(listId, syncSequence).then(() =>
         res.status(201).json({ syncSequence }),
       )
@@ -90,26 +98,32 @@ export const updateListItem = async (req: Request, res: Response, next: NextFunc
     .catch(err => handleFailure(err, res, next))
 }
 
-/* HARD DELETE LIST ITEM */
+/* DELETE LIST ITEM */
 export const softDeleteListItem = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id, listId } = req.params
-  const syncSequence = await getNextSyncSequence(listId)
-  if (syncSequence < 0) return res.status(404).send(ResMsgs.NotFound)
 
-  ListItem.update(
-    {
+  const listStatus = await getListStatus(listId)
+  const { deleted, canRecover } = listStatus
+  // IGDev: We can revisit this later when we look at enabling history
+  if (deleted && !canRecover) return res.status(404).send(ResMsgs.NotFound)
+  if (deleted) return res.status(410).send(ResMsgs.ListDeleted)
+
+  const item = await ListItem.findByPk(id)
+  if (!item) return res.status(404).send(ResMsgs.NotFound)
+  if (item.deleted) return res.status(410).send(ResMsgs.ItemDeleted)
+
+  const syncSequence = await getNextSyncSequence(listId)
+
+  item
+    .update({
       deleted: true,
       updatedAt: dtNowISO(),
       syncSequence,
-    },
-    {
-      where: { id },
-    },
-  )
+    })
     .then(() => {
       updateListSyncSequence(listId, syncSequence).then(() =>
         res.status(201).json({ syncSequence }),

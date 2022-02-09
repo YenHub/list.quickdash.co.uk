@@ -38,7 +38,9 @@ export const getList = (req: Request, res: Response, next: NextFunction) => {
   List.findByPk(id)
     .then(list => {
       if (!list) return res.status(404).send(ResMsgs.NotFound)
-      if (list.deleted) return res.status(410).send(ResMsgs.Deleted)
+      // We still want to return the list to allow people to restore it
+      // Use the response code to indicate this being the case
+      if (list.deleted) return res.status(410).json(list)
 
       return res.status(201).json(list)
     })
@@ -59,8 +61,9 @@ export const updateList = async (req: Request, res: Response, next: NextFunction
   const { value } = req.body
   /* {0: deleted, -1: not found, 1+: version} */
   const version = await getNextVersion(id)
+  // Don't update the list, the client should now treat theirs as a new list
   if (version < 0) return res.status(404).send(ResMsgs.NotFound)
-  if (version === 0) return res.status(410).send(ResMsgs.Deleted)
+  if (version === 0) return res.status(410).send(ResMsgs.ListDeleted)
   // TODO: Validation
   List.update(
     {
@@ -84,11 +87,11 @@ export const softDeleteList = async (req: Request, res: Response, next: NextFunc
 
   const syncSequence = await getNextSyncSequence(id)
   if (syncSequence < 0) res.status(404).send(ResMsgs.NotFound)
-  if (syncSequence === 0) res.status(410).send(ResMsgs.Deleted)
+  if (syncSequence === 0) res.status(410).send(ResMsgs.ListDeleted)
 
   const version = await getNextVersion(id)
   if (version < 0) return res.status(404).send(ResMsgs.NotFound)
-  if (version === 0) return res.status(410).send(ResMsgs.Deleted)
+  if (version === 0) return res.status(410).send(ResMsgs.ListDeleted)
 
   const updateOptions = {
     deleted: true,
@@ -133,7 +136,7 @@ export const hardDeleteList = (req: Request, res: Response, next: NextFunction) 
     List.destroy({ where: { id } }),
     ListItem.destroy({ where: { listId: id } }),
   ])
-    .then(() => res.status(201).send(ResMsgs.Deleted))
+    .then(() => res.status(201).send(ResMsgs.ListDeleted))
     .catch(err => handleFailure(err, res, next))
 }
 
