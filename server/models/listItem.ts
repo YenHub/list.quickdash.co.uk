@@ -88,8 +88,21 @@ const options = {
   modelName: 'ListItem', // We need to choose the model name
   indexes: [
     {
-      unique: false,
-      fields: ['listId', 'syncSequence'],
+      fields: ['syncSequence'],
+    },
+    {
+      name: 'deleted_by_updated_at',
+      fields: ['deleted', 'updatedAt'],
+      where: {
+        deleted: true,
+      },
+    },
+    {
+      name: 'not_deleted_by_list_id',
+      fields: ['deleted', 'listId'],
+      where: {
+        deleted: false,
+      },
     },
   ],
 }

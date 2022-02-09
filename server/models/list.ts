@@ -80,12 +80,17 @@ const options = {
   modelName: 'List', // We need to choose the model name
   indexes: [
     {
-      unique: false,
       fields: ['updatedAt'],
     },
     {
-      unique: false,
       fields: ['createdAt'],
+    },
+    {
+      name: 'not_deleted_by_id',
+      fields: ['id', 'deleted'],
+      where: {
+        deleted: false,
+      },
     },
   ],
 }
