@@ -31,6 +31,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(path.resolve(), 'public')))
 
+/* REST ROUTES */
 app.use('/', indexRouter)
 app.use('/list', listRouter)
 

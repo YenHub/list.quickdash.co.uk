@@ -5,7 +5,13 @@
  */
 import http from 'http'
 import debug from 'debug'
+import { Server, Socket } from 'socket.io'
 import { app } from '../app.js'
+
+const origin =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://list.quickdash.co.uk'
 
 debug('api:server')
 
@@ -21,6 +27,11 @@ app.set('port', port)
  */
 
 const server = http.createServer(app)
+export const io = new Server(server, {
+  cors: {
+    origin,
+  },
+})
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -29,6 +40,11 @@ const server = http.createServer(app)
 server.listen(port)
 server.on('error', onError)
 server.on('listening', onListening)
+
+/* WEBSOCKETS */
+io.on('connection', (socket: Socket) => {
+  console.log(`Someone connected on ${socket.id}`)
+})
 
 /**
  * Normalize a port into a number, string, or false.
