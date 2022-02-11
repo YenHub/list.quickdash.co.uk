@@ -84,7 +84,7 @@ const App: FC = () => {
     <div
       style={{
         display: 'flex',
-        // IGDev: We could add another customisation for the background colour
+        // IGDev: (TODO) We could add another customisation for the background colour
         backgroundColor: darkMode ? '#303030' : '#fafafa',
         height: 'calc(100vh)',
         overflow: 'hidden',
