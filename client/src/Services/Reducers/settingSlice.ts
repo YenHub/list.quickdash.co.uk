@@ -10,6 +10,8 @@ export interface SettingState {
     primary: string
     secondary: string
   }
+  syncSequence?: number
+  version?: number
 }
 
 const initialState: SettingState = {
@@ -31,6 +33,17 @@ export const settingSlice = createSlice({
 
       return { ...state, darkMode: true }
     },
+    setVersion: (state, action: PayloadAction<Pick<SettingState, 'version'>>) => ({
+      ...state,
+      version: action.payload.version,
+    }),
+    setSyncSequence: (
+      state,
+      action: PayloadAction<Pick<SettingState, 'syncSequence'>>,
+    ) => ({
+      ...state,
+      version: action.payload.syncSequence,
+    }),
     setColours: (state, action: PayloadAction<Pick<SettingState, 'colours'>>) => {
       setStringSetting('colours', JSON.stringify(action.payload.colours))
 

@@ -12,6 +12,7 @@ import { bigLog, getStringSetting, setBoolSetting } from './Services/ReactUtils'
 import Main from './Views/Main'
 import CreateNoteModal from './Views/Components/CreateNoteModal'
 import { useAppSelector } from './Services/Store'
+import { socketInit } from './Services/Clients/WebSockets'
 
 const getTheme = (darkMode: boolean) => {
   const custTheme = getStringSetting('colours')
@@ -58,6 +59,9 @@ const App: FC = () => {
 
     return () => window.removeEventListener('click', sortTable)
   }, [])
+
+  // Initialise WebSockets
+  useEffect(socketInit, [])
 
   // Settings: Darkmode
   useEffect(() => {

@@ -11,6 +11,7 @@ import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { resetColours, setColours } from '../../../Services/Reducers/settingSlice'
+import { sendAllItems } from '../../../Services/Clients/Api'
 import generateNote, { random } from './generateNote'
 
 const currentAnimation = () => localStorage.getItem('animateButton') !== null
@@ -128,6 +129,7 @@ export const ImportButton: FC = () => {
 
 export const ShareButton: FC = () => {
   const theme = useTheme()
+  const { syncSequence } = useAppSelector(({ settings }) => settings)
   const [animating, setAnimating] = useState(
     localStorage.getItem('animateButton') === 'share-list',
   )
@@ -144,13 +146,16 @@ export const ShareButton: FC = () => {
 
   const syncList = async () => {
     console.log('Sharing List')
-    // TODO: Implement the list sync
-    // If shared
-    //   > If in Sync > Show Link
-    //   > If not in Sync > Sync List > Show Link
-    // If not shared
-    //   > Sync List > Show Link
-    await new Promise(res => setTimeout(res, 1000))
+    // If we don't have a syncSequence, it means this is our first time syncing our list
+    if (syncSequence) {
+      await new Promise(res => setTimeout(res, 1000))
+      // IGDev: Show Link Modal
+    } else {
+      // IGDev: Sync List
+      // IGDev: Sync List Items
+      await sendAllItems()
+      // IGDev: Show Link Modal
+    }
     setSaving(false)
     setAnimating(true)
   }

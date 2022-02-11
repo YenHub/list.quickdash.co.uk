@@ -7,9 +7,6 @@ import './index.css'
 import reportWebVitals from './reportWebVitals'
 import Store from './Services/Store'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
-import { socketInit } from './Services/Clients/WebSockets'
-
-socketInit()
 
 const app = (
   <React.StrictMode>
