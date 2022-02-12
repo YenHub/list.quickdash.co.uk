@@ -16,7 +16,7 @@ import { dtNowISO, getCleanupQueryObject } from '../utils/index.js'
 export const createList = (req: Request, res: Response, next: NextFunction) => {
   const { list } = req.body
   if (!list) return res.status(404).send(ResMsgs.NotFound)
-  List.create(list)
+  List.create({ ...list, version: 1 })
     .then(list =>
       res
         .status(201)

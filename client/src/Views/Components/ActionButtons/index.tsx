@@ -11,12 +11,17 @@ import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import {
+  clearSyncSettings,
   resetColours,
   setColours,
   setSyncSettings,
 } from '../../../Services/Reducers/settingSlice'
 import { syncNewList } from '../../../Services/Clients/Api'
-import { errorLog } from '../../../Services/Utils/ReactUtils'
+import {
+  deleteSyncSettings,
+  errorLog,
+  persistAppSettings,
+} from '../../../Services/Utils/ReactUtils'
 import { socketInit } from '../../../Services/Clients/WebSockets'
 import generateNote, { random } from './generateNote'
 
@@ -79,6 +84,8 @@ export const DeleteNotes: FC = () => {
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
   const clearNotes = (): void => {
+    deleteSyncSettings()
+    dispatch(clearSyncSettings())
     dispatch(setNotes([]))
     toggleDeleteAlert(false)
   }
@@ -147,9 +154,6 @@ export const ShareButton: FC = () => {
   useEffect(() => {
     if (animating) {
       localStorage.removeItem('animateButton')
-      const x = setTimeout(() => setAnimating(false), 1500)
-
-      return () => clearTimeout(x)
     }
   })
 
@@ -162,10 +166,20 @@ export const ShareButton: FC = () => {
     }
   })
 
+  const setSuccess = () => {
+    localStorage.setItem('animateButton', 'saved-list')
+    setSaved(true)
+  }
+
   const syncList = async () => {
-    console.log('Sharing List')
+    setAnimating(true)
     // If we don't have a syncSequence, it means this is our first time syncing our list
     if (syncSequence) {
+      // IGDev: Check whether syncsequence is up to date
+
+      // IGDev:
+      setSuccess()
+      console.log('Already Synced')
       await new Promise(res => setTimeout(res, 1000))
       // IGDev: Show Link Modal
     } else {
@@ -173,10 +187,12 @@ export const ShareButton: FC = () => {
       // IGDev: Sync List Items
       await syncNewList()
         .then(res => {
-          localStorage.setItem('animateButton', 'saved-list')
           const { version, syncSequence, webId, listItems } = res
+          if (!version || !webId || !syncSequence) return
+          persistAppSettings({ version, webId, syncSequence })
           dispatch(setNotes(listItems))
           dispatch(setSyncSettings({ version, syncSequence, webId }))
+          setSuccess()
           socketInit()
         })
         .catch(e => {

@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getBoolSetting, getStringSetting, setStringSetting } from '../Utils/ReactUtils'
+import {
+  getBoolSetting,
+  getNumberSetting,
+  getStringSetting,
+  setStringSetting,
+} from '../Utils/ReactUtils'
 
 export interface SettingState {
-  webId?: string
+  webId?: string | null
   darkMode: ReturnType<typeof getBoolSetting>
   mdMode: ReturnType<typeof getBoolSetting>
   previewMode: ReturnType<typeof getBoolSetting>
@@ -10,8 +15,8 @@ export interface SettingState {
     primary: string
     secondary: string
   }
-  syncSequence?: number
-  version?: number
+  syncSequence: ReturnType<typeof getNumberSetting> | null
+  version: ReturnType<typeof getNumberSetting> | null
   connected: boolean
 }
 
@@ -21,6 +26,8 @@ const initialState: SettingState = {
   previewMode: getBoolSetting('previewMode'),
   colours: JSON.parse(getStringSetting('colours')),
   connected: false,
+  syncSequence: getNumberSetting('syncSequence'),
+  version: getNumberSetting('syncSequence'),
 }
 
 export const settingSlice = createSlice({
@@ -69,6 +76,12 @@ export const settingSlice = createSlice({
       ...state,
       ...action.payload,
     }),
+    clearSyncSettings: state => ({
+      ...state,
+      version: null,
+      syncSequence: null,
+      webId: null,
+    }),
   },
 })
 
@@ -79,6 +92,7 @@ export const {
   toggleMdMode,
   setColours,
   resetColours,
+  clearSyncSettings,
   setSyncSequence,
   setSyncSettings,
   setVersion,

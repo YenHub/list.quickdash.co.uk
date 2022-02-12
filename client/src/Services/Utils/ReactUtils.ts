@@ -1,9 +1,9 @@
-export type Setting = 'mdMode' | 'darkMode' | 'previewMode' | 'colours'
+import { SettingState } from '../Reducers/settingSlice'
 
 export const showGatedFeatures =
   process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_BETA === 'true'
 
-export const getBoolSetting = (setting: Setting): boolean => {
+export const getBoolSetting = (setting: keyof SettingState): boolean => {
   if (window.localStorage.getItem(setting)) {
     return window.localStorage.getItem(setting) === 'true'
   }
@@ -13,7 +13,16 @@ export const getBoolSetting = (setting: Setting): boolean => {
   return setting !== 'mdMode'
 }
 
-export const getStringSetting = (setting: Setting): string => {
+export const getNumberSetting = (setting: keyof SettingState): number | null => {
+  const number = window.localStorage.getItem(setting)
+
+  return number ? Number(number) : null
+}
+
+export const setNumberSetting = (setting: keyof SettingState, value: number) =>
+  window.localStorage.setItem(setting, String(value))
+
+export const getStringSetting = (setting: keyof SettingState): string => {
   const string = window.localStorage.getItem(setting)
   if (string) return string
   if (setting === 'colours') {
@@ -21,11 +30,31 @@ export const getStringSetting = (setting: Setting): string => {
   } else return ''
 }
 
-export const setStringSetting = (setting: Setting, value: string): void =>
+export const setStringSetting = (setting: keyof SettingState, value: string): void =>
   window.localStorage.setItem(setting, value)
 
-export const setBoolSetting = (setting: Setting, value: boolean): void =>
+export const setBoolSetting = (setting: keyof SettingState, value: boolean): void =>
   localStorage.setItem(setting, value.toString())
+
+export const persistAppSettings = ({
+  version,
+  syncSequence,
+  webId,
+}: {
+  version: number
+  syncSequence: number
+  webId: string
+}) => {
+  setNumberSetting('version', version!)
+  setNumberSetting('syncSequence', syncSequence!)
+  setStringSetting('webId', webId!)
+}
+
+export const deleteSyncSettings = () => {
+  localStorage.removeItem('version')
+  localStorage.removeItem('syncSequence')
+  localStorage.removeItem('webId')
+}
 
 export const bigLog = (msg: string, colour?: string): void => {
   if (!showGatedFeatures) return
