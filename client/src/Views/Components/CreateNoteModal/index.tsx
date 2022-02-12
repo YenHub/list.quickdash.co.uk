@@ -8,12 +8,12 @@ import makeStyles from '@mui/styles/makeStyles'
 import { Theme } from '@mui/system'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
-import { getUniqueId } from '../../../Services/UUID'
+import { bigLog, shallowCompareIdentical } from '../../../Services/Utils/ReactUtils'
 import MDPreview from '../MDPreview'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
+import { getUniqueId } from '../../../Services/Utils/UUID'
 import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>

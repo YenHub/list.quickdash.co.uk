@@ -19,11 +19,14 @@ export interface HttpException extends Error {
 
 const app = express()
 
+const corsOptions =
+  process.env.NODE_ENV === 'development' ? {} : { origin: 'https://list.quickdash.co.uk' }
+
 // view engine setup
 app.set('views', path.join(path.resolve(), 'views'))
 app.set('view engine', 'jade')
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(helmet())
 app.use(logger('dev'))
 app.use(express.json())

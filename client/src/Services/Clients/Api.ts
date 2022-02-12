@@ -1,54 +1,73 @@
+import axios from 'axios'
+
 import { NoteItem } from '../Database/NoteClient'
-import { setNotes } from '../Reducers/noteSlice'
-import { setSyncSequence, setVersion, setWebId } from '../Reducers/settingSlice'
+import { SettingState } from '../Reducers/settingSlice'
 import store from '../Store'
 
-type SyncListItem = NoteItem & { index: number }
+const { REACT_APP_ENV, REACT_APP_API_DEV, REACT_APP_API_PROD } = process.env
 
-export const syncNewList = async (): Promise<void> => {
+const baseURL = REACT_APP_ENV === 'development' ? REACT_APP_API_DEV : REACT_APP_API_PROD
+
+const api = axios.create({
+  baseURL,
+  timeout: 5000,
+  withCredentials: false,
+})
+
+export const syncNewList = async (): Promise<CreateListResponse> => {
+  const syncedSettings = await createList()
+  const syncedNotes = await postListItems(syncedSettings)
+
+  return {
+    ...syncedSettings,
+    listItems: syncedNotes,
+  }
+}
+
+type CreateListResponse = {
+  listItems: NoteItem[]
+} & SettingState
+
+export const createList = async (): Promise<SettingState> => {
+  const { settings } = store.getState()
+
+  const newSettings = await api
+    // POST Settings
+    .post('/list/create', {
+      list: settings,
+    })
+
+  return newSettings.data
+}
+
+export const postListItems = async (settings: SettingState): Promise<NoteItem[]> => {
+  const syncedNotes: NoteItem[] = []
   const {
     notes: { noteState },
   } = store.getState()
-  await postListItems(noteState).then(syncedNotes => postList(syncedNotes))
-}
 
-export const postList = async (listItems: NoteItem[]) => {
-  const { settings } = store.getState()
-  // POST Settings
-  const { syncSequence, version, webId } = await new Promise(res =>
-    setTimeout(() => {
-      const { darkMode, colours, mdMode, previewMode } = settings
-      console.log({ darkMode, mdMode, colours, previewMode })
-
-      return res({ syncSequence: 1, version: 1, webId: 1 })
-    }, 100),
-  )
-  // UPDATE STATE
-  store.dispatch(setNotes(listItems))
-  store.dispatch(setVersion({ version }))
-  store.dispatch(setSyncSequence({ syncSequence }))
-  store.dispatch(setWebId({ webId }))
-}
-
-export const postListItems = async (noteState: NoteItem[]) => {
-  const syncedNotes: NoteItem[] = []
   for (const [index, note] of Object.entries(noteState)) {
-    const syncedNote: SyncListItem = { ...note, index: Number(index) }
-    console.log(syncedNote)
-    // IGDev: Send note, get webId back and store web ID
-    const { syncSequence, webId } = await new Promise(res =>
-      setTimeout(() => res({ syncSequence: 1, webId: 'asds' }), 100),
-    )
-    // const syncSequence = 1
-    // const webId = 'abs-123-def'
-    syncedNotes.push({
-      ...note,
-      syncSequence,
-      locked: false,
-      webId,
-    })
+    // IGDev: Fix the lack of index here, it should live on the list
+    await api
+      // POST Settings
+      .post('/list/item/create', {
+        listItem: {
+          clientId: note.id,
+          listId: settings.webId,
+          title: note.primary,
+          body: note.secondary,
+          index,
+          // IGDev: Need to add this index: note.index,
+        },
+      })
+      .then(({ data: { webId, syncSequence } }) => {
+        syncedNotes.push({
+          ...note,
+          syncSequence,
+          webId,
+        })
+      })
   }
-  console.log(syncedNotes)
 
   return syncedNotes
 }

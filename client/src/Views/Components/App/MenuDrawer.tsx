@@ -4,7 +4,7 @@ import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { isMobile } from 'react-device-detect'
 
-import { showGatedFeatures } from '../../../Services/ReactUtils'
+import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 import { ToggleTypes } from '../../../Services/Types'
 import { useStyles } from '../../Main.Styles'
 import { DeleteNotes, ExportButton, ImportButton, ShareButton } from '../ActionButtons'

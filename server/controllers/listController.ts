@@ -15,6 +15,7 @@ import { dtNowISO, getCleanupQueryObject } from '../utils/index.js'
  */
 export const createList = (req: Request, res: Response, next: NextFunction) => {
   const { list } = req.body
+  if (!list) return res.status(404).send(ResMsgs.NotFound)
   List.create(list)
     .then(list =>
       res
@@ -35,6 +36,7 @@ export const createList = (req: Request, res: Response, next: NextFunction) => {
  */
 export const getList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
+  if (!id) return res.status(404).send(ResMsgs.NotFound)
   List.findByPk(id)
     .then(list => {
       if (!list) return res.status(404).send(ResMsgs.NotFound)
@@ -58,6 +60,7 @@ export const getList = (req: Request, res: Response, next: NextFunction) => {
  */
 export const updateList = async (req: Request, res: Response, next: NextFunction) => {
   const { property, id } = req.params
+  if (!property || !id) return res.status(404).send(ResMsgs.NotFound)
   const { value } = req.body
   /* {0: deleted, -1: not found, 1+: version} */
   const version = await getNextVersion(id)
@@ -84,6 +87,7 @@ export const updateList = async (req: Request, res: Response, next: NextFunction
 /* DELETE LIST */
 export const softDeleteList = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
+  if (!id) return res.status(404).send(ResMsgs.NotFound)
 
   const syncSequence = await getNextSyncSequence(id)
   if (syncSequence < 0) res.status(404).send(ResMsgs.NotFound)
@@ -126,6 +130,7 @@ export const softDeleteList = async (req: Request, res: Response, next: NextFunc
 /* HARD DELETE LIST */
 export const hardDeleteList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
+  if (!id) return res.status(404).send(ResMsgs.NotFound)
 
   /**
    * This oneway street is only used in the cleanup routine

@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import { NoteItem } from './Database/NoteClient'
+import { NoteItem } from '../Database/NoteClient'
 
 export const getUniqueId = (noteState?: NoteItem[]): NoteItem['id'] => {
   let id: string = uuid()

@@ -9,7 +9,7 @@ import Store from './Services/Store'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 // Just makes the tab a little easier to find :p
-if (process.env.NODE_ENV === 'development') document.title = 'BETA'
+if (process.env.REACT_APP_ENV === 'development') document.title = 'BETA'
 
 const app = (
   <React.StrictMode>

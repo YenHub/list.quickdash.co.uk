@@ -46,6 +46,11 @@ io.on('connection', (socket: Socket) => {
   console.log(`Someone connected on ${socket.id}`)
 })
 
+io.on('join', (socket: Socket) => {
+  console.log(`Connected ${socket.id} with room ${socket.data.webId}`)
+  socket.join(socket.data.webId)
+})
+
 /**
  * Normalize a port into a number, string, or false.
  */

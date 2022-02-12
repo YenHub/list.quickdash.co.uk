@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
-import { Setting } from '../../Services/ReactUtils'
+import { Setting } from '../../Services/Utils/ReactUtils'
 import {
   initApp,
   openNoteModal,

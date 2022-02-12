@@ -4,14 +4,20 @@ import { IconButton, Button, useTheme, CircularProgress } from '@mui/material'
 
 import './style.css'
 
-import { downloadFile } from '../../../Services/BrowserUtils'
+import { downloadFile } from '../../../Services/Utils/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { getUniqueId } from '../../../Services/UUID'
+import { getUniqueId } from '../../../Services/Utils/UUID'
 import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
-import { resetColours, setColours } from '../../../Services/Reducers/settingSlice'
+import {
+  resetColours,
+  setColours,
+  setSyncSettings,
+} from '../../../Services/Reducers/settingSlice'
 import { syncNewList } from '../../../Services/Clients/Api'
+import { errorLog } from '../../../Services/Utils/ReactUtils'
+import { socketInit } from '../../../Services/Clients/WebSockets'
 import generateNote, { random } from './generateNote'
 
 const currentAnimation = () => localStorage.getItem('animateButton') !== null
@@ -128,17 +134,29 @@ export const ImportButton: FC = () => {
 }
 
 export const ShareButton: FC = () => {
+  const dispatch = useAppDispatch()
   const theme = useTheme()
   const { syncSequence } = useAppSelector(({ settings }) => settings)
   const [animating, setAnimating] = useState(
-    localStorage.getItem('animateButton') === 'share-list',
+    localStorage.getItem('animateButton') === 'saving-list',
   )
-  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(
+    localStorage.getItem('animateButton') === 'saved-list',
+  )
 
   useEffect(() => {
     if (animating) {
       localStorage.removeItem('animateButton')
-      const x = setTimeout(() => setAnimating(false), 1700)
+      const x = setTimeout(() => setAnimating(false), 1500)
+
+      return () => clearTimeout(x)
+    }
+  })
+
+  useEffect(() => {
+    if (saved) {
+      localStorage.removeItem('animateButton')
+      const x = setTimeout(() => setSaved(false), 1500)
 
       return () => clearTimeout(x)
     }
@@ -154,16 +172,25 @@ export const ShareButton: FC = () => {
       // IGDev: Sync List
       // IGDev: Sync List Items
       await syncNewList()
+        .then(res => {
+          localStorage.setItem('animateButton', 'saved-list')
+          const { version, syncSequence, webId, listItems } = res
+          dispatch(setNotes(listItems))
+          dispatch(setSyncSettings({ version, syncSequence, webId }))
+          socketInit()
+        })
+        .catch(e => {
+          // IGDev: Handle the possible failure here
+          errorLog(e)
+        })
       // IGDev: Show Link Modal
     }
-    setSaving(false)
-    setAnimating(true)
   }
 
   const handleOnClick = async () => {
     if (currentAnimation()) return
-    setSaving(true)
-    localStorage.setItem('animateButton', 'share-list')
+    setAnimating(true)
+    localStorage.setItem('animateButton', 'saving-list')
     await syncList()
   }
 
@@ -173,16 +200,16 @@ export const ShareButton: FC = () => {
     type: 'default',
   }
 
-  if (saving) {
+  if (saved) {
+    return <Checkmark size="35px" color={theme.palette.primary.main} />
+  }
+
+  if (animating) {
     return (
       <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
         <CircularProgress size={35} />
       </div>
     )
-  }
-
-  if (animating) {
-    return <Checkmark size="35px" color={theme.palette.primary.main} />
   }
 
   return <CustomButton {...buttonProps} />

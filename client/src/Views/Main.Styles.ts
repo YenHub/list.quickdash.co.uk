@@ -2,7 +2,7 @@ import { Theme } from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import { isMobile } from 'react-device-detect'
 
-import { DRAWER_WIDTH } from '../Services/constants'
+import { DRAWER_WIDTH } from '../Services/Utils/constants'
 
 export const useStyles = (darkMode: boolean) =>
   makeStyles(

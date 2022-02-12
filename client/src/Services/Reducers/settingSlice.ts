@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getBoolSetting, getStringSetting, setStringSetting } from '../ReactUtils'
+import { getBoolSetting, getStringSetting, setStringSetting } from '../Utils/ReactUtils'
 
 export interface SettingState {
   webId?: string
@@ -12,6 +12,7 @@ export interface SettingState {
   }
   syncSequence?: number
   version?: number
+  connected: boolean
 }
 
 const initialState: SettingState = {
@@ -19,6 +20,7 @@ const initialState: SettingState = {
   mdMode: getBoolSetting('mdMode'),
   previewMode: getBoolSetting('previewMode'),
   colours: JSON.parse(getStringSetting('colours')),
+  connected: false,
 }
 
 export const settingSlice = createSlice({
@@ -41,6 +43,10 @@ export const settingSlice = createSlice({
       ...state,
       webId: action.payload.webId,
     }),
+    setSocketState: (state, action: PayloadAction<Pick<SettingState, 'connected'>>) => ({
+      ...state,
+      connected: action.payload.connected,
+    }),
     setSyncSequence: (
       state,
       action: PayloadAction<Pick<SettingState, 'syncSequence'>>,
@@ -56,16 +62,25 @@ export const settingSlice = createSlice({
         ...action.payload,
       }
     },
+    setSyncSettings: (
+      state,
+      action: PayloadAction<Pick<SettingState, 'syncSequence' | 'version' | 'webId'>>,
+    ) => ({
+      ...state,
+      ...action.payload,
+    }),
   },
 })
 
 export const {
   toggleDarkMode,
   togglePreviewMode,
+  setSocketState,
   toggleMdMode,
   setColours,
   resetColours,
   setSyncSequence,
+  setSyncSettings,
   setVersion,
   setWebId,
 } = settingSlice.actions

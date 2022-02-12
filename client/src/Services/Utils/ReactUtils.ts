@@ -1,8 +1,7 @@
 export type Setting = 'mdMode' | 'darkMode' | 'previewMode' | 'colours'
 
 export const showGatedFeatures =
-  process.env.NODE_ENV === 'development' ||
-  process.env.REACT_APP_BETA === 'true'
+  process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_BETA === 'true'
 
 export const getBoolSetting = (setting: Setting): boolean => {
   if (window.localStorage.getItem(setting)) {
@@ -28,15 +27,21 @@ export const setStringSetting = (setting: Setting, value: string): void =>
 export const setBoolSetting = (setting: Setting, value: boolean): void =>
   localStorage.setItem(setting, value.toString())
 
-export const bigLog = (msg: string): void => {
+export const bigLog = (msg: string, colour?: string): void => {
   if (!showGatedFeatures) return
 
-  console.log(`
+  console.log(
+    `
 
-            ${msg}
+            ${colour ? '%c' : ''}${msg}
 
-        `)
+        `,
+    colour ?? '',
+  )
 }
+
+export const errorLog = (msg: string) => bigLog(msg, 'color: orangered')
+export const successLog = (msg: string) => bigLog(msg, 'color: chartreuse')
 
 export const groupLog = (name: string, msg: any): void => {
   if (!showGatedFeatures) return

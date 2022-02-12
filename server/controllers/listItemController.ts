@@ -13,6 +13,7 @@ import {
 /* CREATE LIST ITEM */
 export const createListItem = async (req: Request, res: Response, next: NextFunction) => {
   const { listItem } = req.body
+  if (!listItem) return res.status(404).send(ResMsgs.NotFound)
 
   const { listId } = listItem
   if (!listId) return res.status(404).send(ResMsgs.NotFound)
@@ -55,6 +56,7 @@ export const getListItems = async (req: Request, res: Response, next: NextFuncti
 /* READ LIST ITEMS */
 export const getListItem = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.body
+  if (!id) return res.status(404).send(ResMsgs.NotFound)
   ListItem.findByPk(id)
     .then(listItem => {
       // IGDev: We could enable note history here later
@@ -70,6 +72,7 @@ export const getListItem = (req: Request, res: Response, next: NextFunction) => 
 /* UPDATE LIST ITEM */
 export const updateListItem = async (req: Request, res: Response, next: NextFunction) => {
   const { listItem } = req.body
+  if (!listItem) return res.status(404).send(ResMsgs.NotFound)
   const { listId, id } = listItem
   if (!listId) return res.status(404).send(ResMsgs.NotFound)
 
@@ -105,6 +108,7 @@ export const softDeleteListItem = async (
   next: NextFunction,
 ) => {
   const { id, listId } = req.params
+  if (!id || !listId) return res.status(404).send(ResMsgs.NotFound)
 
   const listStatus = await getListStatus(listId)
   const { deleted, canRecover } = listStatus
