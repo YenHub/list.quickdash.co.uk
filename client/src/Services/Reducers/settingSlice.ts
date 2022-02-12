@@ -37,6 +37,10 @@ export const settingSlice = createSlice({
       ...state,
       version: action.payload.version,
     }),
+    setWebId: (state, action: PayloadAction<Pick<SettingState, 'webId'>>) => ({
+      ...state,
+      webId: action.payload.webId,
+    }),
     setSyncSequence: (
       state,
       action: PayloadAction<Pick<SettingState, 'syncSequence'>>,
@@ -61,6 +65,9 @@ export const {
   toggleMdMode,
   setColours,
   resetColours,
+  setSyncSequence,
+  setVersion,
+  setWebId,
 } = settingSlice.actions
 
 export default settingSlice.reducer

@@ -1,13 +1,33 @@
 import { NoteItem } from '../Database/NoteClient'
+import { setNotes } from '../Reducers/noteSlice'
+import { setSyncSequence, setVersion, setWebId } from '../Reducers/settingSlice'
 import store from '../Store'
 
 type SyncListItem = NoteItem & { index: number }
 
-export const sendAllItems = async (): Promise<void> => {
+export const syncNewList = async (): Promise<void> => {
   const {
     notes: { noteState },
   } = store.getState()
-  await postListItems(noteState)
+  await postListItems(noteState).then(syncedNotes => postList(syncedNotes))
+}
+
+export const postList = async (listItems: NoteItem[]) => {
+  const { settings } = store.getState()
+  // POST Settings
+  const { syncSequence, version, webId } = await new Promise(res =>
+    setTimeout(() => {
+      const { darkMode, colours, mdMode, previewMode } = settings
+      console.log({ darkMode, mdMode, colours, previewMode })
+
+      return res({ syncSequence: 1, version: 1, webId: 1 })
+    }, 100),
+  )
+  // UPDATE STATE
+  store.dispatch(setNotes(listItems))
+  store.dispatch(setVersion({ version }))
+  store.dispatch(setSyncSequence({ syncSequence }))
+  store.dispatch(setWebId({ webId }))
 }
 
 export const postListItems = async (noteState: NoteItem[]) => {
@@ -30,8 +50,5 @@ export const postListItems = async (noteState: NoteItem[]) => {
   }
   console.log(syncedNotes)
 
-  // once all notes have been stored, we can then commit the new 'synced' state to the notes list
-  return
+  return syncedNotes
 }
-
-export const api = true

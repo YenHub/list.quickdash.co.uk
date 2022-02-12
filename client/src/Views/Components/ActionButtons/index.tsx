@@ -11,7 +11,7 @@ import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { resetColours, setColours } from '../../../Services/Reducers/settingSlice'
-import { sendAllItems } from '../../../Services/Clients/Api'
+import { syncNewList } from '../../../Services/Clients/Api'
 import generateNote, { random } from './generateNote'
 
 const currentAnimation = () => localStorage.getItem('animateButton') !== null
@@ -153,7 +153,7 @@ export const ShareButton: FC = () => {
     } else {
       // IGDev: Sync List
       // IGDev: Sync List Items
-      await sendAllItems()
+      await syncNewList()
       // IGDev: Show Link Modal
     }
     setSaving(false)
