@@ -16,7 +16,7 @@ const api = axios.create({
 
 export const syncNewList = async (): Promise<CreateListResponse> => {
   const syncedSettings = await createList()
-  const syncedNotes = await postListItems(syncedSettings)
+  const syncedNotes = await createListItems(syncedSettings)
 
   return {
     ...syncedSettings,
@@ -40,7 +40,7 @@ export const createList = async (): Promise<SettingState> => {
   return newSettings.data
 }
 
-export const postListItems = async (settings: SettingState): Promise<NoteItem[]> => {
+export const createListItems = async (settings: SettingState): Promise<NoteItem[]> => {
   const syncedNotes: NoteItem[] = []
   const {
     notes: { noteState },
@@ -57,7 +57,6 @@ export const postListItems = async (settings: SettingState): Promise<NoteItem[]>
           title: note.primary,
           body: note.secondary,
           index,
-          // IGDev: Need to add this index: note.index,
         },
       })
       .then(({ data: { webId, syncSequence } }) => {

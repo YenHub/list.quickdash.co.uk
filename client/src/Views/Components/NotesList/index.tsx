@@ -24,6 +24,7 @@ import MDPreview, { MDTitle } from '../MDPreview'
 import { CreateNoteButton } from '../ActionButtons'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
+import { diffWithNewIndex } from '../../../Services/Utils'
 
 const useStyles = makeStyles(
   () => ({
@@ -47,6 +48,7 @@ const reorder = (
   const notes = [...noteState]
   const [removed] = notes.splice(startIndex, 1)
   notes.splice(endIndex, 0, removed)
+  // IGDev: Here we want to UPDATE everything >= startIndex
 
   return notes
 }
@@ -214,9 +216,33 @@ const NoteList: FC = () => {
     // Drop zone is outside of the list
     if (!result.destination) return
 
-    const items = reorder(noteState, result.source.index, result.destination.index)
+    const newNoteState = reorder(noteState, result.source.index, result.destination.index)
 
-    dispatch(setNotes(items))
+    const itemsToSync = diffWithNewIndex(noteState, newNoteState)
+
+    // IGDev: Here we would send a fire & forget sync request
+    console.log(itemsToSync)
+    // syncDiff(itemsToSync)
+    //    await diff.forEach(syncItem, newIndex)
+    // Items get a new index, and syncSequence, new clients see the changes
+
+    // [LOAD] fetch syncSequence
+    //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
+    //    setNotes()
+
+    // [ITEMS]
+    // [ON:CREATE]
+    //    [newNote, ...noteState]
+    // [ON:DELETE]
+    //    noteState.filter( note => note.id !== deleted.id)
+    // [ON:UPDATEITEM]
+    //    noteState[noteState.findIndex( (it) => it.test)] = updatedNote
+    // [ON:UPDATEMANY]
+    //    The with our currentNotes and our newNotes we can do:-
+    //    newNotes.forEach( newNote => currentNotes[newNote.index] = newNote)
+    //    setNotes(currentNotes)
+
+    dispatch(setNotes(newNoteState))
   }
 
   if (noteState === null) return null

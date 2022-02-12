@@ -8,7 +8,6 @@ export interface NoteItem {
   secondary?: string
   syncSequence?: number
   locked?: boolean
-  // IGDev: Do we need to work in the index here??
 }
 
 const noteStore = 'notes'
@@ -34,7 +33,7 @@ class NoteClient {
   public getNotes = async (): Promise<NoteItem[]> => {
     const storedNotes = (await Store.getItem<NoteItem[]>(noteStore)) || []
 
-    if (!storedNotes.length) return DefaultNotes
+    if (!storedNotes.length) return DefaultNotes.map((n, index) => ({ ...n, index }))
 
     return storedNotes
   }
