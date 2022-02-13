@@ -12,9 +12,10 @@ import {
 interface Props {
   open: boolean
   title: string
-  message: string
+  message?: string
   onAccept?(): void
   onCancel?(): void
+  children?: React.ReactNode
 }
 
 const ActionDialog: FC<Props> = ({
@@ -23,6 +24,7 @@ const ActionDialog: FC<Props> = ({
   message,
   onAccept,
   onCancel,
+  children,
 }) => {
   const handleClose = (accept: boolean) => {
     if (accept) {
@@ -42,17 +44,16 @@ const ActionDialog: FC<Props> = ({
       >
         <DialogTitle id="action-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="action-dialog-description">
-            {message}
-          </DialogContentText>
+          {children && children}
+          {message && (
+            <DialogContentText id="action-dialog-description">
+              {message}
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           {onCancel && (
-            <Button
-              data-testid="action-dialog-cancel"
-              onClick={onCancel}
-              color="primary"
-            >
+            <Button data-testid="action-dialog-cancel" onClick={onCancel} color="primary">
               CANCEL
             </Button>
           )}

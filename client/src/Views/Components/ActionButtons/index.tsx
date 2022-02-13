@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme, CircularProgress } from '@mui/material'
+import { IconButton, Button, useTheme, CircularProgress, Link } from '@mui/material'
 
 import './style.css'
 
@@ -16,7 +16,7 @@ import {
   setColours,
   setSyncSettings,
 } from '../../../Services/Reducers/settingSlice'
-import { syncNewList } from '../../../Services/Clients/Api'
+import { deleteList, syncNewList } from '../../../Services/Clients/Api'
 import {
   deleteSyncSettings,
   errorLog,
@@ -27,14 +27,35 @@ import generateNote, { random } from './generateNote'
 
 const currentAnimation = () => localStorage.getItem('animateButton') !== null
 
-const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
+const DeletionWarning: FC = () => {
+  const { webId } = useAppSelector(({ settings }) => settings)
+
+  if (webId) {
+    const listUrl = `${document.location.origin}/${webId}`
+
+    return (
+      <>
+        <p>Anyone with the link below can restore this list within 90 days:</p>
+        <Link href={listUrl}>{listUrl}</Link>
+      </>
+    )
+  }
+
+  return <p>You cannot undo this 👀</p>
+}
+
+const DeleteAlert: FC<{
+  handleAccept: () => void
+  handleClose: () => void
+}> = ({ handleAccept, handleClose }) => (
   <ActionDialog
     open={true}
-    title="Delete List"
-    message="Are you sure you want to delete all of your notes?"
+    title="Delete this list?"
     onAccept={handleAccept}
     onCancel={handleClose}
-  />
+  >
+    <DeletionWarning />
+  </ActionDialog>
 )
 
 const CustomButton = (props: any) => (
@@ -85,6 +106,7 @@ export const DeleteNotes: FC = () => {
 
   const clearNotes = (): void => {
     deleteSyncSettings()
+    deleteList()
     dispatch(clearSyncSettings())
     dispatch(setNotes([]))
     toggleDeleteAlert(false)
@@ -103,7 +125,9 @@ export const DeleteNotes: FC = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      {showDeleteAlert && DeleteAlert(clearNotes, handleDeleteCancel)}
+      {showDeleteAlert && (
+        <DeleteAlert handleAccept={clearNotes} handleClose={handleDeleteCancel} />
+      )}
       <CustomButton {...buttonProps} />
     </div>
   )

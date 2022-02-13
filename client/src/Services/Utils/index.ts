@@ -30,14 +30,16 @@ export const debounce = <T extends Function>(
  * We can use the resulting diff to reduce API overhead and simply
  * post a syncItemIndex(note.webId, index) alone to update their index values
  *
+ * // TODO: We should really have notes as a dictionary of note.ids or index
+ * We can then avoid looking items up within arrays
  */
 export const diffWithNewIndex = (
-  objA: Record<string, any>[],
-  objB: Record<string, any>[],
+  arrayA: Record<string, any>[],
+  arrayB: Record<string, any>[],
 ) => {
   const diff: Record<string, any>[] = []
-  objB.forEach((it, index) => {
-    const areEqual = JSON.stringify(it) === JSON.stringify(objA[index])
+  arrayB.forEach((it, index) => {
+    const areEqual = JSON.stringify(it) === JSON.stringify(arrayA[index])
     if (!areEqual) diff.push({ ...it, index })
   })
 

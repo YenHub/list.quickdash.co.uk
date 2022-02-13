@@ -22,12 +22,14 @@ export const getNumberSetting = (setting: keyof SettingState): number | null => 
 export const setNumberSetting = (setting: keyof SettingState, value: number) =>
   window.localStorage.setItem(setting, String(value))
 
-export const getStringSetting = (setting: keyof SettingState): string => {
+export const getStringSetting = (setting: keyof SettingState): string | null => {
   const string = window.localStorage.getItem(setting)
   if (string) return string
   if (setting === 'colours') {
     return JSON.stringify({ primary: '#08d2ff', secondary: '#ff0000' })
-  } else return ''
+  }
+
+  return null
 }
 
 export const setStringSetting = (setting: keyof SettingState, value: string): void =>

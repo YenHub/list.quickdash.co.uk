@@ -70,3 +70,13 @@ export const createListItems = async (settings: SettingState): Promise<NoteItem[
 
   return syncedNotes
 }
+
+export const deleteList = async (): Promise<void> => {
+  const {
+    settings: { webId },
+  } = store.getState()
+
+  if (!webId) return
+
+  return await api.delete(`/list/${webId}`)
+}

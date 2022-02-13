@@ -15,7 +15,7 @@ import { useAppSelector } from './Services/Store'
 import { socketInit } from './Services/Clients/WebSockets'
 
 const getTheme = (darkMode: boolean) => {
-  const custTheme = getStringSetting('colours')
+  const custTheme = getStringSetting('colours') ?? ''
   let primaryMain = darkMode ? '#08d2ff' : '#007bff'
   let secondaryMain = '#ff0000'
   if (custTheme.length) {

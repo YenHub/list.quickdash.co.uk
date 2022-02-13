@@ -7,7 +7,6 @@ import {
 } from '../Utils/ReactUtils'
 
 export interface SettingState {
-  webId?: string | null
   darkMode: ReturnType<typeof getBoolSetting>
   mdMode: ReturnType<typeof getBoolSetting>
   previewMode: ReturnType<typeof getBoolSetting>
@@ -15,17 +14,19 @@ export interface SettingState {
     primary: string
     secondary: string
   }
+  connected: boolean
+  webId: ReturnType<typeof getStringSetting> | null
   syncSequence: ReturnType<typeof getNumberSetting> | null
   version: ReturnType<typeof getNumberSetting> | null
-  connected: boolean
 }
 
 const initialState: SettingState = {
   darkMode: getBoolSetting('darkMode'),
   mdMode: getBoolSetting('mdMode'),
   previewMode: getBoolSetting('previewMode'),
-  colours: JSON.parse(getStringSetting('colours')),
+  colours: JSON.parse(getStringSetting('colours') ?? ''),
   connected: false,
+  webId: getStringSetting('webId'),
   syncSequence: getNumberSetting('syncSequence'),
   version: getNumberSetting('syncSequence'),
 }

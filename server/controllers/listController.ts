@@ -89,13 +89,17 @@ export const softDeleteList = async (req: Request, res: Response, next: NextFunc
   const { id } = req.params
   if (!id) return res.status(404).send(ResMsgs.NotFound)
 
+  console.log('HasID')
+
   const syncSequence = await getNextSyncSequence(id)
   if (syncSequence < 0) res.status(404).send(ResMsgs.NotFound)
   if (syncSequence === 0) res.status(410).send(ResMsgs.ListDeleted)
+  console.log('hasSyncSequence')
 
   const version = await getNextVersion(id)
   if (version < 0) return res.status(404).send(ResMsgs.NotFound)
   if (version === 0) return res.status(410).send(ResMsgs.ListDeleted)
+  console.log('hasNextVersion')
 
   const updateOptions = {
     deleted: true,
@@ -109,6 +113,8 @@ export const softDeleteList = async (req: Request, res: Response, next: NextFunc
    * Later when we implement proper history we can rethink this design decision
    */
   await ListItem.destroy({ where: { listId: id, deleted: true } })
+
+  console.log('destroyedItems')
   /**
    * Now with a clean slate of history we can persist what is left
    * Later this can be either cleaned up or restored by a user revisiting the list
