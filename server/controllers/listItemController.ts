@@ -21,6 +21,11 @@ export const createListItem = async (req: Request, res: Response, next: NextFunc
   const syncSequence = await getNextSyncSequence(listId)
   if (syncSequence <= 0) return res.status(404).send(ResMsgs.NotFound)
 
+  if (listItem.bumpIndexes) {
+    await ListItem.increment(['index'], { where: listId, by: 1 })
+    await ListItem.update({ syncSequence }, { where: listId })
+  }
+
   ListItem.create({ ...listItem, syncSequence })
     .then(({ listId, id, syncSequence }) =>
       updateListSyncSequence(listId, syncSequence).then(() =>

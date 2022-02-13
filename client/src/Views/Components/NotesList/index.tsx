@@ -221,7 +221,6 @@ const NoteList: FC = () => {
     const itemsToSync = diffWithNewIndex(noteState, newNoteState)
 
     // IGDev: Here we would send a fire & forget sync request
-    console.log(itemsToSync)
     if (itemsToSync.length === 0) return
     // syncDiff(itemsToSync)
     //    await diff.forEach(syncItem, newIndex)
@@ -231,18 +230,22 @@ const NoteList: FC = () => {
     //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
     //    setNotes()
 
-    // When creating a new note, all indexes must bump by one on the server
+    // When creating a new note, all indexes must bump by one on the server for fresh connections
+    // The syncSequence must also be updated
 
     // [ITEMS]
-    // [ON:CREATE]
-    //    [newNote, ...noteState]
     // [ON:DELETE]
-    //    noteState.filter( note => note.id !== deleted.id)
+    //    const {deletedNoteId} = socket.message.deletedNoteId
+    //    const currentNotes = [...noteState].filter( note => note.id !== deletedNoteId )
+    //    const newNotes = syncList(syncSequence)
+    //    newNotes.forEach( note => currentNotes[note.index] = note)
+    //    setNotes(currentNotes)
+    // [ON:CREATE]
     // [ON:UPDATEITEM]
-    //    noteState[noteState.findIndex( (it) => it.test)] = updatedNote
     // [ON:UPDATEMANY]
-    //    The with our currentNotes and our newNotes we can do:-
-    //    newNotes.forEach( newNote => currentNotes[newNote.index] = newNote)
+    //    const currentNotes = [...noteState]
+    //    const newNotes = syncList(syncSequence)
+    //    newNotes.forEach( note => currentNotes[note.index] = note)
     //    setNotes(currentNotes)
 
     dispatch(setNotes(newNoteState))
