@@ -175,10 +175,10 @@ export const resetDb = (_req: Request, res: Response) => {
  */
 const cleanUp = () => {
   const deleteOptions = getCleanupQueryObject()
-  Promise.all([
+  /* ListItems are destroyed first due to the relationship between ListItems <> List */
+  ListItem.destroy({ where: deleteOptions }).then(() =>
     List.destroy({ where: deleteOptions }),
-    ListItem.destroy({ where: deleteOptions }),
-  ])
+  )
 }
 
 /**

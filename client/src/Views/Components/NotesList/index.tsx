@@ -222,6 +222,7 @@ const NoteList: FC = () => {
 
     // IGDev: Here we would send a fire & forget sync request
     console.log(itemsToSync)
+    if (itemsToSync.length === 0) return
     // syncDiff(itemsToSync)
     //    await diff.forEach(syncItem, newIndex)
     // Items get a new index, and syncSequence, new clients see the changes
@@ -229,6 +230,8 @@ const NoteList: FC = () => {
     // [LOAD] fetch syncSequence
     //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
     //    setNotes()
+
+    // When creating a new note, all indexes must bump by one on the server
 
     // [ITEMS]
     // [ON:CREATE]

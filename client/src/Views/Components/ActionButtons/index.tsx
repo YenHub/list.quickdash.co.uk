@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme, CircularProgress, Link } from '@mui/material'
+import { IconButton, Button, useTheme, Link } from '@mui/material'
 
 import './style.css'
 
@@ -14,18 +14,12 @@ import {
   clearSyncSettings,
   resetColours,
   setColours,
-  setSyncSettings,
 } from '../../../Services/Reducers/settingSlice'
-import { deleteList, syncNewList } from '../../../Services/Clients/Api'
-import {
-  deleteSyncSettings,
-  errorLog,
-  persistAppSettings,
-} from '../../../Services/Utils/ReactUtils'
-import { socketInit } from '../../../Services/Clients/WebSockets'
+import { deleteList } from '../../../Services/Clients/Api'
+import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
 import generateNote, { random } from './generateNote'
 
-const currentAnimation = () => localStorage.getItem('animateButton') !== null
+export const currentAnimation = () => localStorage.getItem('animateButton') !== null
 
 const DeletionWarning: FC = () => {
   const { webId } = useAppSelector(({ settings }) => settings)
@@ -58,7 +52,7 @@ const DeleteAlert: FC<{
   </ActionDialog>
 )
 
-const CustomButton = (props: any) => (
+export const CustomButton = (props: any) => (
   <Button {...props} edge="end" variant="outlined" fullWidth>
     {props['aria-label']}
   </Button>
@@ -159,97 +153,6 @@ export const ImportButton: FC = () => {
     onClick: () => importNotes(noteState),
     disabled: !noteState,
     type: 'secondary',
-  }
-
-  return <CustomButton {...buttonProps} />
-}
-
-export const ShareButton: FC = () => {
-  const dispatch = useAppDispatch()
-  const theme = useTheme()
-  const { syncSequence } = useAppSelector(({ settings }) => settings)
-  const [animating, setAnimating] = useState(
-    localStorage.getItem('animateButton') === 'saving-list',
-  )
-  const [saved, setSaved] = useState(
-    localStorage.getItem('animateButton') === 'saved-list',
-  )
-
-  useEffect(() => {
-    if (animating) {
-      localStorage.removeItem('animateButton')
-    }
-  })
-
-  useEffect(() => {
-    if (saved) {
-      localStorage.removeItem('animateButton')
-      const x = setTimeout(() => setSaved(false), 1500)
-
-      return () => clearTimeout(x)
-    }
-  })
-
-  const setSuccess = () => {
-    localStorage.setItem('animateButton', 'saved-list')
-    setSaved(true)
-  }
-
-  const syncList = async () => {
-    setAnimating(true)
-    // If we don't have a syncSequence, it means this is our first time syncing our list
-    if (syncSequence) {
-      // IGDev: Check whether syncsequence is up to date
-
-      // IGDev:
-      setSuccess()
-      console.log('Already Synced')
-      await new Promise(res => setTimeout(res, 1000))
-      // IGDev: Show Link Modal
-    } else {
-      // IGDev: Sync List
-      // IGDev: Sync List Items
-      await syncNewList()
-        .then(res => {
-          const { version, syncSequence, webId, listItems } = res
-          if (!version || !webId || !syncSequence) return
-          persistAppSettings({ version, webId, syncSequence })
-          dispatch(setNotes(listItems))
-          dispatch(setSyncSettings({ version, syncSequence, webId }))
-          setSuccess()
-          socketInit()
-        })
-        .catch(e => {
-          // IGDev: Handle the possible failure here
-          errorLog(e)
-        })
-      // IGDev: Show Link Modal
-    }
-  }
-
-  const handleOnClick = async () => {
-    if (currentAnimation()) return
-    setAnimating(true)
-    localStorage.setItem('animateButton', 'saving-list')
-    await syncList()
-  }
-
-  const buttonProps = {
-    'aria-label': 'SHARE LIST',
-    onClick: handleOnClick,
-    type: 'default',
-  }
-
-  if (saved) {
-    return <Checkmark size="35px" color={theme.palette.primary.main} />
-  }
-
-  if (animating) {
-    return (
-      <div style={{ width: '100%', justifyContent: 'center', display: 'flex' }}>
-        <CircularProgress size={35} />
-      </div>
-    )
   }
 
   return <CustomButton {...buttonProps} />
