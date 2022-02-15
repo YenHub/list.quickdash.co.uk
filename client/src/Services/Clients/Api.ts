@@ -71,6 +71,36 @@ export const createListItems = async (settings: SettingState): Promise<NoteItem[
   return syncedNotes
 }
 
+export const createListItem = async (note: NoteItem, listId: string): Promise<void> =>
+  await api
+    // POST Settings
+    .post('/list/item/create', {
+      listItem: {
+        clientId: note.id,
+        listId,
+        title: note.primary,
+        body: note.secondary,
+        index: 1,
+      },
+    })
+
+export const updateListItem = async (
+  listId: string,
+  note: NoteItem,
+  index: number,
+): Promise<void> =>
+  await api
+    // POST Settings
+    .put('/list/item', {
+      listItem: {
+        clientId: note.id,
+        listId,
+        title: note.primary,
+        body: note.secondary,
+        index,
+      },
+    })
+
 export const deleteList = async (): Promise<void> => {
   const {
     settings: { webId },
