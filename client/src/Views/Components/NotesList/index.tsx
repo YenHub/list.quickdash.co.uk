@@ -62,13 +62,6 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   }),
 })
 
-const getListStyle = (
-  isDraggingOver: boolean,
-  darkMode: boolean,
-): { background: string } => ({
-  background: isDraggingOver ? (darkMode ? '#303030' : '#fafafa') : '',
-})
-
 const getTextStyle = (isDraggingOver: boolean): { color: string } => ({
   color: isDraggingOver ? 'black' : '',
 })
@@ -107,11 +100,10 @@ const DeleteAlert: FC<{
 )
 
 interface NoteFragProps {
-  item: NoteItem
   index: number
 }
 
-const NoteFragment: FC<NoteFragProps> = memo(({ item, index }: NoteFragProps) => {
+const NoteFragment: FC<NoteFragProps> = memo(({ index }: NoteFragProps) => {
   bigLog('[RENDER] <NoteFragment />')
 
   const classes = useStyles()
@@ -119,6 +111,7 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }: NoteFragProps) =>
   const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
   const { noteState } = useAppSelector(({ notes }) => notes)
   const dispatch = useAppDispatch()
+  const item = noteState[index]
 
   const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
 
@@ -140,7 +133,7 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }: NoteFragProps) =>
       {deleteNote && (
         <DeleteAlert handleAccept={handleDeleteNote} handleClose={handleCloseAlert} />
       )}
-      <Draggable key={item.id} draggableId={item.id} index={index}>
+      <Draggable draggableId={item.id} index={index}>
         {(provided, snapshot) => {
           const textStyle = getTextStyle(snapshot.isDragging)
           const itemStyle = getItemStyle(
@@ -206,8 +199,6 @@ const NoteFragment: FC<NoteFragProps> = memo(({ item, index }: NoteFragProps) =>
 const NoteList: FC = () => {
   bigLog('[RENDER] <NotesList />')
   const classes = useStyles()
-
-  const { darkMode } = useAppSelector(({ settings }) => settings)
   const { noteState } = useAppSelector(({ notes }) => notes)
 
   const dispatch = useAppDispatch()
@@ -245,19 +236,14 @@ const NoteList: FC = () => {
     dispatch(setNotes(newNoteState))
   }
 
-  if (noteState === null) return null
-
   return (
     <div className={classes.listRoot}>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <List
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver, darkMode)}
-            >
-              {noteState.map((item, index) => (
-                <NoteFragment key={item.id} item={item} index={index} />
+          {provided => (
+            <List ref={provided.innerRef}>
+              {noteState.map(({ id }, index) => (
+                <NoteFragment key={id} index={index} />
               ))}
               {provided.placeholder}
             </List>
@@ -268,4 +254,4 @@ const NoteList: FC = () => {
   )
 }
 
-export default NoteList
+export default memo(NoteList)
