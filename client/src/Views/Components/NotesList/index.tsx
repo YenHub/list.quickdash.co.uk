@@ -1,4 +1,4 @@
-import { FC, memo, useState } from 'react'
+import { FC, memo, useCallback, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { isMobile } from 'react-device-detect'
 
@@ -103,98 +103,105 @@ interface NoteFragProps {
   index: number
 }
 
-const NoteFragment: FC<NoteFragProps> = memo(({ index }: NoteFragProps) => {
-  bigLog('[RENDER] <NoteFragment />')
+const NoteFragment: FC<NoteFragProps> = memo(
+  ({ index }: NoteFragProps) => {
+    bigLog('[RENDER] <NoteFragment />')
 
-  const classes = useStyles()
+    const classes = useStyles()
 
-  const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
-  const { noteState } = useAppSelector(({ notes }) => notes)
-  const dispatch = useAppDispatch()
-  const item = noteState[index]
+    const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
+    const { noteState } = useAppSelector(({ notes }) => notes)
+    const dispatch = useAppDispatch()
+    const item = noteState[index]
 
-  const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
+    const [deleteNote, setDeleteNote] = useState<NoteItem | null>(null)
 
-  const showDeleteAlert = (item: NoteItem) => setDeleteNote(item)
+    const showDeleteAlert = (item: NoteItem) => setDeleteNote(item)
 
-  const handleDeleteNote = () => {
-    const newNotes = [...noteState]
-    newNotes.splice(index, 1)
-    dispatch(setNotes(newNotes))
-    setDeleteNote(null)
-  }
+    const handleDeleteNote = () => {
+      const newNotes = [...noteState]
+      newNotes.splice(index, 1)
+      dispatch(setNotes(newNotes))
+      setDeleteNote(null)
+    }
 
-  const handleCloseAlert = () => setDeleteNote(null)
+    const handleCloseAlert = () => setDeleteNote(null)
 
-  const buttonStyle = isMobile ? { minWidth: '2.5em' } : {}
+    const buttonStyle = isMobile ? { minWidth: '2.5em' } : {}
 
-  return (
-    <>
-      {deleteNote && (
-        <DeleteAlert handleAccept={handleDeleteNote} handleClose={handleCloseAlert} />
-      )}
-      <Draggable draggableId={item.id} index={index}>
-        {(provided, snapshot) => {
-          const textStyle = getTextStyle(snapshot.isDragging)
-          const itemStyle = getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style,
-          )
-          const listItemFrags = getListItemFrags(darkMode, mdMode, item)
+    return (
+      <>
+        {deleteNote && (
+          <DeleteAlert handleAccept={handleDeleteNote} handleClose={handleCloseAlert} />
+        )}
+        <Draggable draggableId={item.id} index={index}>
+          {(provided, snapshot) => {
+            const textStyle = getTextStyle(snapshot.isDragging)
+            const itemStyle = getItemStyle(
+              snapshot.isDragging,
+              provided.draggableProps.style,
+            )
+            const listItemFrags = getListItemFrags(darkMode, mdMode, item)
 
-          return (
-            <ListItem
-              className={classes.secondaryAction}
-              ContainerComponent={(<li />).type}
-              // ContainerProps={{ ref: provided.innerRef }}
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              style={itemStyle}
-            >
-              <ListItemIcon style={buttonStyle}>
-                <NotesIcon style={textStyle} />
-              </ListItemIcon>
-              <ListItemText
-                disableTypography={mdMode ? true : false}
-                primary={listItemFrags[0]}
-                primaryTypographyProps={{ style: { ...textStyle } }}
-                secondary={listItemFrags[1]}
-                secondaryTypographyProps={{
-                  style: { ...textStyle, whiteSpace: 'pre-wrap' },
-                }}
-              />
-              <ListItemIcon style={buttonStyle}>
-                <CreateNoteButton
-                  testId="edit"
-                  label="Edit Note"
-                  onClick={() =>
-                    dispatch(
-                      setModalState({
-                        modalState: { open: true, editingNoteId: item.id },
-                      }),
-                    )
-                  }
-                  ActionButton={<EditIcon color="primary" />}
-                />
-              </ListItemIcon>
-              <ListItemIcon
-                style={{ ...buttonStyle, paddingRight: '0.5em' }}
-                role="deleteNote"
-                onClick={() => showDeleteAlert(item)}
+            return (
+              <ListItem
+                className={classes.secondaryAction}
+                ContainerComponent={(<li />).type}
+                // ContainerProps={{ ref: provided.innerRef }}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                style={itemStyle}
               >
-                <IconButton>
-                  <DeleteForeverIcon color="secondary" />
-                </IconButton>
-              </ListItemIcon>
-              <ListItemSecondaryAction />
-            </ListItem>
-          )
-        }}
-      </Draggable>
-    </>
-  )
-})
+                <ListItemIcon style={buttonStyle}>
+                  <NotesIcon style={textStyle} />
+                </ListItemIcon>
+                <ListItemText
+                  disableTypography={mdMode ? true : false}
+                  primary={listItemFrags[0]}
+                  primaryTypographyProps={{ style: { ...textStyle } }}
+                  secondary={listItemFrags[1]}
+                  secondaryTypographyProps={{
+                    style: { ...textStyle, whiteSpace: 'pre-wrap' },
+                  }}
+                />
+                <ListItemIcon style={buttonStyle}>
+                  <CreateNoteButton
+                    testId="edit"
+                    label="Edit Note"
+                    onClick={() =>
+                      dispatch(
+                        setModalState({
+                          modalState: { open: true, editingNoteId: item.id },
+                        }),
+                      )
+                    }
+                    ActionButton={<EditIcon color="primary" />}
+                  />
+                </ListItemIcon>
+                <ListItemIcon
+                  style={{ ...buttonStyle, paddingRight: '0.5em' }}
+                  role="deleteNote"
+                  onClick={() => showDeleteAlert(item)}
+                >
+                  <IconButton>
+                    <DeleteForeverIcon color="secondary" />
+                  </IconButton>
+                </ListItemIcon>
+                <ListItemSecondaryAction />
+              </ListItem>
+            )
+          }}
+        </Draggable>
+      </>
+    )
+  },
+  (prev, next) => {
+    if (prev.index === next.index) return true
+
+    return false
+  },
+)
 
 const NoteList: FC = () => {
   bigLog('[RENDER] <NotesList />')
@@ -203,44 +210,50 @@ const NoteList: FC = () => {
 
   const dispatch = useAppDispatch()
 
-  const onDragEnd = (result: any) => {
-    // Drop zone is outside of the list
-    if (!result.destination) return
+  const onDragEnd = useCallback(
+    (result: any) => {
+      // Drop zone is outside of the list
+      if (!result.destination) return
 
-    const newNoteState = reorder(noteState, result.source.index, result.destination.index)
+      const newNoteState = reorder(
+        noteState,
+        result.source.index,
+        result.destination.index,
+      )
 
-    const itemsToSync = diffWithNewIndex(noteState, newNoteState)
+      const itemsToSync = diffWithNewIndex(noteState, newNoteState)
 
-    // IGDev: Here we would send a fire & forget sync request
-    if (itemsToSync.length === 0) return
-    // syncDiff(itemsToSync)
-    //    await diff.forEach(syncItem, newIndex)
-    // Items get a new index, and syncSequence, new clients see the changes
+      // IGDev: Here we would send a fire & forget sync request
+      if (itemsToSync.length === 0) return
+      // syncDiff(itemsToSync)
+      //    await diff.forEach(syncItem, newIndex)
+      // Items get a new index, and syncSequence, new clients see the changes
 
-    // [LOAD] fetch syncSequence
-    //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
-    //    setNotes()
+      // [LOAD] fetch syncSequence
+      //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
+      //    setNotes()
 
-    // When creating a new note, all indexes must bump by one on the server for fresh connections
-    // The syncSequence must also be updated
+      // When creating a new note, all indexes must bump by one on the server for fresh connections
+      // The syncSequence must also be updated
 
-    // [ITEMS]
-    // [ON:DELETE]
-    //    const {deletedNoteId} = socket.message.deletedNoteId
-    //    const currentNotes = [...noteState].filter( note => note.id !== deletedNoteId )
-    //    const newNotes = syncList(syncSequence)
-    //    newNotes.forEach( note => currentNotes[note.index] = note)
-    //    setNotes(currentNotes)
-    // [ON:CREATE]
-    // [ON:UPDATEITEM]
-    // [ON:UPDATEMANY]
-    //    const currentNotes = [...noteState]
-    //    const newNotes = syncList(syncSequence)
-    //    newNotes.forEach( note => currentNotes[note.index] = note)
-    //    setNotes(currentNotes)
-
-    dispatch(setNotes(newNoteState))
-  }
+      // [ITEMS]
+      // [ON:DELETE]
+      //    const {deletedNoteId} = socket.message.deletedNoteId
+      //    const currentNotes = [...noteState].filter( note => note.id !== deletedNoteId )
+      //    const newNotes = syncList(syncSequence)
+      //    newNotes.forEach( note => currentNotes[note.index] = note)
+      //    setNotes(currentNotes)
+      // [ON:CREATE]
+      // [ON:UPDATEITEM]
+      // [ON:UPDATEMANY]
+      //    const currentNotes = [...noteState]
+      //    const newNotes = syncList(syncSequence)
+      //    newNotes.forEach( note => currentNotes[note.index] = note)
+      //    setNotes(currentNotes)
+      dispatch(setNotes(newNoteState))
+    },
+    [dispatch, noteState],
+  )
 
   return (
     <div className={classes.listRoot}>
