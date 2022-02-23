@@ -56,7 +56,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:beta": "cross-env REACT_APP_BETA=true react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env REACT_APP_BETA=false REACT_APP_ENV=production react-scripts build",
     "build:beta": "cross-env REACT_APP_BETA=true react-scripts build",
     "test": "cross-env REACT_APP_ENV=production react-scripts test --verbose",
     "eject": "react-scripts eject",
