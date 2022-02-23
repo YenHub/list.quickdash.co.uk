@@ -74,7 +74,7 @@ describe('Note Functions', () => {
     expect(getNoteCount()).toBe(expectedCount + 1)
   })
 
-  test.skip('Can create a note with only a desc', async () => {
+  test('Can create a note with only a desc', async () => {
     const expectedCount = getNoteCount()
     openNoteModal()
     setNoteDesc('Only Desc ab123')
@@ -105,38 +105,5 @@ describe('Note Functions', () => {
     // Test if a note has been created with a <hr>
     const newNote = document.querySelectorAll('.MuiListItem-container hr')
     expect(newNote.length).toEqual(1)
-  })
-
-  // TODO: (IGDev) We've broken some selectors
-  test.skip('Markdown Preview Works', async () => {
-    const expectedCount = getNoteCount()
-    // Create a new note
-    openNoteModal()
-    expect(screen.queryByTestId('create-note-submit')).toBeInTheDocument()
-    setNoteTitle('MDPreviewCheck')
-    setNoteDesc('---')
-
-    // Check the preview window is absent & submit the note
-    expect(document.querySelectorAll('form hr').length).toEqual(0)
-    submitNote()
-
-    // Check the note was created
-    expect(getNoteCount()).toBe(expectedCount + 1)
-
-    // Enable MDMode (It's disabled by default)
-    toggleMD()
-
-    // Check MDMode & Preview mode are now active
-    expect(window.localStorage.mdMode).toEqual('true')
-    expect(window.localStorage.previewMode).toEqual('true')
-
-    // Create another note
-    openNoteModal()
-    expect(screen.queryByTestId('create-note-submit')).toBeInTheDocument()
-    setNoteTitle('MDPreviewFinalCheck')
-    setNoteDesc('---')
-
-    // Check the preview window is rendering the Markdown
-    expect(document.querySelectorAll('form hr').length).toEqual(1)
   })
 })

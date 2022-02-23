@@ -38,7 +38,12 @@ export const AppHeader: FC<{
         >
           <SettingsIcon fontSize="large" />
         </IconButton>
-        <Typography variant="h1" noWrap className={classes.title}>
+        <Typography
+          variant="h1"
+          noWrap
+          className={classes.title}
+          data-testid="header-title"
+        >
           QuickList
           <SyncStatus />
         </Typography>
