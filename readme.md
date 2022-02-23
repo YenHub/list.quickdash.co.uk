@@ -127,22 +127,14 @@ Or alternatively just use root 🙄
 
 ### Create a .env config
 
-Create a file at `./.env` and populate the contents like below, setting a password of your choosing.
-
-Copy this file also to `./server/.env`
-
-_This file is .gitignored_
+Copy and edit the .env files to suit your setup needs (for local development the defaults are perfectly acceptable)
 
 ```.env
-DB_PORT=3306
-DB_USERNAME=root
-DB_SERVICE_USER=NodeUser
-DB_SERVICE_USER_PASSWORD=Node@User_Pass2021
-DB_PASSWORD=NodeUserPassword
-DB_DATABASE=nodeDB
-DB_HOST=node-mysql
-DB_TEST=testDB
+cp .env.example .env
+cp /server/.env.example /server/.env
 ```
+
+_Note; these files are .gitignored_
 
 ### Run the solution using Docker 🐳
 

@@ -1,28 +1,44 @@
-import express from 'express';
-const router = express.Router();
+import { Router } from 'express'
+
 import {
-    get,
-    getAll,
-    deleteAll,
-    createList,
-    updateList,
-    deleteList,
-    createRandom,
-} from '../controllers/listController';
+  createList,
+  getList,
+  resetDb,
+  softDeleteList,
+  updateList,
+} from '../controllers/listController.js'
+import {
+  createListItem,
+  getListItem,
+  getListItems,
+  softDeleteListItem,
+  updateListItem,
+} from '../controllers/listItemController.js'
 
-// READ
-router.get('/all', getAll);
-router.get('/:id', get);
+const router = Router()
 
-// DELETE
-router.delete('/all', deleteAll);
-router.delete('/:id', deleteList);
-
+/* LIST */
 // CREATE
-router.post('/create', createList);
-router.post('/random', createRandom);
-
+router.post('/create', createList)
+// READ
+router.get('/:id', getList)
 // UPDATE
-router.put('/update/:id', updateList);
+router.put('/:id/:property', updateList)
+// DELETE
+router.delete('/:id', softDeleteList)
+// DEV
+router.post('/reset', resetDb)
 
-export { router };
+/* LIST ITEM */
+// CREATE ITEM
+router.post('/item/create', createListItem)
+// READ ITEM
+router.get('/item', getListItem)
+// READ ALL ITEMS
+router.get('/item/all/:listId', getListItems)
+// UPDATE ITEM
+router.put('/item', updateListItem)
+// DELETE ITEM
+router.delete('/item/:id/:listId', softDeleteListItem)
+
+export { router }

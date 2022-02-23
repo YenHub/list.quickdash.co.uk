@@ -35,9 +35,10 @@ export const TitleInput: FC<Pick<ICustomInputs, 'primary' | 'setPrimary'>> = ({
   )
 }
 
-export const DescInput: FC<
-  Pick<ICustomInputs, 'secondary' | 'setSecondary'>
-> = ({ secondary, setSecondary }) => {
+export const DescInput: FC<Pick<ICustomInputs, 'secondary' | 'setSecondary'>> = ({
+  secondary,
+  setSecondary,
+}) => {
   const handleDescChange: ChangeEventHandler<HTMLInputElement> = evt =>
     setSecondary(evt.target.value)
 
@@ -49,7 +50,7 @@ export const DescInput: FC<
       variant="outlined"
       onChange={handleDescChange}
       multiline
-      rows={isMobile ? 6 : 12}
+      rows={isMobile ? 8 : 12}
       defaultValue={secondary}
       inputProps={{ 'aria-label': 'Note Description' }}
     />

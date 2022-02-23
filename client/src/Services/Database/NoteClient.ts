@@ -3,8 +3,11 @@ import { DefaultNotes } from './DefaultNotes'
 
 export interface NoteItem {
   id: string
+  webId?: string
   primary?: string
   secondary?: string
+  syncSequence?: number
+  locked?: boolean
 }
 
 const noteStore = 'notes'
@@ -30,7 +33,7 @@ class NoteClient {
   public getNotes = async (): Promise<NoteItem[]> => {
     const storedNotes = (await Store.getItem<NoteItem[]>(noteStore)) || []
 
-    if (!storedNotes.length) return DefaultNotes
+    if (!storedNotes.length) return DefaultNotes.map((n, index) => ({ ...n, index }))
 
     return storedNotes
   }

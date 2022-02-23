@@ -50,9 +50,7 @@ describe('Note Functions', () => {
   test('Cannot create blank notes', async () => {
     // Open the note modal & check the submit button is disabled
     openNoteModal()
-    expect(
-      screen.getByTestId('create-note-submit').closest('button'),
-    ).toBeDisabled()
+    expect(screen.getByTestId('create-note-submit').closest('button')).toBeDisabled()
 
     // Check count before > attempt to submit > check count after
     const expectedCount = getNoteCount()
@@ -107,38 +105,5 @@ describe('Note Functions', () => {
     // Test if a note has been created with a <hr>
     const newNote = document.querySelectorAll('.MuiListItem-container hr')
     expect(newNote.length).toEqual(1)
-  })
-
-  // TODO: (IGDev) We've broken some selectors
-  test.skip('Markdown Preview Works', async () => {
-    const expectedCount = getNoteCount()
-    // Create a new note
-    openNoteModal()
-    expect(screen.queryByTestId('create-note-submit')).toBeInTheDocument()
-    setNoteTitle('MDPreviewCheck')
-    setNoteDesc('---')
-
-    // Check the preview window is absent & submit the note
-    expect(document.querySelectorAll('form hr').length).toEqual(0)
-    submitNote()
-
-    // Check the note was created
-    expect(getNoteCount()).toBe(expectedCount + 1)
-
-    // Enable MDMode (It's disabled by default)
-    toggleMD()
-
-    // Check MDMode & Preview mode are now active
-    expect(window.localStorage.mdMode).toEqual('true')
-    expect(window.localStorage.previewMode).toEqual('true')
-
-    // Create another note
-    openNoteModal()
-    expect(screen.queryByTestId('create-note-submit')).toBeInTheDocument()
-    setNoteTitle('MDPreviewFinalCheck')
-    setNoteDesc('---')
-
-    // Check the preview window is rendering the Markdown
-    expect(document.querySelectorAll('form hr').length).toEqual(1)
   })
 })

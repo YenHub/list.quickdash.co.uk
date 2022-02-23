@@ -1,32 +1,58 @@
 import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme } from '@mui/material'
+import { IconButton, Button, useTheme, Link } from '@mui/material'
 
 import './style.css'
 
-import { downloadFile } from '../../../Services/BrowserUtils'
+import { downloadFile } from '../../../Services/Utils/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { getUniqueId } from '../../../Services/UUID'
+import { getUniqueId } from '../../../Services/Utils/UUID'
 import ActionDialog from '../ActionDialog'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import {
+  clearSyncSettings,
   resetColours,
   setColours,
 } from '../../../Services/Reducers/settingSlice'
+import { deleteList } from '../../../Services/Clients/Api'
+import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
 import generateNote, { random } from './generateNote'
 
-const DeleteAlert = (handleAccept: () => void, handleClose: () => void) => (
+export const currentAnimation = () => localStorage.getItem('animateButton') !== null
+
+const DeletionWarning: FC = () => {
+  const { webId } = useAppSelector(({ settings }) => settings)
+
+  if (webId) {
+    const listUrl = `${document.location.origin}/${webId}`
+
+    return (
+      <>
+        <p>Anyone with the link below can restore this list within 90 days:</p>
+        <Link href={listUrl}>{listUrl}</Link>
+      </>
+    )
+  }
+
+  return <p>You cannot undo this 👀</p>
+}
+
+const DeleteAlert: FC<{
+  handleAccept: () => void
+  handleClose: () => void
+}> = ({ handleAccept, handleClose }) => (
   <ActionDialog
     open={true}
-    title="Delete List"
-    message="Are you sure you want to delete all of your notes?"
+    title="Delete this list?"
     onAccept={handleAccept}
     onCancel={handleClose}
-  />
+  >
+    <DeletionWarning />
+  </ActionDialog>
 )
 
-const CustomButton = (props: any) => (
+export const CustomButton = (props: any) => (
   <Button {...props} edge="end" variant="outlined" fullWidth>
     {props['aria-label']}
   </Button>
@@ -35,7 +61,6 @@ const CustomButton = (props: any) => (
 const AnimatedButton: FC<any> = (props: any) => {
   const theme = useTheme()
   const { animatesuccess, onClick } = props
-  const currentAnimation = () => localStorage.getItem('animateButton')
   const [animating, setAnimating] = useState(
     localStorage.getItem('animateButton') === animatesuccess,
   )
@@ -50,7 +75,7 @@ const AnimatedButton: FC<any> = (props: any) => {
   })
 
   const handleOnClick = () => {
-    if (currentAnimation() !== null) return
+    if (currentAnimation()) return
     localStorage.setItem('animateButton', animatesuccess)
     onClick()
   }
@@ -60,16 +85,11 @@ const AnimatedButton: FC<any> = (props: any) => {
     onClick: handleOnClick,
   }
 
-  if (animatesuccess && animating) {
+  if (animating) {
     return <Checkmark size="35px" color={theme.palette.primary.main} />
   }
 
-  return (
-    <CustomButton
-      {...buttonProps}
-      className={currentAnimation() ? '' : 'fade-in'}
-    />
-  )
+  return <CustomButton {...buttonProps} />
 }
 
 export const DeleteNotes: FC = () => {
@@ -79,6 +99,9 @@ export const DeleteNotes: FC = () => {
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
   const clearNotes = (): void => {
+    deleteSyncSettings()
+    deleteList()
+    dispatch(clearSyncSettings())
     dispatch(setNotes([]))
     toggleDeleteAlert(false)
   }
@@ -96,7 +119,9 @@ export const DeleteNotes: FC = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      {showDeleteAlert && DeleteAlert(clearNotes, handleDeleteCancel)}
+      {showDeleteAlert && (
+        <DeleteAlert handleAccept={clearNotes} handleClose={handleDeleteCancel} />
+      )}
       <CustomButton {...buttonProps} />
     </div>
   )

@@ -1,0 +1,174 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": ["dist/**", "public/**", "node_modules"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "tsconfigRootDir": "./"
+  },
+  "plugins": ["eslint-plugin-import", "@typescript-eslint"],
+  "rules": {
+    "linebreak-style": ["error", "unix"],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": true
+      }
+    ],
+    "@typescript-eslint/adjacent-overload-signatures": "error",
+    "@typescript-eslint/consistent-type-assertions": "error",
+    "@typescript-eslint/consistent-type-definitions": "error",
+    "@typescript-eslint/explicit-member-accessibility": [
+      "error",
+      {
+        "accessibility": "explicit"
+      }
+    ],
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "none",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": false
+        }
+      }
+    ],
+    "@typescript-eslint/no-empty-function": "error",
+    "@typescript-eslint/no-inferrable-types": [
+      "error",
+      {
+        "ignoreParameters": true,
+        "ignoreProperties": true
+      }
+    ],
+    "@typescript-eslint/no-misused-new": "error",
+    "@typescript-eslint/no-shadow": [
+      "off",
+      {
+        "hoist": "all"
+      }
+    ],
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ],
+    "@typescript-eslint/prefer-function-type": "error",
+    "@typescript-eslint/prefer-namespace-keyword": "error",
+    "@typescript-eslint/quotes": ["error", "single"],
+    "@typescript-eslint/semi": ["error", "never"],
+    "@typescript-eslint/triple-slash-reference": "error",
+    "@typescript-eslint/type-annotation-spacing": "error",
+    "arrow-body-style": "error",
+    "arrow-parens": ["error", "as-needed"],
+    "brace-style": ["error", "1tbs"],
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "complexity": [
+      "error",
+      {
+        "max": 11
+      }
+    ],
+    "constructor-super": "error",
+    "curly": ["error", "multi-line"],
+    "default-case": "error",
+    "eol-last": "error",
+    "eqeqeq": ["error", "smart"],
+    "id-denylist": "error",
+    "id-match": "error",
+    "import/order": "error",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "new-parens": "error",
+    "no-caller": "error",
+    "no-cond-assign": "error",
+    "no-const-assign": "warn",
+    "no-constant-condition": "error",
+    "no-control-regex": "error",
+    "no-debugger": "error",
+    "no-empty": "error",
+    "no-empty-function": "error",
+    "no-eval": "error",
+    "no-fallthrough": "error",
+    "no-invalid-regexp": "error",
+    "no-irregular-whitespace": "error",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2
+      }
+    ],
+    "no-new-wrappers": "error",
+    "no-redeclare": "error",
+    "no-regex-spaces": "error",
+    "no-shadow": "off",
+    "no-sparse-arrays": "error",
+    "no-this-before-super": "warn",
+    "no-throw-literal": "error",
+    "no-trailing-spaces": "error",
+    "no-undef": "warn",
+    "no-underscore-dangle": "error",
+    "no-unreachable": "warn",
+    "no-unsafe-finally": "error",
+    "no-unused-expressions": "error",
+    "no-unused-labels": "error",
+    "no-unused-vars": "off",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "one-var": ["off", "never"],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
+    ],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "quote-props": ["error", "as-needed"],
+    "quotes": ["error", "single"],
+    "radix": "error",
+    "semi": 0,
+    "semi-style": ["error", "first"],
+    "use-isnan": "error",
+    "valid-typeof": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "rules": {}
+    }
+  ],
+  "globals": {
+    "node": true,
+    "context": true,
+    "expect": true,
+    "jsdom": true,
+    "JSX": true
+  }
+}

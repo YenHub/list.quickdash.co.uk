@@ -9,7 +9,7 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-import { DRAWER_WIDTH } from '../../../Services/constants'
+import { DRAWER_WIDTH } from '../../../Services/Utils/constants'
 
 const useStyles = makeStyles(
   () => ({

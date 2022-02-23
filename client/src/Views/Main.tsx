@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import 'typeface-dosis'
 
 import NoteClient from '../Services/Database/NoteClient'
-import { bigLog, groupLog } from '../Services/ReactUtils'
+import { bigLog, groupLog } from '../Services/Utils/ReactUtils'
 import { useAppDispatch, useAppSelector } from '../Services/Store'
 import { setNotes } from '../Services/Reducers/noteSlice'
 import { useStyles } from './Main.Styles'

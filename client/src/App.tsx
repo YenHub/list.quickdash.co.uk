@@ -7,19 +7,21 @@ import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material'
 
 import './RootCSS.css'
-import { sortTable } from './Services/BrowserUtils'
-import { bigLog, getStringSetting, setBoolSetting } from './Services/ReactUtils'
+import { sortTable } from './Services/Utils/BrowserUtils'
+import { bigLog, getStringSetting, setBoolSetting } from './Services/Utils/ReactUtils'
 import Main from './Views/Main'
 import CreateNoteModal from './Views/Components/CreateNoteModal'
 import { useAppSelector } from './Services/Store'
+import { socketInit } from './Services/Clients/WebSockets'
 
 const getTheme = (darkMode: boolean) => {
-  const custTheme = getStringSetting('colours')
+  const custTheme = getStringSetting('colours') ?? ''
   let primaryMain = darkMode ? '#08d2ff' : '#007bff'
   let secondaryMain = '#ff0000'
   if (custTheme.length) {
-    primaryMain = JSON.parse(custTheme).primary
-    secondaryMain = JSON.parse(custTheme).secondary
+    const { primary, secondary } = JSON.parse(custTheme)
+    primaryMain = primary
+    secondaryMain = secondary
   }
 
   return createTheme({
@@ -48,9 +50,7 @@ const getTheme = (darkMode: boolean) => {
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const { darkMode, mdMode, previewMode } = useAppSelector(
-    ({ settings }) => settings,
-  )
+  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
 
   // Auto Table Sorting
   useEffect(() => {
@@ -59,6 +59,9 @@ const App: FC = () => {
 
     return () => window.removeEventListener('click', sortTable)
   }, [])
+
+  // Initialise WebSockets
+  useEffect(socketInit, [])
 
   // Settings: Darkmode
   useEffect(() => {
@@ -81,7 +84,7 @@ const App: FC = () => {
     <div
       style={{
         display: 'flex',
-        // IGDev: We could add another customisation for the background colour
+        // IGDev: (TODO) We could add another customisation for the background colour
         backgroundColor: darkMode ? '#303030' : '#fafafa',
         height: 'calc(100vh)',
         overflow: 'hidden',
@@ -90,11 +93,7 @@ const App: FC = () => {
     >
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <Scrollbars
-            autoHeight
-            autoHeightMin={'calc(100vh)'}
-            hideTracksWhenNotNeeded
-          >
+          <Scrollbars autoHeight autoHeightMin={'calc(100vh)'} hideTracksWhenNotNeeded>
             <CssBaseline />
             <Main /> <br />
             <CreateNoteModal />

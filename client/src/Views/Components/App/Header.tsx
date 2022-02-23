@@ -5,10 +5,12 @@ import clsx from 'clsx'
 
 import SettingsIcon from '@mui/icons-material/Settings'
 
+import { isMobile } from 'react-device-detect'
 import { useStyles } from '../../Main.Styles'
 import { CreateNoteButton } from '../ActionButtons'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { SyncStatus } from './SyncStatus'
 
 export const AppHeader: FC<{
   open: boolean
@@ -36,8 +38,14 @@ export const AppHeader: FC<{
         >
           <SettingsIcon fontSize="large" />
         </IconButton>
-        <Typography variant="h1" noWrap className={classes.title}>
+        <Typography
+          variant="h1"
+          noWrap
+          className={classes.title}
+          data-testid="header-title"
+        >
           QuickList
+          <SyncStatus />
         </Typography>
         <CreateNoteButton
           testId="create"
@@ -50,7 +58,11 @@ export const AppHeader: FC<{
             )
           }
           ActionButton={
-            <AddCircleOutlineIcon color="primary" fontSize="large" />
+            <AddCircleOutlineIcon
+              style={isMobile ? {} : { fontSize: '2.5rem' }}
+              color="primary"
+              fontSize="large"
+            />
           }
         />
       </Toolbar>

@@ -1,5 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
-import { Setting } from '../../Services/ReactUtils'
+import { SettingState } from '../../Services/Reducers/settingSlice'
 import {
   initApp,
   openNoteModal,
@@ -9,7 +9,7 @@ import {
   toggleMDPreview,
 } from '../../test-helpers'
 
-const checkBoolIsTruthy = (storageKey: Setting): boolean =>
+const checkBoolIsTruthy = (storageKey: keyof SettingState): boolean =>
   window.localStorage.getItem(storageKey) === 'true'
 
 beforeEach(async () => {
@@ -69,27 +69,23 @@ describe('Menu Toggles', () => {
   })
 
   // TODO: (IGDev) We've broken some selectors
-  test.skip('Can Toggle Markdown Preview in Create Note Modal', async () => {
+  test('Can Toggle Markdown Preview in Create Note Modal', async () => {
     const mdModeActive = () => checkBoolIsTruthy('mdMode')
-
-    // Enable MDMode (It's disabled by default)
-    toggleMD()
-    expect(mdModeActive()).toBeTruthy()
 
     // Open the note modal & create a note with a HR
     openNoteModal()
     setNoteDesc('---')
     const beforeToggle = document.querySelectorAll('form hr')
 
-    // Check the preview is active & HR has rendered
-    expect(beforeToggle.length).toEqual(1)
+    // Check the HR is absent
+    expect(beforeToggle.length).toEqual(0)
 
-    // Turn off the preview
+    // Turn on the preview
     fireEvent.click(screen.getByTestId('create-note-md-toggle'))
     const afterToggle = document.querySelectorAll('form hr')
 
-    // Check the HR is now absent
-    expect(afterToggle.length).toEqual(0)
+    // Check the preview is active & HR has rendered
+    expect(afterToggle.length).toEqual(1)
 
     // Toggle MDMode OFF
     toggleMD()

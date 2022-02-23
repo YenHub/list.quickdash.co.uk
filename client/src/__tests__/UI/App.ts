@@ -4,7 +4,7 @@ import { initApp, openMainMenu, openNoteModal } from '../../test-helpers'
 describe('UI Rendering', () => {
   test('Header & Welcome List Renders', async () => {
     await initApp()
-    const pageTitle = screen.getByText(/^QuickList$/i)
+    const pageTitle = screen.getByTestId('header-title')
     expect(pageTitle).toBeInTheDocument()
     const welcomeItems = await screen.findAllByText(
       /(Welcome To QuickList|Use the icons)/i,

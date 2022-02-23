@@ -8,12 +8,12 @@ import makeStyles from '@mui/styles/makeStyles'
 import { Theme } from '@mui/system'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog, shallowCompareIdentical } from '../../../Services/ReactUtils'
-import { getUniqueId } from '../../../Services/UUID'
+import { bigLog, shallowCompareIdentical } from '../../../Services/Utils/ReactUtils'
 import MDPreview from '../MDPreview'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
+import { getUniqueId } from '../../../Services/Utils/UUID'
 import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
@@ -88,10 +88,9 @@ const CreateNoteModal: React.FC = () => {
       primary,
       secondary,
     }
-    if (shallowCompareIdentical(editingNote, newNote)) {
-      bigLog(`No changes made to note: ${editingNoteId}`)
 
-      return
+    if (shallowCompareIdentical(editingNote, newNote)) {
+      return bigLog(`No changes made to note: ${editingNoteId}`)
     }
 
     bigLog(`Updated note: ${editingNoteId}`)
@@ -102,6 +101,7 @@ const CreateNoteModal: React.FC = () => {
       primary,
       secondary,
     }
+    // IGDev: We need to sync here: Edited note
     dispatch(setNotes(newNotes))
   }
 
@@ -118,9 +118,10 @@ const CreateNoteModal: React.FC = () => {
         /* HAS NOTE: Edit existing */
         return editExistingNote(editingNoteId as string)
       case !!noteState?.length:
+        /* HAS NOTES: Prepend new note */
         bigLog('Adding new note')
 
-        /* HAS NOTES: Prepend new note */
+        // IGDev: We need to sync here: New Note
         dispatch(
           setNotes([
             {
@@ -135,6 +136,8 @@ const CreateNoteModal: React.FC = () => {
         return
       default:
         bigLog('First Ever Note')
+
+        // IGDev: We need to sync here: New Note, no bump
 
         /* FIRST NOTE: Set initial state */
         dispatch(setNotes([{ id: getUniqueId(), primary, secondary }]))
