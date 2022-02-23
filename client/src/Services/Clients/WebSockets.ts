@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client'
-import { errorLog, successLog } from '../Utils/ReactUtils'
+import { errorLog, showGatedFeatures, successLog } from '../Utils/ReactUtils'
 import { setSocketState } from '../Reducers/settingSlice'
 import store from '../Store'
 
@@ -30,7 +30,7 @@ export const socketInit = () => {
     settings: { version },
   } = store.getState()
   // IGDev: Will need to remove this dev gate
-  if (!version) return
+  if (!version || !showGatedFeatures) return
 
   const socket: Socket = io(`${socketHost}`)
 

@@ -80,7 +80,7 @@ describe('Menu Toggles', () => {
     // Check the HR is absent
     expect(beforeToggle.length).toEqual(0)
 
-    // Turn off the preview
+    // Turn on the preview
     fireEvent.click(screen.getByTestId('create-note-md-toggle'))
     const afterToggle = document.querySelectorAll('form hr')
 

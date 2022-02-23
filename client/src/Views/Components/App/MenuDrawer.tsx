@@ -49,7 +49,7 @@ export const AppMenuDrawer: FC<{
 
   const MenuItems: FC = () => (
     <List>
-      <ShareList />
+      {showGatedFeatures && <ShareList />}
       {showGatedFeatures && <ExportListItem />}
       {showGatedFeatures && <ImportListItem />}
       <ListItem>

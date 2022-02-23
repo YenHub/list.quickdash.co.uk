@@ -3,11 +3,12 @@ import CloudOffIcon from '@mui/icons-material/CloudOff' // Make it secondary col
 import FilterDramaIcon from '@mui/icons-material/FilterDrama' // Make it primary colour == CONNECTED
 
 import { useAppSelector } from '../../../Services/Store'
+import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 
 export const SyncStatus: FC = () => {
   const { version, connected, darkMode } = useAppSelector(({ settings }) => settings)
   // IGDev: Don't forget to remove this dev flag
-  if (!version) return null
+  if (!version || !showGatedFeatures) return null
 
   return (
     <sup>

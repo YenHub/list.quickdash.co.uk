@@ -18,7 +18,7 @@ import NotesIcon from '@mui/icons-material/Notes'
 import { useAppSelector, useAppDispatch } from '../../../Services/Store'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog } from '../../../Services/Utils/ReactUtils'
+import { bigLog, showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 import ActionDialog from '../ActionDialog'
 import MDPreview, { MDTitle } from '../MDPreview'
 import { CreateNoteButton } from '../ActionButtons'
@@ -211,36 +211,38 @@ const NoteList: FC = () => {
         result.destination.index,
       )
 
-      const itemsToSync = diffWithNewIndex(noteState, newNoteState)
-
-      // IGDev: Here we would send a fire & forget sync request
-      if (itemsToSync.length === 0) return
-      // syncDiff(itemsToSync)
-      //    await diff.forEach(syncItem, newIndex)
-      // Items get a new index, and syncSequence, new clients see the changes
-
-      // [LOAD] fetch syncSequence
-      //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
-      //    setNotes()
-
-      // When creating a new note, all indexes must bump by one on the server for fresh connections
-      // The syncSequence must also be updated
-
-      // [ITEMS]
-      // [ON:DELETE]
-      //    const {deletedNoteId} = socket.message.deletedNoteId
-      //    const currentNotes = [...noteState].filter( note => note.id !== deletedNoteId )
-      //    const newNotes = syncList(syncSequence)
-      //    newNotes.forEach( note => currentNotes[note.index] = note)
-      //    setNotes(currentNotes)
-      // [ON:CREATE]
-      // [ON:UPDATEITEM]
-      // [ON:UPDATEMANY]
-      //    const currentNotes = [...noteState]
-      //    const newNotes = syncList(syncSequence)
-      //    newNotes.forEach( note => currentNotes[note.index] = note)
-      //    setNotes(currentNotes)
       dispatch(setNotes(newNoteState))
+
+      if (showGatedFeatures) {
+        const itemsToSync = diffWithNewIndex(noteState, newNoteState)
+        if (itemsToSync.length === 0) return
+        // IGDev: Here we would send a fire & forget sync request
+        // syncDiff(itemsToSync)
+        //    await diff.forEach(syncItem, newIndex)
+        // Items get a new index, and syncSequence, new clients see the changes
+
+        // [LOAD] fetch syncSequence
+        //    IF syncSequence > currentSyncSequence [syncItems(currentSyncSequence)]
+        //    setNotes()
+
+        // When creating a new note, all indexes must bump by one on the server for fresh connections
+        // The syncSequence must also be updated
+
+        // [ITEMS]
+        // [ON:DELETE]
+        //    const {deletedNoteId} = socket.message.deletedNoteId
+        //    const currentNotes = [...noteState].filter( note => note.id !== deletedNoteId )
+        //    const newNotes = syncList(syncSequence)
+        //    newNotes.forEach( note => currentNotes[note.index] = note)
+        //    setNotes(currentNotes)
+        // [ON:CREATE]
+        // [ON:UPDATEITEM]
+        // [ON:UPDATEMANY]
+        //    const currentNotes = [...noteState]
+        //    const newNotes = syncList(syncSequence)
+        //    newNotes.forEach( note => currentNotes[note.index] = note)
+        //    setNotes(currentNotes)
+      }
     },
     [dispatch, noteState],
   )
