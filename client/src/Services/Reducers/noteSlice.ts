@@ -19,9 +19,16 @@ export const noteSlice = createSlice({
 
       return { ...state, noteState: action.payload }
     },
+    deleteNote: (state, action: PayloadAction<number>) => {
+      const newNotes = [...state.noteState]
+      newNotes.splice(action.payload, 1)
+      noteClient.setNotes(newNotes)
+
+      return { ...state, noteState: newNotes }
+    },
   },
 })
 
-export const { setNotes } = noteSlice.actions
+export const { setNotes, deleteNote } = noteSlice.actions
 
 export default noteSlice.reducer
