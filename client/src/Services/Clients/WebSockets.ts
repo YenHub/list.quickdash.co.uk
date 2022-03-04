@@ -35,7 +35,7 @@ export class Socket {
 
     const handleDisconnect = (err: Error | string) => {
       errorLog(`[WebSockets] Failed to connect: ${err}`)
-      connected && store.dispatch(setSocketState({ connected: false }))
+      store.dispatch(setSocketState({ connected: false }))
     }
 
     this.socket.off('connect', handleConnect).on('connect', handleConnect)

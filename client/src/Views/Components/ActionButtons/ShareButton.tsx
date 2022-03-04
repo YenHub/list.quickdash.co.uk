@@ -3,6 +3,7 @@ import { CircularProgress, Link, useTheme } from '@mui/material'
 import { Checkmark } from 'react-checkmark'
 
 import { syncNewList } from '../../../Services/Clients/Api'
+import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setSyncSettings } from '../../../Services/Reducers/settingSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { errorLog } from '../../../Services/Utils/ReactUtils'
@@ -71,6 +72,7 @@ export const ShareButton: FC = () => {
     listItems: NoteItem[]
   }) => {
     setSaved(true)
+    dispatch(setNotes(listItems))
     dispatch(setSyncSettings({ version, syncSequence, webId }))
     localStorage.setItem('animateButton', 'saved-list')
   }
