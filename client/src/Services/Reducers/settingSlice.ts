@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
+  deleteSyncSettings,
   getBoolSetting,
   getNumberSetting,
   getStringSetting,
@@ -84,12 +85,16 @@ export const settingSlice = createSlice({
         ...action.payload,
       }
     },
-    clearSyncSettings: state => ({
-      ...state,
-      version: null,
-      syncSequence: null,
-      webId: null,
-    }),
+    clearSyncSettings: state => {
+      deleteSyncSettings()
+
+      return {
+        ...state,
+        version: null,
+        syncSequence: null,
+        webId: null,
+      }
+    },
   },
 })
 

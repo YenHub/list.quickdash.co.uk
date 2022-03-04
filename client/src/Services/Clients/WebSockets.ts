@@ -20,6 +20,10 @@ export class Socket {
     this.socket = io(this.socketHost)
   }
 
+  public disconnect(): void {
+    this.socket.disconnect()
+  }
+
   public init(): void {
     const {
       settings: { webId, connected },
@@ -34,7 +38,7 @@ export class Socket {
     }
 
     const handleDisconnect = (err: Error | string) => {
-      errorLog(`[WebSockets] Failed to connect: ${err}`)
+      errorLog(`[WebSockets] Disconnection Reason: ${err}`)
       store.dispatch(setSocketState({ connected: false }))
     }
 

@@ -16,7 +16,7 @@ import {
   setColours,
 } from '../../../Services/Reducers/settingSlice'
 import { deleteList } from '../../../Services/Clients/Api'
-import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
+import { Socket } from '../../../Services/Clients/WebSockets'
 import generateNote, { random } from './generateNote'
 
 export const currentAnimation = () => localStorage.getItem('animateButton') !== null
@@ -94,14 +94,22 @@ const AnimatedButton: FC<any> = (props: any) => {
 
 export const DeleteNotes: FC = () => {
   const { noteState } = useAppSelector(({ notes }) => notes)
+  const { version } = useAppSelector(({ settings }) => settings)
   const dispatch = useAppDispatch()
 
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
   const clearNotes = (): void => {
-    deleteSyncSettings()
-    deleteList()
-    dispatch(clearSyncSettings())
+    if (version) {
+      const socket = Socket.getInstance()
+      socket.disconnect()
+      deleteList()
+      dispatch(clearSyncSettings())
+      dispatch(setNotes([]))
+      toggleDeleteAlert(false)
+
+      return
+    }
     dispatch(setNotes([]))
     toggleDeleteAlert(false)
   }
