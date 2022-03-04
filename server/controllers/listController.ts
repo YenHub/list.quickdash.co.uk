@@ -37,7 +37,7 @@ export const createList = (req: Request, res: Response, next: NextFunction) => {
 export const getList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   if (!id) return res.status(404).send(ResMsgs.NotFound)
-  List.findByPk(id)
+  getListFromDB(id)
     .then(list => {
       if (!list) return res.status(404).send(ResMsgs.NotFound)
       // We still want to return the list to allow people to restore it
@@ -48,6 +48,8 @@ export const getList = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(err => handleFailure(err, res, next))
 }
+
+export const getListFromDB = (id: string): Promise<List | null> => List.findByPk(id)
 
 /**
  * UPDATE LIST

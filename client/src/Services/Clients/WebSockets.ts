@@ -2,6 +2,7 @@ import { io, Socket as SocketType } from 'socket.io-client'
 import { errorLog, successLog } from '../Utils/ReactUtils'
 import { setSocketState } from '../Reducers/settingSlice'
 import store from '../Store'
+import { NoteItem } from '../Database/NoteClient'
 
 export class Socket {
   private static instance: Socket
@@ -20,6 +21,12 @@ export class Socket {
     this.socket = io(this.socketHost)
   }
 
+  public static getInstance(): Socket {
+    Socket.instance = Socket.instance || new Socket()
+
+    return Socket.instance
+  }
+
   public disconnect(): void {
     this.socket.disconnect()
   }
@@ -33,7 +40,7 @@ export class Socket {
 
     const handleConnect = () => {
       successLog(`[WebSockets] Connected on ${this.socket.id}`)
-      this.socket.emit('join', { webId })
+      this.socket.emit('join', webId)
       store.dispatch(setSocketState({ connected: true }))
     }
 
@@ -52,9 +59,8 @@ export class Socket {
       .on('reconnect_error', handleDisconnect)
   }
 
-  public static getInstance(): Socket {
-    Socket.instance = Socket.instance || new Socket()
-
-    return Socket.instance
+  public setNotes(notes: NoteItem[]) {
+    console.log('Setting Notes')
+    this.socket.emit('set-notes', notes)
   }
 }

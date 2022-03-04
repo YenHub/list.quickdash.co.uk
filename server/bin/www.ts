@@ -6,7 +6,9 @@
 import http from 'http'
 import debug from 'debug'
 import { Server, Socket } from 'socket.io'
+import { Console } from 'winston/lib/winston/transports'
 import { app } from '../app.js'
+import { getListFromDB } from '../controllers/listController.js'
 
 const origin =
   process.env.NODE_ENV === 'development'
@@ -44,11 +46,29 @@ server.on('listening', onListening)
 /* WEBSOCKETS */
 io.on('connection', (socket: Socket) => {
   console.log(`Someone connected on ${socket.id}`)
-})
+  // A room is synonymous with a list
+  // This allows us to fan out messages using a list.webId 😎
+  socket.on('join', (webId: string) => {
+    console.log(`Connected ${socket.id} with room ${webId}`)
+    socket.join(webId)
+  })
+  // IGDev: Need a CRUD here
+  // But we probably want to handle it via rooms
+  socket.on('get-list', (webId: string) => {
+    getListFromDB(webId)
+      .then(list => {
+        if (!list) return console.log('Return list deleted')
 
-io.on('join', (socket: Socket) => {
-  console.log(`Connected ${socket.id} with room ${socket.data.webId}`)
-  socket.join(socket.data.webId)
+        // We still want to return the list to allow people to restore it
+        // Use the response code to indicate this being the case
+        if (list.deleted) return console.log('list soft deleted')
+
+        return list
+      })
+      .catch(err => {
+        console.log('Handle the DB Error', err)
+      })
+  })
 })
 
 /**
