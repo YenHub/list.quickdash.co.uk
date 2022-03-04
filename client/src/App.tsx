@@ -12,7 +12,7 @@ import { bigLog, getStringSetting, setBoolSetting } from './Services/Utils/React
 import Main from './Views/Main'
 import CreateNoteModal from './Views/Components/CreateNoteModal'
 import { useAppSelector } from './Services/Store'
-import { socketInit } from './Services/Clients/WebSockets'
+import { Socket } from './Services/Clients/WebSockets'
 
 const getTheme = (darkMode: boolean) => {
   const custTheme = getStringSetting('colours') ?? ''
@@ -50,7 +50,9 @@ const getTheme = (darkMode: boolean) => {
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { darkMode, mdMode, previewMode, version } = useAppSelector(
+    ({ settings }) => settings,
+  )
 
   // Auto Table Sorting
   useEffect(() => {
@@ -61,7 +63,12 @@ const App: FC = () => {
   }, [])
 
   // Initialise WebSockets
-  useEffect(socketInit, [])
+  useEffect(() => {
+    // If we don't have a version, it means we haven't shared
+    if (!version) return
+    const socket = Socket.getInstance()
+    socket.init()
+  }, [version])
 
   // Settings: Darkmode
   useEffect(() => {

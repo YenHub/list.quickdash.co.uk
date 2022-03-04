@@ -1,65 +1,56 @@
-import { io, Socket } from 'socket.io-client'
-import { errorLog, showGatedFeatures, successLog } from '../Utils/ReactUtils'
+import { io, Socket as SocketType } from 'socket.io-client'
+import { errorLog, successLog } from '../Utils/ReactUtils'
 import { setSocketState } from '../Reducers/settingSlice'
 import store from '../Store'
 
-const socketHost =
-  process.env.REACT_APP_ENV === 'development'
-    ? process.env.REACT_APP_API_DEV
-    : process.env.REACT_APP_API_PROD
+export class Socket {
+  private static instance: Socket
+  private socket: SocketType
+  private socketHost: string
 
-const handleDisconnect = (err: Error | string, socket: Socket) => {
-  const {
-    settings: { connected },
-  } = store.getState()
-  errorLog(`[WebSockets] Failed to connect: ${err}`)
-  connected && store.dispatch(setSocketState({ connected: false }))
-}
+  public constructor() {
+    if (Socket.instance) {
+      throw new Error('Use `const socket = Socket.getInstance()` instead')
+    }
 
-const handleConnect = (socket: Socket) => {
-  const {
-    settings: { webId },
-  } = store.getState()
-  successLog(`[WebSockets] Connected on ${socket.id}`)
-  socket.emit('join', { webId })
-  store.dispatch(setSocketState({ connected: true }))
-}
+    this.socketHost =
+      process.env.REACT_APP_ENV === 'development'
+        ? process.env.REACT_APP_API_DEV!
+        : process.env.REACT_APP_API_PROD!
+    this.socket = io(this.socketHost)
+  }
 
-export const socketInit = () => {
-  const {
-    settings: { version },
-  } = store.getState()
-  // IGDev: Will need to remove this dev gate
-  if (!version || !showGatedFeatures) return
+  public init(): void {
+    const {
+      settings: { webId, connected },
+    } = store.getState()
 
-  const socket: Socket = io(`${socketHost}`)
+    if (connected) return
 
-  socket
-    .off('connect', () => {
-      handleConnect(socket)
-    })
-    .on('connect', () => {
-      handleConnect(socket)
-    })
-  socket
-    .off('connect_error', err => {
-      handleDisconnect(err, socket)
-    })
-    .on('connect_error', err => {
-      handleDisconnect(err, socket)
-    })
-  socket
-    .off('disconnect', err => {
-      handleDisconnect(err, socket)
-    })
-    .on('disconnect', err => {
-      handleDisconnect(err, socket)
-    })
-  socket
-    .off('reconnect_error', err => {
-      handleDisconnect(err, socket)
-    })
-    .on('reconnect_error', err => {
-      handleDisconnect(err, socket)
-    })
+    const handleConnect = () => {
+      successLog(`[WebSockets] Connected on ${this.socket.id}`)
+      this.socket.emit('join', { webId })
+      store.dispatch(setSocketState({ connected: true }))
+    }
+
+    const handleDisconnect = (err: Error | string) => {
+      errorLog(`[WebSockets] Failed to connect: ${err}`)
+      connected && store.dispatch(setSocketState({ connected: false }))
+    }
+
+    this.socket.off('connect', handleConnect).on('connect', handleConnect)
+    this.socket.off('disconnect', handleDisconnect).on('disconnect', handleDisconnect)
+    this.socket
+      .off('connect_error', handleDisconnect)
+      .on('connect_error', handleDisconnect)
+    this.socket
+      .off('reconnect_error', handleDisconnect)
+      .on('reconnect_error', handleDisconnect)
+  }
+
+  public static getInstance(): Socket {
+    Socket.instance = Socket.instance || new Socket()
+
+    return Socket.instance
+  }
 }

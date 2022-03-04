@@ -3,6 +3,7 @@ import {
   getBoolSetting,
   getNumberSetting,
   getStringSetting,
+  persistAppSettings,
   setStringSetting,
 } from '../Utils/ReactUtils'
 
@@ -73,10 +74,16 @@ export const settingSlice = createSlice({
     setSyncSettings: (
       state,
       action: PayloadAction<Pick<SettingState, 'syncSequence' | 'version' | 'webId'>>,
-    ) => ({
-      ...state,
-      ...action.payload,
-    }),
+    ) => {
+      const { version, webId, syncSequence } = action.payload
+      if (!version || !webId || !syncSequence) return
+      persistAppSettings({ version, webId, syncSequence })
+
+      return {
+        ...state,
+        ...action.payload,
+      }
+    },
     clearSyncSettings: state => ({
       ...state,
       version: null,

@@ -3,11 +3,9 @@ import { CircularProgress, Link, useTheme } from '@mui/material'
 import { Checkmark } from 'react-checkmark'
 
 import { syncNewList } from '../../../Services/Clients/Api'
-import { socketInit } from '../../../Services/Clients/WebSockets'
-import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setSyncSettings } from '../../../Services/Reducers/settingSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
-import { errorLog, persistAppSettings } from '../../../Services/Utils/ReactUtils'
+import { errorLog } from '../../../Services/Utils/ReactUtils'
 import ActionDialog from '../ActionDialog'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { currentAnimation, CustomButton } from '.'
@@ -73,11 +71,7 @@ export const ShareButton: FC = () => {
     listItems: NoteItem[]
   }) => {
     setSaved(true)
-    dispatch(setNotes(listItems))
-    persistAppSettings({ version, webId, syncSequence })
     dispatch(setSyncSettings({ version, syncSequence, webId }))
-    // Sockets require the syncSettings to be present
-    socketInit()
     localStorage.setItem('animateButton', 'saved-list')
   }
 
