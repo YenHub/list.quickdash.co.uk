@@ -1,6 +1,7 @@
 import localForage from 'localforage'
 import { DefaultNotes } from './DefaultNotes'
 
+// TODO: This is a shared interface, we should create a shared package!
 export interface NoteItem {
   id: string
   webId?: string

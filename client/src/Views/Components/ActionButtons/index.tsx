@@ -4,7 +4,7 @@ import { IconButton, Button, useTheme, Link } from '@mui/material'
 
 import './style.css'
 
-import { downloadFile } from '../../../Services/Utils/BrowserUtils'
+import { downloadFile, setUrlPath } from '../../../Services/Utils/BrowserUtils'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { getUniqueId } from '../../../Services/Utils/UUID'
 import ActionDialog from '../ActionDialog'
@@ -16,7 +16,6 @@ import {
   setColours,
 } from '../../../Services/Reducers/settingSlice'
 import { deleteList } from '../../../Services/Clients/Api'
-import { Socket } from '../../../Services/Clients/WebSockets'
 import generateNote, { random } from './generateNote'
 
 export const currentAnimation = () => localStorage.getItem('animateButton') !== null
@@ -25,7 +24,7 @@ const DeletionWarning: FC = () => {
   const { webId } = useAppSelector(({ settings }) => settings)
 
   if (webId) {
-    const listUrl = `${document.location.origin}/${webId}`
+    const listUrl = `${document.location.host}/${webId}`
 
     return (
       <>
@@ -101,12 +100,12 @@ export const DeleteNotes: FC = () => {
 
   const clearNotes = (): void => {
     if (version) {
-      const socket = Socket.getInstance()
-      socket.disconnect()
       deleteList()
-      dispatch(clearSyncSettings())
       dispatch(setNotes([]))
-      toggleDeleteAlert(false)
+      dispatch(clearSyncSettings())
+      setTimeout(() => {
+        setUrlPath('/')
+      })
 
       return
     }

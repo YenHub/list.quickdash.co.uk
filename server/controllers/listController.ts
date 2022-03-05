@@ -1,11 +1,17 @@
 import { NextFunction, Request, Response } from 'express'
 import sequelize from '../database/DBClient.js'
+import {
+  cleanUp,
+  getListById,
+  getNextSyncSequence,
+  getNextVersion,
+} from '../database/service.js'
 
 import { List } from '../models/list.js'
 import { ListItem } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
 import { handleFailure } from '../utils/errorHandler.js'
-import { dtNowISO, getCleanupQueryObject } from '../utils/index.js'
+import { dtNowISO } from '../utils/index.js'
 
 /**
  * CREATE LIST
@@ -37,7 +43,7 @@ export const createList = (req: Request, res: Response, next: NextFunction) => {
 export const getList = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params
   if (!id) return res.status(404).send(ResMsgs.NotFound)
-  getListFromDB(id)
+  getListById(id)
     .then(list => {
       if (!list) return res.status(404).send(ResMsgs.NotFound)
       // We still want to return the list to allow people to restore it
@@ -48,8 +54,6 @@ export const getList = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(err => handleFailure(err, res, next))
 }
-
-export const getListFromDB = (id: string): Promise<List | null> => List.findByPk(id)
 
 /**
  * UPDATE LIST
@@ -164,75 +168,4 @@ export const resetDb = (_req: Request, res: Response) => {
     return res.status(201).send(ResMsgs.DbReset)
   }
   res.status(404).send(ResMsgs.NotFound)
-}
-
-/* UTILS */
-
-/**
- * Clean up any deleted lists & list items
- * The idea here being we will periodically over-time maintain the size of the database
- *
- * // TODO: We might want to throttle or similar here if performance becomes an question
- * We are indexing basing on these options though..
- */
-const cleanUp = () => {
-  const deleteOptions = getCleanupQueryObject()
-  /* ListItems are destroyed first due to the relationship between ListItems <> List */
-  ListItem.destroy({ where: deleteOptions }).then(() =>
-    List.destroy({ where: deleteOptions }),
-  )
-}
-
-/**
- * Every write operation should trigger a refresh on all clients
- * We will achieve this through websockets and use signals to trigger syncs
- * Having a single source of truth for the sync sequence means we can compare
- * compare only a single value, which is the signal from the websocket itself
- * with the value stored in the client
- */
-export const updateListSyncSequence = async (listId: string, syncSequence: number) =>
-  await List.update({ syncSequence }, { where: { id: listId } })
-
-const getListById = async (listId: string) => await List.findByPk(listId)
-
-/**
- * The parent list always points to the greatest syncSequence
- * Every new operation bumps the sync sequence for that record
- * This allows for simple client side sync basing on the current syncSequence
- *
- * If no list is found we simply return -1 to indicate the absence of the resource
- * If the list has been deleted, we will signal this with a 0
- */
-export const getNextSyncSequence = async (listId: string) => {
-  const list = await getListById(listId)
-  if (!list) return -1
-  if (list.deleted) return 0
-
-  return list.syncSequence + 1
-}
-
-/**
- * The list carries its own version number, in effect a sync sequence
- *
- * The client listens out on websockets for the UpdateSettings signal,
- * comparing the payload with this version
- *
- * If no list is found we simply return -1 to indicate the absence of the resource
- * If the list has been deleted, we will signal this with a 0
- * */
-const getNextVersion = async (listId: string) => {
-  const list = await getListById(listId)
-  if (!list) return -1
-  if (list.deleted) return 0
-
-  return list.version + 1
-}
-
-export const getListStatus = async (
-  listId: string,
-): Promise<{ deleted: boolean; canRecover: boolean }> => {
-  const list = await getListById(listId)
-  if (!list) return { deleted: true, canRecover: false }
-
-  return { deleted: list.deleted, canRecover: true }
 }

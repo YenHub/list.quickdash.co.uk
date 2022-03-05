@@ -2,6 +2,16 @@ const isIE = () =>
   navigator.userAgent.indexOf('MISE ') !== -1 ||
   !!navigator.userAgent.match(/Trident.*rv:11\./)
 
+/**
+ * Replaces the current browser history entry without reloading
+ */
+export const replaceUrlPath = (path: string) => window.history.replaceState({}, '', path)
+
+/**
+ * Reload the browser with a new path
+ */
+export const setUrlPath = (path: string) => (window.location.href = path)
+
 export const downloadFile = (content: string): void => {
   const date = new Date().toLocaleDateString().replace(/\//g, '-')
   const filename = `QuickList-${date}.txt`
@@ -65,4 +75,19 @@ export const sortTable = (e: MouseEvent) => {
     }
   }
   element.setAttribute('data-sortAsc', sortAsc ? 'false' : 'true')
+}
+
+export const unstoppableCopy = (str: string) => {
+  try {
+    navigator.clipboard.writeText(str)
+  } catch (e) {
+    const copyBox = document.createElement('textarea')
+    copyBox.id = 'copyBox'
+    copyBox.value = str
+    document.getElementsByTagName('body')[0].appendChild(copyBox)
+    copyBox.focus()
+    copyBox.select()
+    document.execCommand('copy')
+    copyBox.remove()
+  }
 }

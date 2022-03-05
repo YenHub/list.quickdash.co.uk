@@ -28,6 +28,7 @@ export class Socket {
   }
 
   public disconnect(): void {
+    store.dispatch(setSocketState({ connected: false }))
     this.socket.disconnect()
   }
 
@@ -59,8 +60,19 @@ export class Socket {
       .on('reconnect_error', handleDisconnect)
   }
 
-  public setNotes(notes: NoteItem[]) {
-    console.log('Setting Notes')
-    this.socket.emit('set-notes', notes)
+  public createNote({ note, listWebId }: { note: NoteItem; listWebId: string }) {
+    this.socket.emit('create-note', { note, listWebId })
+  }
+
+  public updateNotes({ notes, listWebId }: { notes: NoteItem[]; listWebId: string }) {
+    this.socket.emit('update-notes', { notes, listWebId })
+  }
+
+  public deleteNote({ note, listWebId }: { note: NoteItem; listWebId: string }) {
+    this.socket.emit('delete-note', { note, listWebId })
+  }
+
+  public deleteList({ listWebId }: { listWebId: string }) {
+    this.socket.emit('delete-list', listWebId)
   }
 }

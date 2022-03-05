@@ -4,16 +4,27 @@ import sequelize from '../database/DBClient.js'
 import { List } from './list.js'
 
 interface ListItemAttributes {
-  id: string
+  id?: string
   listId: string
   clientId: string
   title?: string
   body?: string
-  deleted: boolean
+  deleted?: boolean
   index: number
-  createdAt: ReturnType<Date['toISOString']>
+  createdAt?: ReturnType<Date['toISOString']>
   updatedAt: ReturnType<Date['toISOString']>
   syncSequence: number
+}
+
+// TODO: This is a shared interface, we should create a shared package!
+export interface NoteWithIndex {
+  id: string
+  webId?: string
+  primary?: string
+  secondary?: string
+  syncSequence?: number
+  locked?: boolean
+  index: number
 }
 
 export type ListInput = Optional<ListItemAttributes, 'title' | 'body'>

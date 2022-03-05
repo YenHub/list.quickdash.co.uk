@@ -8,11 +8,11 @@ import {
   updateList,
 } from '../controllers/listController.js'
 import {
-  createListItem,
+  createItem,
   getListItem,
   getListItems,
   softDeleteListItem,
-  updateListItem,
+  updateItem,
 } from '../controllers/listItemController.js'
 
 const router = Router()
@@ -31,13 +31,13 @@ router.post('/reset', resetDb)
 
 /* LIST ITEM */
 // CREATE ITEM
-router.post('/item/create', createListItem)
+router.post('/item/create', createItem)
 // READ ITEM
 router.get('/item', getListItem)
 // READ ALL ITEMS
 router.get('/item/all/:listId', getListItems)
 // UPDATE ITEM
-router.put('/item', updateListItem)
+router.put('/item', updateItem)
 // DELETE ITEM
 router.delete('/item/:id/:listId', softDeleteListItem)
 

@@ -51,13 +51,11 @@ export const createListItems = async (settings: SettingState): Promise<NoteItem[
     await api
       // POST Settings
       .post('/list/item/create', {
-        listItem: {
-          clientId: note.id,
-          listId: settings.webId,
-          title: note.primary,
-          body: note.secondary,
+        noteItem: {
+          ...note,
           index,
         },
+        listId: settings.webId,
       })
       .then(({ data: { webId, syncSequence } }) => {
         syncedNotes.push({

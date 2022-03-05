@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { errorLog } from '../../../Services/Utils/ReactUtils'
 import ActionDialog from '../ActionDialog'
 import { NoteItem } from '../../../Services/Database/NoteClient'
+import { replaceUrlPath, unstoppableCopy } from '../../../Services/Utils/BrowserUtils'
 import { currentAnimation, CustomButton } from '.'
 
 const Dialog: FC<{
@@ -17,7 +18,8 @@ const Dialog: FC<{
   success: boolean
   webId: string | null
 }> = ({ onAccept, open, success, webId }) => {
-  const listUrl = `${document.location.origin}/${webId}`
+  const listUrl = `${document.location.host}/${webId}`
+  const copyUrl = () => unstoppableCopy(listUrl)
   if (!success) {
     return (
       <ActionDialog
@@ -30,7 +32,16 @@ const Dialog: FC<{
   }
 
   return (
-    <ActionDialog open={open} title="Successfully synced 🎉" onAccept={onAccept}>
+    <ActionDialog
+      open={open}
+      title="Successfully synced 🎉"
+      customHandler={{
+        action: copyUrl,
+        message: 'Copy Link',
+        animateSuccess: true,
+      }}
+      onAccept={onAccept}
+    >
       <p>Your personal list link:</p>
       <Link href={listUrl}>{listUrl}</Link>
     </ActionDialog>
@@ -45,22 +56,22 @@ export const ShareButton: FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [success, setSuccess] = useState(false)
   const [animating, setAnimating] = useState(false)
-  const [saved, setSaved] = useState(
+  const [synced, setSynced] = useState(
     localStorage.getItem('animateButton') === 'saved-list',
   )
 
   useEffect(() => {
-    if (saved) {
+    if (synced) {
       localStorage.removeItem('animateButton')
       setDialogOpen(true)
       setSuccess(true)
-      const x = setTimeout(() => setSaved(false), 1500)
+      const x = setTimeout(() => setSynced(false), 1500)
 
       return () => clearTimeout(x)
     }
-  }, [saved])
+  }, [synced])
 
-  const handleCreateSuccess = ({
+  const handleSyncSuccess = ({
     version,
     webId,
     syncSequence,
@@ -71,46 +82,41 @@ export const ShareButton: FC = () => {
     syncSequence: number
     listItems: NoteItem[]
   }) => {
-    setSaved(true)
+    setSynced(true)
+    replaceUrlPath(webId)
+    // The payload we set here includes the newly added webIds for the items
     dispatch(setNotes(listItems))
     dispatch(setSyncSettings({ version, syncSequence, webId }))
     localStorage.setItem('animateButton', 'saved-list')
   }
 
-  const handleCreateFail = () => {
+  const handleSyncFail = () => {
     localStorage.removeItem('animateButton')
-    setSaved(false)
+    setSynced(false)
     setSuccess(false)
     setAnimating(false)
     setDialogOpen(true)
   }
 
+  const showShareLink = () => setSynced(true)
+
   const syncList = async () => {
-    localStorage.setItem('animateButton', 'saving-list')
-    setAnimating(true)
-
     if (webId) {
-      /* List already exists */
-
-      // IGDev: Check whether syncsequence is up to date
-      // IGDev: Show Link Modal
-      console.log('Already Synced')
-
-      await new Promise(res => setTimeout(res, 1000))
-      handleCreateFail()
+      showShareLink()
     } else {
+      localStorage.setItem('animateButton', 'saving-list')
+      setAnimating(true)
       /* New list to sync */
       await syncNewList()
         .then(res => {
           const { version, syncSequence, webId, listItems } = res
-          if (!version || !webId || !syncSequence) return handleCreateFail()
-          handleCreateSuccess({ version, webId, syncSequence, listItems })
+          if (!version || !webId || !syncSequence) return handleSyncFail()
+          handleSyncSuccess({ version, webId, syncSequence, listItems })
         })
         .catch(e => {
           errorLog(e)
-          handleCreateFail()
+          handleSyncFail()
         })
-      // IGDev: Show Link Modal
     }
   }
 
@@ -126,7 +132,7 @@ export const ShareButton: FC = () => {
     disabled: noteState.length <= 0,
   }
 
-  if (saved) {
+  if (synced) {
     return <Checkmark size="35px" color={theme.palette.primary.main} />
   }
 

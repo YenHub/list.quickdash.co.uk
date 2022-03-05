@@ -6,9 +6,9 @@
 import http from 'http'
 import debug from 'debug'
 import { Server, Socket } from 'socket.io'
-import { Console } from 'winston/lib/winston/transports'
 import { app } from '../app.js'
-import { getListFromDB } from '../controllers/listController.js'
+import { NoteWithIndex } from '../models/listItem.js'
+import { createListItem, getListById } from '../database/service.js'
 
 const origin =
   process.env.NODE_ENV === 'development'
@@ -46,16 +46,35 @@ server.on('listening', onListening)
 /* WEBSOCKETS */
 io.on('connection', (socket: Socket) => {
   console.log(`Someone connected on ${socket.id}`)
+
   // A room is synonymous with a list
-  // This allows us to fan out messages using a list.webId 😎
+  // This allows us to fan out messages using a listId 😎
   socket.on('join', (webId: string) => {
     console.log(`Connected ${socket.id} with room ${webId}`)
     socket.join(webId)
   })
+
+  // Update & Create
+  socket.on(
+    'update-notes',
+    ({ notes, listId }: { notes: NoteWithIndex[]; listId: string }) => {
+      // First we would update the database
+      // Check for webIds, if they don't exist we create them
+      Promise.all(
+        notes.map(noteItem => {
+          if (noteItem.webId) console.log('updateNote({note, listId})')
+          else createListItem({ noteItem, listId })
+        }),
+      ).then()
+      // Then we can fan the same notes straight out to the clients
+      const syncedNotes = ['insert new notes here from DB with WebIDs']
+      io.to(listId).emit('updated-notes', syncedNotes)
+    },
+  )
   // IGDev: Need a CRUD here
   // But we probably want to handle it via rooms
   socket.on('get-list', (webId: string) => {
-    getListFromDB(webId)
+    getListById(webId)
       .then(list => {
         if (!list) return console.log('Return list deleted')
 

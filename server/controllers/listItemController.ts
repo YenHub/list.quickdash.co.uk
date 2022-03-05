@@ -1,32 +1,27 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { ListItem } from '../models/listItem.js'
+import { ListItem, NoteWithIndex } from '../models/listItem.js'
 import { ResMsgs } from '../utils/constants.js'
 import { dtNowISO } from '../utils/index.js'
 import { handleFailure } from '../utils/errorHandler.js'
 import {
+  createListItem,
   getListStatus,
   getNextSyncSequence,
   updateListSyncSequence,
-} from './listController.js'
+} from '../database/service.js'
 
 /* CREATE LIST ITEM */
-export const createListItem = async (req: Request, res: Response, next: NextFunction) => {
-  const { listItem } = req.body
-  if (!listItem) return res.status(404).send(ResMsgs.NotFound)
+export const createItem = async (req: Request, res: Response, next: NextFunction) => {
+  const { noteItem, listId } = req.body as { noteItem: NoteWithIndex; listId: string }
+  if (!noteItem || !listId) return res.status(404).send(ResMsgs.NotFound)
 
-  const { listId } = listItem
-  if (!listId) return res.status(404).send(ResMsgs.NotFound)
+  // if (listItem.bumpIndexes) {
+  //   await ListItem.increment(['index'], { where: listId, by: 1 })
+  //   await ListItem.update({ syncSequence }, { where: listId })
+  // }
 
-  const syncSequence = await getNextSyncSequence(listId)
-  if (syncSequence <= 0) return res.status(404).send(ResMsgs.NotFound)
-
-  if (listItem.bumpIndexes) {
-    await ListItem.increment(['index'], { where: listId, by: 1 })
-    await ListItem.update({ syncSequence }, { where: listId })
-  }
-
-  ListItem.create({ ...listItem, syncSequence })
+  createListItem({ noteItem, listId })
     .then(({ listId, id, syncSequence }) =>
       updateListSyncSequence(listId, syncSequence).then(() =>
         res.status(201).json({ webId: id, syncSequence }),
@@ -75,7 +70,7 @@ export const getListItem = (req: Request, res: Response, next: NextFunction) => 
 }
 
 /* UPDATE LIST ITEM */
-export const updateListItem = async (req: Request, res: Response, next: NextFunction) => {
+export const updateItem = async (req: Request, res: Response, next: NextFunction) => {
   const { listItem } = req.body
   if (!listItem) return res.status(404).send(ResMsgs.NotFound)
   const { listId, id } = listItem

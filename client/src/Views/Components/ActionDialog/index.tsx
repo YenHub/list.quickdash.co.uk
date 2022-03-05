@@ -15,6 +15,11 @@ interface Props {
   message?: string
   onAccept?(): void
   onCancel?(): void
+  customHandler?: {
+    action(): void
+    message: string
+    animateSuccess?: boolean
+  }
   children?: React.ReactNode
 }
 
@@ -24,6 +29,7 @@ const ActionDialog: FC<Props> = ({
   message,
   onAccept,
   onCancel,
+  customHandler,
   children,
 }) => {
   const handleClose = (accept: boolean) => {
@@ -52,6 +58,15 @@ const ActionDialog: FC<Props> = ({
           )}
         </DialogContent>
         <DialogActions>
+          {customHandler && (
+            <Button
+              data-testid="action-dialog-custom"
+              onClick={customHandler.action}
+              color="primary"
+            >
+              {customHandler.message}
+            </Button>
+          )}
           {onCancel && (
             <Button data-testid="action-dialog-cancel" onClick={onCancel} color="primary">
               CANCEL
