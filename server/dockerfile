@@ -1,5 +1,5 @@
 # --- Build Express API ---
-FROM node:17.4-buster-slim as builder
+FROM node:17.9.0-buster-slim as builder
 
 # Create working directory
 RUN mkdir /app
