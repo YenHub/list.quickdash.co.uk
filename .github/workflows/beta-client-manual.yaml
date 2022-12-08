@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v2.3.2
+        uses: actions/checkout@v3
 
-      - name: 🐱‍👤 Use Node.js 14.17.1
-        uses: actions/setup-node@v2-beta
+      - name: 🐱‍👤 Use Node.js 16.14.0
+        uses: actions/setup-node@v3
         with:
-          node-version: "14.17.1"
+          node-version: '16.14.0'
 
       - name: 💥 Install & Cache Deps (CLIENT)
-        uses: bahmutov/npm-install@v1.7.11
+        uses: bahmutov/npm-install@v1.8.25
         with:
           working-directory: client
 
@@ -32,7 +32,7 @@ jobs:
         working-directory: client
 
       - name: 📂 Sync Client
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           password: ${{ secrets.client_ftppass_staging }}
           server: ${{ secrets.client_ftpserver_staging }}
