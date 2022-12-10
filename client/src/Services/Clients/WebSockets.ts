@@ -4,9 +4,9 @@ import { setSocketState } from '../Reducers/settingSlice'
 import store from '../Store'
 
 const socketHost =
-  process.env.REACT_APP_ENV === 'development'
-    ? process.env.REACT_APP_API_DEV
-    : process.env.REACT_APP_API_PROD
+  import.meta.env.REACT_APP_ENV === 'development'
+    ? import.meta.env.REACT_APP_API_DEV
+    : import.meta.env.REACT_APP_API_PROD
 
 const handleDisconnect = (err: Error | string, socket: Socket) => {
   const {

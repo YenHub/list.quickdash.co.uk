@@ -8,7 +8,11 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material'
 
 import './RootCSS.css'
 import { sortTable } from './Services/Utils/BrowserUtils'
-import { bigLog, getStringSetting, setBoolSetting } from './Services/Utils/ReactUtils'
+import {
+  bigLog,
+  getStringSetting,
+  setBoolSetting,
+} from './Services/Utils/ReactUtils'
 import Main from './Views/Main'
 import CreateNoteModal from './Views/Components/CreateNoteModal'
 import { useAppSelector } from './Services/Store'
@@ -36,9 +40,6 @@ const getTheme = (darkMode: boolean) => {
       error: {
         main: '#ff0000',
       },
-      neutral: {
-        main: '#c7c7c7',
-      },
     },
     typography: {
       fontSize: 13,
@@ -50,7 +51,9 @@ const getTheme = (darkMode: boolean) => {
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
 
   // Auto Table Sorting
   useEffect(() => {
@@ -93,7 +96,11 @@ const App: FC = () => {
     >
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <Scrollbars autoHeight autoHeightMin={'calc(100vh)'} hideTracksWhenNotNeeded>
+          <Scrollbars
+            autoHeight
+            autoHeightMin={'calc(100vh)'}
+            hideTracksWhenNotNeeded
+          >
             <CssBaseline />
             <Main /> <br />
             <CreateNoteModal />

@@ -10,7 +10,9 @@ export const properCase = (str: string): string =>
   )
 
 const getWords = (count?: number): string =>
-  properCase(random(100) > 50 ? faker.random.words(count) : faker.lorem.words(count))
+  properCase(
+    random(100) > 50 ? faker.random.words(count) : faker.lorem.words(count),
+  )
 
 const getWord = (): string =>
   properCase(random(100) > 40 ? faker.random.word() : faker.lorem.word())

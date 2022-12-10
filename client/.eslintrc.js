@@ -22,7 +22,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['eslint-plugin-import', 'eslint-plugin-react', '@typescript-eslint'],
+  plugins: [
+    'eslint-plugin-import',
+    'eslint-plugin-react',
+    '@typescript-eslint',
+  ],
   overrides: [
     {
       files: ['**/*.ts?(x)'],

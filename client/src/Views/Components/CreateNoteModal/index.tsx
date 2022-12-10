@@ -8,13 +8,21 @@ import makeStyles from '@mui/styles/makeStyles'
 import { Theme } from '@mui/system'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog, shallowCompareIdentical } from '../../../Services/Utils/ReactUtils'
+import {
+  bigLog,
+  shallowCompareIdentical,
+} from '../../../Services/Utils/ReactUtils'
 import MDPreview from '../MDPreview'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { getUniqueId } from '../../../Services/Utils/UUID'
-import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
+import {
+  CloseButton,
+  DescInput,
+  SubmitButton,
+  TitleInput,
+} from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
   makeStyles<Theme>(
@@ -48,7 +56,9 @@ const modalStyle = (darkMode: boolean) => ({
 })
 
 const CreateNoteModal: React.FC = () => {
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
   const { noteState } = useAppSelector(({ notes }) => notes)
   const {
     modalState: { editingNoteId, open },
@@ -64,7 +74,9 @@ const CreateNoteModal: React.FC = () => {
 
   const classes = useStyles(wideView)()
 
-  const editingNote = noteState.find((note: NoteItem) => note.id === editingNoteId)
+  const editingNote = noteState.find(
+    (note: NoteItem) => note.id === editingNoteId,
+  )
 
   const [primary, setPrimary] = useState<string>('')
   const [secondary, setSecondary] = useState<string>('')
@@ -75,7 +87,9 @@ const CreateNoteModal: React.FC = () => {
   }, [editingNote, open])
 
   const handleClose = (): void => {
-    dispatch(setModalState({ modalState: { open: false, editingNoteId: null } }))
+    dispatch(
+      setModalState({ modalState: { open: false, editingNoteId: null } }),
+    )
   }
 
   const titleProps = { setPrimary, primary }
@@ -94,7 +108,9 @@ const CreateNoteModal: React.FC = () => {
     }
 
     bigLog(`Updated note: ${editingNoteId}`)
-    const indOfNote = noteState.findIndex((note: NoteItem) => note.id === editingNoteId)
+    const indOfNote = noteState.findIndex(
+      (note: NoteItem) => note.id === editingNoteId,
+    )
     const newNotes = [...noteState]
     newNotes[indOfNote] = {
       ...newNotes[indOfNote],
@@ -157,7 +173,9 @@ const CreateNoteModal: React.FC = () => {
     return (
       <div
         style={{
-          border: `solid 1px rgba(${darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'})`,
+          border: `solid 1px rgba(${
+            darkMode ? '255, 255, 255, 25%' : '0, 0, 0, 25%'
+          })`,
           borderRadius: '4px',
           paddingRight: '0.3rem',
         }}
@@ -200,7 +218,9 @@ const CreateNoteModal: React.FC = () => {
                 />
               )}
             </FormGroup>
-            {showPreview && <MDPreview darkMode={darkMode}>{secondary}</MDPreview>}
+            {showPreview && (
+              <MDPreview darkMode={darkMode}>{secondary}</MDPreview>
+            )}
           </div>
         </Scrollbars>
       </div>
@@ -219,7 +239,10 @@ const CreateNoteModal: React.FC = () => {
         <TitleInput {...titleProps} />
         <DescInput {...descProps} />
         <CloseButton {...noteButtonProps} />
-        <SubmitButton {...submitButtonProps} editingNoteID={editingNoteId ?? undefined} />
+        <SubmitButton
+          {...submitButtonProps}
+          editingNoteID={editingNoteId ?? undefined}
+        />
         {mdMode && !isMobile && <MDContainer />}
       </form>
       <span id="new-note-modal" style={{ display: 'none' }} aria-hidden="true">

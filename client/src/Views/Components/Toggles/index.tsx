@@ -20,7 +20,12 @@ interface ToggleProps {
   qaId: string
 }
 
-export const MenuToggle: FC<ToggleProps> = ({ state, dispatchType, label, qaId }) => {
+export const MenuToggle: FC<ToggleProps> = ({
+  state,
+  dispatchType,
+  label,
+  qaId,
+}) => {
   const dispatch = useAppDispatch()
 
   let actionType: ActionCreatorWithoutPayload

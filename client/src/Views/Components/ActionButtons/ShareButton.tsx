@@ -7,7 +7,10 @@ import { socketInit } from '../../../Services/Clients/WebSockets'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setSyncSettings } from '../../../Services/Reducers/settingSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
-import { errorLog, persistAppSettings } from '../../../Services/Utils/ReactUtils'
+import {
+  errorLog,
+  persistAppSettings,
+} from '../../../Services/Utils/ReactUtils'
 import ActionDialog from '../ActionDialog'
 import { NoteItem } from '../../../Services/Database/NoteClient'
 import { currentAnimation, CustomButton } from '.'
@@ -31,7 +34,11 @@ const Dialog: FC<{
   }
 
   return (
-    <ActionDialog open={open} title="Successfully synced 🎉" onAccept={onAccept}>
+    <ActionDialog
+      open={open}
+      title="Successfully synced 🎉"
+      onAccept={onAccept}
+    >
       <p>Your personal list link:</p>
       <Link href={listUrl}>{listUrl}</Link>
     </ActionDialog>

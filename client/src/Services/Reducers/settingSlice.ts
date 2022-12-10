@@ -43,7 +43,10 @@ export const settingSlice = createSlice({
 
       return { ...state, darkMode: true }
     },
-    setVersion: (state, action: PayloadAction<Pick<SettingState, 'version'>>) => ({
+    setVersion: (
+      state,
+      action: PayloadAction<Pick<SettingState, 'version'>>,
+    ) => ({
       ...state,
       version: action.payload.version,
     }),
@@ -51,7 +54,10 @@ export const settingSlice = createSlice({
       ...state,
       webId: action.payload.webId,
     }),
-    setSocketState: (state, action: PayloadAction<Pick<SettingState, 'connected'>>) => ({
+    setSocketState: (
+      state,
+      action: PayloadAction<Pick<SettingState, 'connected'>>,
+    ) => ({
       ...state,
       connected: action.payload.connected,
     }),
@@ -62,7 +68,10 @@ export const settingSlice = createSlice({
       ...state,
       version: action.payload.syncSequence,
     }),
-    setColours: (state, action: PayloadAction<Pick<SettingState, 'colours'>>) => {
+    setColours: (
+      state,
+      action: PayloadAction<Pick<SettingState, 'colours'>>,
+    ) => {
       setStringSetting('colours', JSON.stringify(action.payload.colours))
 
       return {
@@ -72,7 +81,9 @@ export const settingSlice = createSlice({
     },
     setSyncSettings: (
       state,
-      action: PayloadAction<Pick<SettingState, 'syncSequence' | 'version' | 'webId'>>,
+      action: PayloadAction<
+        Pick<SettingState, 'syncSequence' | 'version' | 'webId'>
+      >,
     ) => ({
       ...state,
       ...action.payload,

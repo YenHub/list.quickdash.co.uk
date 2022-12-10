@@ -11,7 +11,8 @@ export const initApp = () =>
   })
 export const openNoteModal = () =>
   fireEvent.click(screen.getByTestId('create-note-button'))
-export const openMainMenu = () => fireEvent.click(screen.getByTestId('menu-button'))
+export const openMainMenu = () =>
+  fireEvent.click(screen.getByTestId('menu-button'))
 export const closeMainMenu = () =>
   fireEvent.click(screen.getByTestId('close-menu-button'))
 export const closeNoteModal = () =>
@@ -21,9 +22,13 @@ export const submitNote = () =>
 export const getNoteCount = () =>
   document.querySelectorAll('.MuiListItemText-secondary').length
 export const toggleDarkMode = () =>
-  openMainMenu() && fireEvent.click(screen.getByTestId('dm-toggle')) && closeMainMenu()
+  openMainMenu() &&
+  fireEvent.click(screen.getByTestId('dm-toggle')) &&
+  closeMainMenu()
 export const toggleMD = () =>
-  openMainMenu() && fireEvent.click(screen.getByTestId('md-toggle')) && closeMainMenu()
+  openMainMenu() &&
+  fireEvent.click(screen.getByTestId('md-toggle')) &&
+  closeMainMenu()
 export const toggleMDPreview = () =>
   openMainMenu() &&
   fireEvent.click(screen.getByTestId('md-preview-toggle')) &&
@@ -43,7 +48,9 @@ export const setNoteTitle = (value: string) => {
 }
 
 export const setNoteDesc = (value: string) => {
-  const descInput = screen.getByLabelText('Note Description').closest('textarea')
+  const descInput = screen
+    .getByLabelText('Note Description')
+    .closest('textarea')
   fireEvent.change(descInput!, { target: { value } })
 }
 

@@ -53,7 +53,11 @@ const ActionDialog: FC<Props> = ({
         </DialogContent>
         <DialogActions>
           {onCancel && (
-            <Button data-testid="action-dialog-cancel" onClick={onCancel} color="primary">
+            <Button
+              data-testid="action-dialog-cancel"
+              onClick={onCancel}
+              color="primary"
+            >
               CANCEL
             </Button>
           )}

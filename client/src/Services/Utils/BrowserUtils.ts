@@ -46,8 +46,12 @@ export const sortTable = (e: MouseEvent) => {
       /* Assume we don't need to switch */
       shouldSwitch = false
       /* Get the text for the cells we want to compare */
-      const textX = rows[i].getElementsByTagName('TD')[columnInd].innerHTML.toString()
-      const textY = rows[i + 1].getElementsByTagName('TD')[columnInd].innerHTML.toString()
+      const textX = rows[i]
+        .getElementsByTagName('TD')
+        [columnInd].innerHTML.toString()
+      const textY = rows[i + 1]
+        .getElementsByTagName('TD')
+        [columnInd].innerHTML.toString()
       const triggerSwitch = sortAsc
         ? textX.localeCompare(textY) < 0
         : textX.localeCompare(textY) > 0

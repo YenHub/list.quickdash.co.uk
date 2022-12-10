@@ -1,7 +1,8 @@
 import { SettingState } from '../Reducers/settingSlice'
 
 export const showGatedFeatures =
-  process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_BETA === 'true'
+  import.meta.env.REACT_APP_ENV === 'development' ||
+  import.meta.env.REACT_APP_BETA === 'true'
 
 export const getBoolSetting = (setting: keyof SettingState): boolean => {
   if (window.localStorage.getItem(setting)) {
@@ -13,7 +14,9 @@ export const getBoolSetting = (setting: keyof SettingState): boolean => {
   return setting !== 'mdMode'
 }
 
-export const getNumberSetting = (setting: keyof SettingState): number | null => {
+export const getNumberSetting = (
+  setting: keyof SettingState,
+): number | null => {
   const number = window.localStorage.getItem(setting)
 
   return number ? Number(number) : null
@@ -22,7 +25,9 @@ export const getNumberSetting = (setting: keyof SettingState): number | null => 
 export const setNumberSetting = (setting: keyof SettingState, value: number) =>
   window.localStorage.setItem(setting, String(value))
 
-export const getStringSetting = (setting: keyof SettingState): string | null => {
+export const getStringSetting = (
+  setting: keyof SettingState,
+): string | null => {
   const string = window.localStorage.getItem(setting)
   if (string) return string
   if (setting === 'colours') {
@@ -32,11 +37,15 @@ export const getStringSetting = (setting: keyof SettingState): string | null => 
   return null
 }
 
-export const setStringSetting = (setting: keyof SettingState, value: string): void =>
-  window.localStorage.setItem(setting, value)
+export const setStringSetting = (
+  setting: keyof SettingState,
+  value: string,
+): void => window.localStorage.setItem(setting, value)
 
-export const setBoolSetting = (setting: keyof SettingState, value: boolean): void =>
-  localStorage.setItem(setting, value.toString())
+export const setBoolSetting = (
+  setting: keyof SettingState,
+  value: boolean,
+): void => localStorage.setItem(setting, value.toString())
 
 export const persistAppSettings = ({
   version,

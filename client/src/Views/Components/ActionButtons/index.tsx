@@ -19,7 +19,8 @@ import { deleteList } from '../../../Services/Clients/Api'
 import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
 import generateNote, { random } from './generateNote'
 
-export const currentAnimation = () => localStorage.getItem('animateButton') !== null
+export const currentAnimation = () =>
+  localStorage.getItem('animateButton') !== null
 
 const DeletionWarning: FC = () => {
   const { webId } = useAppSelector(({ settings }) => settings)
@@ -120,7 +121,10 @@ export const DeleteNotes: FC = () => {
   return (
     <div style={{ width: '100%' }}>
       {showDeleteAlert && (
-        <DeleteAlert handleAccept={clearNotes} handleClose={handleDeleteCancel} />
+        <DeleteAlert
+          handleAccept={clearNotes}
+          handleClose={handleDeleteCancel}
+        />
       )}
       <CustomButton {...buttonProps} />
     </div>

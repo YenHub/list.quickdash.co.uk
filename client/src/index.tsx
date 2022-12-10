@@ -4,12 +4,10 @@ import { Provider } from 'react-redux'
 
 import App from './App'
 import './index.css'
-import reportWebVitals from './reportWebVitals'
 import Store from './Services/Store'
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 // Just makes the tab a little easier to find :p
-if (process.env.REACT_APP_ENV === 'development') document.title = 'BETA'
+if (import.meta.env.REACT_APP_ENV === 'development') document.title = 'BETA'
 
 const app = (
   <React.StrictMode>
@@ -20,13 +18,3 @@ const app = (
 )
 
 ReactDOM.render(app, document.getElementById('root'))
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register()
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()

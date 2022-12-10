@@ -6,7 +6,9 @@ import { useAppSelector } from '../../../Services/Store'
 import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 
 export const SyncStatus: FC = () => {
-  const { version, connected, darkMode } = useAppSelector(({ settings }) => settings)
+  const { version, connected, darkMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
   // IGDev: Don't forget to remove this dev flag
   if (!version || !showGatedFeatures) return null
 

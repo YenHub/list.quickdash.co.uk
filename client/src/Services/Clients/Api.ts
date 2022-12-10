@@ -4,9 +4,10 @@ import { NoteItem } from '../Database/NoteClient'
 import { SettingState } from '../Reducers/settingSlice'
 import store from '../Store'
 
-const { REACT_APP_ENV, REACT_APP_API_DEV, REACT_APP_API_PROD } = process.env
+const { REACT_APP_ENV, REACT_APP_API_DEV, REACT_APP_API_PROD } = import.meta.env
 
-const baseURL = REACT_APP_ENV === 'development' ? REACT_APP_API_DEV : REACT_APP_API_PROD
+const baseURL =
+  REACT_APP_ENV === 'development' ? REACT_APP_API_DEV : REACT_APP_API_PROD
 
 const api = axios.create({
   baseURL,
@@ -40,7 +41,9 @@ export const createList = async (): Promise<SettingState> => {
   return newSettings.data
 }
 
-export const createListItems = async (settings: SettingState): Promise<NoteItem[]> => {
+export const createListItems = async (
+  settings: SettingState,
+): Promise<NoteItem[]> => {
   const syncedNotes: NoteItem[] = []
   const {
     notes: { noteState },
@@ -71,7 +74,10 @@ export const createListItems = async (settings: SettingState): Promise<NoteItem[
   return syncedNotes
 }
 
-export const createListItem = async (note: NoteItem, listId: string): Promise<void> =>
+export const createListItem = async (
+  note: NoteItem,
+  listId: string,
+): Promise<void> =>
   await api
     // POST Settings
     .post('/list/item/create', {

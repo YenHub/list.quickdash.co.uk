@@ -18,7 +18,9 @@ export const AppMenuDrawer: FC<{
   open: boolean
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { darkMode, mdMode, previewMode } = useAppSelector(
+    ({ settings }) => settings,
+  )
   const classes = useStyles(darkMode)()
 
   const DrawerHeader: FC = () => (
