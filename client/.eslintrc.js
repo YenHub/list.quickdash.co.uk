@@ -23,6 +23,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
+    'simple-import-sort',
     'eslint-plugin-import',
     'eslint-plugin-react',
     '@typescript-eslint',
@@ -34,6 +35,8 @@ module.exports = {
     },
   ],
   rules: {
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     '@typescript-eslint/adjacent-overload-signatures': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',

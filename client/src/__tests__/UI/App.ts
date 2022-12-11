@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react'
+
 import { initApp, openMainMenu, openNoteModal } from '../../test-helpers'
 
 describe('UI Rendering', () => {

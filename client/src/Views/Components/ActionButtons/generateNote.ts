@@ -1,5 +1,6 @@
 // Generate a random number within a range
 import faker from 'faker'
+
 import { NoteItem } from '../../../Services/Database/NoteClient'
 
 export const random = (n: number) => Math.min(Math.floor(Math.random() * n))

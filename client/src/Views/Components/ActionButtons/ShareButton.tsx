@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from 'react'
 import { CircularProgress, Link, useTheme } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
 
 import { syncNewList } from '../../../Services/Clients/Api'
 import { socketInit } from '../../../Services/Clients/WebSockets'
+import { NoteItem } from '../../../Services/Database/NoteClient'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import { setSyncSettings } from '../../../Services/Reducers/settingSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
@@ -12,7 +13,6 @@ import {
   persistAppSettings,
 } from '../../../Services/Utils/ReactUtils'
 import ActionDialog from '../ActionDialog'
-import { NoteItem } from '../../../Services/Database/NoteClient'
 import { currentAnimation, CustomButton } from '.'
 
 const Dialog: FC<{

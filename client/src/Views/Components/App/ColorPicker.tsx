@@ -1,6 +1,7 @@
-import { FC, useState } from 'react'
-import { ColorPicker } from 'mui-color'
 import { ListItem, useTheme } from '@mui/material'
+import { ColorPicker } from 'mui-color'
+import { FC, useState } from 'react'
+
 import { ResetColours, SaveColours } from '../ActionButtons'
 
 interface IPicker {

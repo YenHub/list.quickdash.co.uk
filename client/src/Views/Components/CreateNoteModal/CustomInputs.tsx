@@ -1,8 +1,6 @@
-import { ChangeEventHandler, Dispatch, FC, SetStateAction } from 'react'
-
-import { isMobile } from 'react-device-detect'
-
 import { Button, TextField } from '@mui/material'
+import { ChangeEventHandler, Dispatch, FC, SetStateAction } from 'react'
+import { isMobile } from 'react-device-detect'
 
 interface ICustomInputs {
   darkMode: boolean

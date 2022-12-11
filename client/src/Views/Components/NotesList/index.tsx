@@ -1,7 +1,6 @@
-import { FC, memo, useCallback, useState } from 'react'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { isMobile } from 'react-device-detect'
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
+import NotesIcon from '@mui/icons-material/Notes'
 import {
   IconButton,
   List,
@@ -10,21 +9,20 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material'
-
 import makeStyles from '@mui/styles/makeStyles'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import EditIcon from '@mui/icons-material/Edit'
-import NotesIcon from '@mui/icons-material/Notes'
-import { useAppSelector, useAppDispatch } from '../../../Services/Store'
+import { FC, memo, useCallback, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { isMobile } from 'react-device-detect'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { bigLog, showGatedFeatures } from '../../../Services/Utils/ReactUtils'
-import ActionDialog from '../ActionDialog'
-import MDPreview, { MDTitle } from '../MDPreview'
-import { CreateNoteButton } from '../ActionButtons'
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { deleteNote, setNotes } from '../../../Services/Reducers/noteSlice'
+import { useAppDispatch,useAppSelector } from '../../../Services/Store'
 import { diffWithNewIndex } from '../../../Services/Utils'
+import { bigLog, showGatedFeatures } from '../../../Services/Utils/ReactUtils'
+import { CreateNoteButton } from '../ActionButtons'
+import ActionDialog from '../ActionDialog'
+import MDPreview, { MDTitle } from '../MDPreview'
 
 const useStyles = makeStyles(
   () => ({

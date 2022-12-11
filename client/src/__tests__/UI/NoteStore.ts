@@ -1,5 +1,4 @@
 import { getNoteCount, initApp } from '../../test-helpers'
-
 import { noteClient } from '../../Views/Main'
 
 beforeEach(async () => {

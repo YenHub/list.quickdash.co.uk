@@ -1,7 +1,8 @@
 import { io, Socket } from 'socket.io-client'
-import { errorLog, showGatedFeatures, successLog } from '../Utils/ReactUtils'
+
 import { setSocketState } from '../Reducers/settingSlice'
 import store from '../Store'
+import { errorLog, showGatedFeatures, successLog } from '../Utils/ReactUtils'
 
 const socketHost =
   import.meta.env.REACT_APP_ENV === 'development'

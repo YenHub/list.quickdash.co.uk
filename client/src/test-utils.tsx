@@ -1,5 +1,5 @@
-import { FC, ReactElement, ReactNode } from 'react'
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
+import { FC, ReactElement, ReactNode } from 'react'
 import { Provider } from 'react-redux'
 
 import Store from './Services/Store'

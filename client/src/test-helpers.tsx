@@ -1,6 +1,6 @@
+import { fireEvent, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { fireEvent, screen } from '@testing-library/react'
 import App from './App'
 import { customRender } from './test-utils'
 

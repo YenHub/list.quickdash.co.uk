@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+
 import modalSlice from '../Reducers/modalSlice'
 import noteSlice from '../Reducers/noteSlice'
 import settingSlice from '../Reducers/settingSlice'

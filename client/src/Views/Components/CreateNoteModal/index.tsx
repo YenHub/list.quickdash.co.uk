@@ -1,22 +1,20 @@
-import { ChangeEventHandler, FormEvent, useEffect, useState } from 'react'
-
-import { Scrollbars } from 'react-custom-scrollbars'
-import { isMobile } from 'react-device-detect'
-
 import { FormControlLabel, FormGroup, Modal, Switch } from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import { Theme } from '@mui/system'
+import { ChangeEventHandler, FormEvent, useEffect, useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars'
+import { isMobile } from 'react-device-detect'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
+import { setModalState } from '../../../Services/Reducers/modalSlice'
+import { setNotes } from '../../../Services/Reducers/noteSlice'
+import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import {
   bigLog,
   shallowCompareIdentical,
 } from '../../../Services/Utils/ReactUtils'
-import MDPreview from '../MDPreview'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
-import { setNotes } from '../../../Services/Reducers/noteSlice'
-import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { getUniqueId } from '../../../Services/Utils/UUID'
+import MDPreview from '../MDPreview'
 import {
   CloseButton,
   DescInput,

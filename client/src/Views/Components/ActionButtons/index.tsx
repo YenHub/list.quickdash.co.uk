@@ -1,22 +1,22 @@
-import { FC, useEffect, useState } from 'react'
-import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme, Link } from '@mui/material'
-
 import './style.css'
 
-import { downloadFile } from '../../../Services/Utils/BrowserUtils'
+import { Button, IconButton, Link,useTheme } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
+import { Checkmark } from 'react-checkmark'
+
+import { deleteList } from '../../../Services/Clients/Api'
 import { NoteItem } from '../../../Services/Database/NoteClient'
-import { getUniqueId } from '../../../Services/Utils/UUID'
-import ActionDialog from '../ActionDialog'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { setNotes } from '../../../Services/Reducers/noteSlice'
 import {
   clearSyncSettings,
   resetColours,
   setColours,
 } from '../../../Services/Reducers/settingSlice'
-import { deleteList } from '../../../Services/Clients/Api'
+import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { downloadFile } from '../../../Services/Utils/BrowserUtils'
 import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
+import { getUniqueId } from '../../../Services/Utils/UUID'
+import ActionDialog from '../ActionDialog'
 import generateNote, { random } from './generateNote'
 
 export const currentAnimation = () =>

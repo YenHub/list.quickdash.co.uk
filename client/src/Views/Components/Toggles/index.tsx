@@ -1,17 +1,16 @@
-import { FC, Fragment } from 'react'
-
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
 import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
+import { FC, Fragment } from 'react'
 
-import { ToggleTypes } from '../../../Services/Types'
-import { useAppDispatch } from '../../../Services/Store'
 import {
   toggleDarkMode,
   toggleMdMode,
   togglePreviewMode,
 } from '../../../Services/Reducers/settingSlice'
+import { useAppDispatch } from '../../../Services/Store'
+import { ToggleTypes } from '../../../Services/Types'
 
 interface ToggleProps {
   state: boolean
