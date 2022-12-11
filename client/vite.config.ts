@@ -12,7 +12,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    envCompatible,
+    envCompatible(),
     viteTsconfigPaths(),
     svgrPlugin(),
     VitePWA({
