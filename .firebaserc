@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "quickdash-4bf3a"
+  },
+  "targets": {
+    "quickdash-4bf3a": {
+      "hosting": {
+        "list-quickdash": [
+          "list-quickdash"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

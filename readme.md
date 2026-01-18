@@ -296,21 +296,30 @@ We now run a lint check against the code base using `npm run lint`
 
 This will enforce the ESLint config against the codebase, again failing to deploy if anything doesn't check out here.
 
-### Sync
+### 🔥 Sync to Firebase
 
-[SamKirkland's awesome simple ftp action](https://github.com/SamKirkland/FTP-Deploy-Action) is then used to run a diff check between the new environment produced and that of the server.
+#### Log in to Firebase
 
-Any changes that are identified are then synced to the server.
+```bash
+firebase login
+```
 
-### Manual Deployment
+#### Adding a new site (target)
 
-Mistakes happen, right? For this reason, there is a [manual "emergency publish"](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual.yaml) available.
+```bash
+# e.g. <custom-app-name> <firebase-site-id>
+firebase target:apply hosting app my-app-dir
+```
 
-You can manually trigger this action to wipe the remote & resync the current master branch across to the live environment.
+#### Deploying locally
 
-This process takes a little more time (~2m30s) and is more likely to result in downtime.
+```bash
+# Specific site, e.g. <custom-app-name>
+firebase deploy --only hosting:app
 
-There is also a less destructive method available, which mimics the standard automated deployment, which can be [seen here](https://github.com/YenHub/list.quickdash.co.uk/actions/workflows/push-to-ftp-manual-clean.yaml).
+# All hosting sites
+firebase deploy --only hosting
+```
 
 ## Contributing
 

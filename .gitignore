@@ -10,3 +10,7 @@ node_modules/
 /server/.env
 .env.test
 .env.prod
+
+# Ignore generated credentials from google-github-actions/auth
+.firebase
+gha-creds-*.json
