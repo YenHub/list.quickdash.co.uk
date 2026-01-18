@@ -5,16 +5,16 @@ jobs:
     name: 🧪 Lint & Test 🧹
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v3
+      - name: 📩 Check Out Code
+        uses: actions/checkout@v4.1.1
 
-      - name: 🐱‍👤 Use Node.js 16.14.0
-        uses: actions/setup-node@v3
+      - name: 🥷 Use Node.js 20.18.1
+        uses: actions/setup-node@v6
         with:
-          node-version: '16.14.0'
+          node-version: '20.18.1'
 
       - name: 💥 Install & Cache Deps
-        uses: bahmutov/npm-install@v1.8.25
+        uses: bahmutov/npm-install@v1.11.2
         with:
           working-directory: client
 

@@ -6,16 +6,16 @@ jobs:
     name: 🎉 Deploy Client
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v3
+      - name: 📩 Check Out Code
+        uses: actions/checkout@v4.1.1
 
-      - name: 🐱‍👤 Use Node.js 16.14.0
-        uses: actions/setup-node@v3
+      - name: 🥷 Use Node.js 20.18.1
+        uses: actions/setup-node@v6
         with:
-          node-version: '16.14.0'
+          node-version: '20.18.1'
 
-      - name: 💥 Install & Cache Deps (CLIENT)
-        uses: bahmutov/npm-install@v1.8.25
+      - name: 💥 Install & Cache Deps
+        uses: bahmutov/npm-install@v1.11.2
         with:
           working-directory: client
 
@@ -31,10 +31,13 @@ jobs:
         run: INLINE_RUNTIME_CHUNK=false npm run build:beta
         working-directory: client
 
-      - name: 📂 Sync Client
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      - name: 📂 Sync files
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          password: ${{ secrets.client_ftppass_staging }}
-          server: ${{ secrets.client_ftpserver_staging }}
-          username: ${{ secrets.client_ftpuser_staging }}
-          local-dir: ./client/build/
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_QUICKDASH_4BF3A }}
+          firebaseToolsVersion: 15.1.0
+          projectId: quickdash-4bf3a
+          target: list-quickdash
+          channelId: preview
+          force: true
