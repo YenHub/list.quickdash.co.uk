@@ -3,11 +3,7 @@
     {
       "target": "list-quickdash",
       "public": "client/build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "headers": [
         {
           "source": "**",
@@ -19,6 +15,10 @@
             {
               "key": "Referrer-Policy",
               "value": "no-referrer, strict-origin-when-cross-origin"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             }
           ]
         }
