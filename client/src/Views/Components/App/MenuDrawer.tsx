@@ -1,17 +1,17 @@
 import { FC } from 'react'
 
-import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
 import { isMobile } from 'react-device-detect'
 
-import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
+import { useAppSelector } from '../../../Services/Store'
 import { ToggleTypes } from '../../../Services/Types'
+import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 import { useStyles } from '../../Main.Styles'
 import { DeleteNotes, ExportButton, ImportButton } from '../ActionButtons'
 import { ShareButton } from '../ActionButtons/ShareButton'
 import ShareButtons from '../ShareButtons'
 import MenuToggle from '../Toggles'
-import { useAppSelector } from '../../../Services/Store'
 import { ColourPicker } from './ColorPicker'
 
 export const AppMenuDrawer: FC<{
@@ -19,7 +19,7 @@ export const AppMenuDrawer: FC<{
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
   const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
-  const classes = useStyles(darkMode)()
+  const classes = useStyles(darkMode)({})
 
   const DrawerHeader: FC = () => (
     <div className={classes.drawerHeader}>

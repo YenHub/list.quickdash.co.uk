@@ -1,5 +1,5 @@
 # --- Build Express API ---
-FROM node:17.9.0-buster-slim as builder
+FROM node:17.9.0-buster-slim AS builder
 
 # Create working directory
 RUN mkdir /app
@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . ./
 
 # Install the modules
-RUN npm ci
+RUN pnpm --filter server i --frozen-lockfile
 
 # Default port exposure
 EXPOSE 9000
@@ -18,7 +18,7 @@ COPY wait-for-it.sh /usr/wait-for-it.sh
 RUN chmod +x /usr/wait-for-it.sh
 
 # Run the app
-CMD ["/usr/wait-for-it.sh", "--timeout=0", "node-mysql:3306", "--", "npm", "run", "dev"]
+CMD ["/usr/wait-for-it.sh", "--timeout=0", "node-mysql:3306", "--", "pnpm", "--filter", "server", "dev"]
 
 # docker build -t web-app .
 # WINDOWS (See this: https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10)

@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.3.0",
     "@mui/material": "^5.3.0",
     "@mui/styles": "^5.3.0",
+    "@mui/system": "^5.3.0",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
@@ -54,8 +55,8 @@
     "fsevents": "2.1.2"
   },
   "overrides": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -67,11 +68,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --write **/*.{ts,tsx}",
-    "refresh:staging": "git checkout staging && npm run stash:staging",
-    "stash:staging": "git stash save -k -u -m \"Staging Stash - we all make mistakes :o)\" && npm run git:reset",
-    "git:reset": "git reset --hard && npm run pull:master",
-    "pull:master": "git checkout master && git fetch -p && git pull --all && npm run branch:staging",
-    "branch:staging": "git branch -D staging && git branch staging && npm run publish:staging",
+    "refresh:staging": "git checkout staging && pnpm --filter client stash:staging",
+    "stash:staging": "git stash save -k -u -m \"Staging Stash - we all make mistakes :o)\" && pnpm --filter client git:reset",
+    "git:reset": "git reset --hard && pnpm --filter client pull:master",
+    "pull:master": "git checkout master && git fetch -p && git pull --all && pnpm --filter client branch:staging",
+    "branch:staging": "git branch -D staging && git branch staging && pnpm --filter client publish:staging",
     "publish:staging": "git push -u origin staging"
   },
   "browserslist": {
@@ -88,15 +89,20 @@
   },
   "devDependencies": {
     "@types/faker": "^5.5.6",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^17.0.90",
     "@types/react-beautiful-dnd": "^13.0.0",
     "@types/react-custom-scrollbars": "^4.0.7",
     "@types/react-dom": "^17.0.8",
+    "@types/react-redux": "^7.1.34",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.7.0",
+    "eslint": "catalog:",
     "eslint-config-prettier": "^8.3.0",
-    "prettier": "^2.5.1"
+    "identity-obj-proxy": "^3.0.0",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
   }
 }
