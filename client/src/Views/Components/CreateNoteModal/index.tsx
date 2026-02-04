@@ -80,7 +80,7 @@ const CreateNoteModal: React.FC = () => {
   useEffect(() => {
     setPrimary(editingNote?.primary ?? '')
     setSecondary(editingNote?.secondary ?? '')
-  }, [editingNote, open])
+  }, [editingNote?.primary, editingNote?.secondary, open])
 
   const handleClose = (): void => setModalState({ open: false, editingNoteId: null })
 
