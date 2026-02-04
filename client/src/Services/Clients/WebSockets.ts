@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
+
+import { useAppStore } from '../Store'
 import { errorLog, showGatedFeatures, successLog } from '../Utils/ReactUtils'
-import { setSocketState } from '../Reducers/settingSlice'
-import store from '../Store'
 
 const socketHost =
   process.env.REACT_APP_ENV === 'development'
@@ -11,24 +11,24 @@ const socketHost =
 const handleDisconnect = (err: Error | string, socket: Socket) => {
   const {
     settings: { connected },
-  } = store.getState()
+  } = useAppStore.getState()
   errorLog(`[WebSockets] Failed to connect: ${err}`)
-  connected && store.dispatch(setSocketState({ connected: false }))
+  connected && useAppStore.getState().setSocketState(false)
 }
 
 const handleConnect = (socket: Socket) => {
   const {
     settings: { webId },
-  } = store.getState()
+  } = useAppStore.getState()
   successLog(`[WebSockets] Connected on ${socket.id}`)
   socket.emit('join', { webId })
-  store.dispatch(setSocketState({ connected: true }))
+  useAppStore.getState().setSocketState(true)
 }
 
 export const socketInit = () => {
   const {
     settings: { version },
-  } = store.getState()
+  } = useAppStore.getState()
   // IGDev: Will need to remove this dev gate
   if (!version || !showGatedFeatures) return
 

@@ -12,9 +12,10 @@ import { isMobile } from 'react-device-detect'
 import 'typeface-roboto'
 
 import { socketInit } from './Services/Clients/WebSockets'
-import { useAppSelector } from './Services/Store'
+import { useAppStore } from './Services/Store'
 import { sortTable } from './Services/Utils/BrowserUtils'
 import { bigLog, getStringSetting, setBoolSetting } from './Services/Utils/ReactUtils'
+
 import CreateNoteModal from './Views/Components/CreateNoteModal'
 import Main from './Views/Main'
 
@@ -54,7 +55,11 @@ const getTheme = (darkMode: boolean) => {
 const App: FC = () => {
   bigLog('[Render] <App />')
 
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { previewMode, darkMode, mdMode } = useAppStore(state => ({
+    previewMode: state.settings.previewMode,
+    darkMode: state.settings.darkMode,
+    mdMode: state.settings.mdMode,
+  }))
 
   // Auto Table Sorting
   useEffect(() => {

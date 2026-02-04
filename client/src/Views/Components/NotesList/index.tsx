@@ -2,6 +2,9 @@ import { FC, memo, useCallback, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { isMobile } from 'react-device-detect'
 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
+import NotesIcon from '@mui/icons-material/Notes'
 import {
   IconButton,
   List,
@@ -10,21 +13,16 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material'
-
 import makeStyles from '@mui/styles/makeStyles'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import EditIcon from '@mui/icons-material/Edit'
-import NotesIcon from '@mui/icons-material/Notes'
-import { useAppSelector, useAppDispatch } from '../../../Services/Store'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
+import { diffWithNewIndex } from '../../../Services/Utils'
 import { bigLog, showGatedFeatures } from '../../../Services/Utils/ReactUtils'
+
+import { useAppStore } from '../../../Services/Store'
+import { CreateNoteButton } from '../ActionButtons'
 import ActionDialog from '../ActionDialog'
 import MDPreview, { MDTitle } from '../MDPreview'
-import { CreateNoteButton } from '../ActionButtons'
-import { setModalState } from '../../../Services/Reducers/modalSlice'
-import { deleteNote, setNotes } from '../../../Services/Reducers/noteSlice'
-import { diffWithNewIndex } from '../../../Services/Utils'
 
 const useStyles = makeStyles(
   () => ({
@@ -109,15 +107,19 @@ const NoteFragment: FC<NoteFragProps> = memo(({ note, index }: NoteFragProps) =>
 
   const classes = useStyles()
 
-  const { darkMode, mdMode } = useAppSelector(({ settings }) => settings)
-  const dispatch = useAppDispatch()
+  const { setModalState, darkMode, mdMode, deleteNote } = useAppStore(state => ({
+    setModalState: state.setModalState,
+    darkMode: state.settings.darkMode,
+    mdMode: state.settings.mdMode,
+    deleteNote: state.deleteNote,
+  }))
 
   const [noteDeleted, setNoteDeleted] = useState<NoteItem | null>(null)
 
   const showDeleteAlert = (item: NoteItem) => setNoteDeleted(item)
 
   const handleDeleteNote = () => {
-    dispatch(deleteNote(index))
+    deleteNote(index)
     setNoteDeleted(null)
   }
 
@@ -165,13 +167,7 @@ const NoteFragment: FC<NoteFragProps> = memo(({ note, index }: NoteFragProps) =>
                 <CreateNoteButton
                   testId="edit"
                   label="Edit Note"
-                  onClick={() =>
-                    dispatch(
-                      setModalState({
-                        modalState: { open: true, editingNoteId: note.id },
-                      }),
-                    )
-                  }
+                  onClick={() => setModalState({ open: true, editingNoteId: note.id })}
                   ActionButton={<EditIcon color="primary" />}
                 />
               </ListItemIcon>
@@ -195,10 +191,13 @@ const NoteFragment: FC<NoteFragProps> = memo(({ note, index }: NoteFragProps) =>
 
 const NoteList: FC = () => {
   bigLog('[RENDER] <NotesList />')
-  const classes = useStyles()
-  const { noteState } = useAppSelector(({ notes }) => notes)
 
-  const dispatch = useAppDispatch()
+  const classes = useStyles()
+
+  const { noteState, setNotes } = useAppStore(state => ({
+    noteState: state.notes.noteState,
+    setNotes: state.setNotes,
+  }))
 
   const onDragEnd = useCallback(
     (result: any) => {
@@ -211,7 +210,7 @@ const NoteList: FC = () => {
         result.destination.index,
       )
 
-      dispatch(setNotes(newNoteState))
+      setNotes(newNoteState)
 
       if (showGatedFeatures) {
         const itemsToSync = diffWithNewIndex(noteState, newNoteState)
@@ -244,7 +243,7 @@ const NoteList: FC = () => {
         //    setNotes(currentNotes)
       }
     },
-    [dispatch, noteState],
+    [noteState, setNotes],
   )
 
   return (

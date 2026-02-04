@@ -1,28 +1,23 @@
-import { FC, useEffect, useState } from 'react'
-import { Checkmark } from 'react-checkmark'
-import { IconButton, Button, useTheme, Link } from '@mui/material'
-
 import './style.css'
 
-import { downloadFile } from '../../../Services/Utils/BrowserUtils'
-import { NoteItem } from '../../../Services/Database/NoteClient'
-import { getUniqueId } from '../../../Services/Utils/UUID'
-import ActionDialog from '../ActionDialog'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
-import { setNotes } from '../../../Services/Reducers/noteSlice'
-import {
-  clearSyncSettings,
-  resetColours,
-  setColours,
-} from '../../../Services/Reducers/settingSlice'
+import { Button, IconButton, Link, useTheme } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
+import { Checkmark } from 'react-checkmark'
+
 import { deleteList } from '../../../Services/Clients/Api'
+import { NoteItem } from '../../../Services/Database/NoteClient'
+import { useAppStore } from '../../../Services/Store'
+import { downloadFile } from '../../../Services/Utils/BrowserUtils'
 import { deleteSyncSettings } from '../../../Services/Utils/ReactUtils'
+import { getUniqueId } from '../../../Services/Utils/UUID'
+
+import ActionDialog from '../ActionDialog'
 import generateNote, { random } from './generateNote'
 
 export const currentAnimation = () => localStorage.getItem('animateButton') !== null
 
 const DeletionWarning: FC = () => {
-  const { webId } = useAppSelector(({ settings }) => settings)
+  const { webId } = useAppStore(state => ({ webId: state.settings.webId }))
 
   if (webId) {
     const listUrl = `${document.location.origin}/${webId}`
@@ -93,16 +88,19 @@ const AnimatedButton: FC<any> = (props: any) => {
 }
 
 export const DeleteNotes: FC = () => {
-  const { noteState } = useAppSelector(({ notes }) => notes)
-  const dispatch = useAppDispatch()
+  const { clearSyncSettings, noteState, setNotes } = useAppStore(state => ({
+    clearSyncSettings: state.clearSyncSettings,
+    noteState: state.notes.noteState,
+    setNotes: state.setNotes,
+  }))
 
   const [showDeleteAlert, toggleDeleteAlert] = useState<boolean>(false)
 
   const clearNotes = (): void => {
     deleteSyncSettings()
     deleteList()
-    dispatch(clearSyncSettings())
-    dispatch(setNotes([]))
+    clearSyncSettings()
+    setNotes([])
     toggleDeleteAlert(false)
   }
 
@@ -128,8 +126,10 @@ export const DeleteNotes: FC = () => {
 }
 
 export const ImportButton: FC = () => {
-  const { noteState } = useAppSelector(({ notes }) => notes)
-  const dispatch = useAppDispatch()
+  const { noteState, setNotes } = useAppStore(state => ({
+    noteState: state.notes.noteState,
+    setNotes: state.setNotes,
+  }))
 
   const importNotes = (noteState: NoteItem[]) => {
     const currentNotes = [...noteState]
@@ -145,7 +145,7 @@ export const ImportButton: FC = () => {
     newNotes.forEach(item =>
       currentNotes.push({ ...item, id: getUniqueId(currentNotes) }),
     )
-    dispatch(setNotes(currentNotes))
+    setNotes(currentNotes)
   }
 
   const buttonProps = {
@@ -159,7 +159,7 @@ export const ImportButton: FC = () => {
 }
 
 export const ExportButton: FC = () => {
-  const { noteState } = useAppSelector(({ notes }) => notes)
+  const { noteState } = useAppStore(state => ({ noteState: state.notes.noteState }))
 
   const exportNotes = (noteState: NoteItem[]): void => {
     const exportContent = JSON.stringify(
@@ -185,13 +185,11 @@ export const SaveColours: FC<{ primary: string; secondary: string }> = ({
   primary,
   secondary,
 }) => {
-  const dispatch = useAppDispatch()
+  const { setColours } = useAppStore(state => ({ setColours: state.setColours }))
 
   const buttonProps = {
     'aria-label': 'SAVE',
-    onClick: () => {
-      dispatch(setColours({ colours: { primary, secondary } }))
-    },
+    onClick: () => setColours({ primary, secondary }),
     type: 'default',
     animatesuccess: 'save-colours',
   }
@@ -200,13 +198,11 @@ export const SaveColours: FC<{ primary: string; secondary: string }> = ({
 }
 
 export const ResetColours: FC = () => {
-  const dispatch = useAppDispatch()
+  const { resetColours } = useAppStore(state => ({ resetColours: state.resetColours }))
 
   const buttonProps = {
     'aria-label': 'RESET',
-    onClick: () => {
-      dispatch(resetColours())
-    },
+    onClick: () => resetColours(),
     type: 'default',
     animatesuccess: 'reset-colours',
   }

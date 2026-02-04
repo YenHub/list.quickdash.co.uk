@@ -1,4 +1,5 @@
 import localForage from 'localforage'
+
 import { DefaultNotes } from './DefaultNotes'
 
 export interface NoteItem {

@@ -1,15 +1,15 @@
-import { FC, useEffect, useState } from 'react'
 import { CircularProgress, Link, useTheme } from '@mui/material'
+import { FC, useEffect, useState } from 'react'
 import { Checkmark } from 'react-checkmark'
 
 import { syncNewList } from '../../../Services/Clients/Api'
 import { socketInit } from '../../../Services/Clients/WebSockets'
-import { setNotes } from '../../../Services/Reducers/noteSlice'
-import { setSyncSettings } from '../../../Services/Reducers/settingSlice'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
 import { errorLog, persistAppSettings } from '../../../Services/Utils/ReactUtils'
-import ActionDialog from '../ActionDialog'
+
 import { NoteItem } from '../../../Services/Database/NoteClient'
+import { useAppStore } from '../../../Services/Store'
+import ActionDialog from '../ActionDialog'
+
 import { currentAnimation, CustomButton } from '.'
 
 const Dialog: FC<{
@@ -39,13 +39,18 @@ const Dialog: FC<{
 }
 
 export const ShareButton: FC = () => {
-  const dispatch = useAppDispatch()
   const theme = useTheme()
-  const { webId } = useAppSelector(({ settings }) => settings)
-  const { noteState } = useAppSelector(({ notes }) => notes)
-  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const { setSyncSettings, noteState, webId, setNotes } = useAppStore(state => ({
+    setSyncSettings: state.setSyncSettings,
+    noteState: state.notes.noteState,
+    webId: state.settings.webId,
+    setNotes: state.setNotes,
+  }))
+
   const [success, setSuccess] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
   const [saved, setSaved] = useState(
     localStorage.getItem('animateButton') === 'saved-list',
   )
@@ -73,9 +78,9 @@ export const ShareButton: FC = () => {
     listItems: NoteItem[]
   }) => {
     setSaved(true)
-    dispatch(setNotes(listItems))
+    setNotes(listItems)
     persistAppSettings({ version, webId, syncSequence })
-    dispatch(setSyncSettings({ version, syncSequence, webId }))
+    setSyncSettings({ version, syncSequence, webId })
     // Sockets require the syncSettings to be present
     socketInit()
     localStorage.setItem('animateButton', 'saved-list')

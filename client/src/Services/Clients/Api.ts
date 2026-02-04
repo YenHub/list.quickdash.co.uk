@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 import { NoteItem } from '../Database/NoteClient'
-import { SettingState } from '../Reducers/settingSlice'
-import store from '../Store'
+import { useAppStore, type SettingState } from '../Store'
 
 const { REACT_APP_ENV, REACT_APP_API_DEV, REACT_APP_API_PROD } = process.env
 
@@ -29,7 +28,7 @@ type CreateListResponse = {
 } & SettingState
 
 export const createList = async (): Promise<SettingState> => {
-  const { settings } = store.getState()
+  const { settings } = useAppStore.getState()
 
   const newSettings = await api
     // POST Settings
@@ -44,7 +43,7 @@ export const createListItems = async (settings: SettingState): Promise<NoteItem[
   const syncedNotes: NoteItem[] = []
   const {
     notes: { noteState },
-  } = store.getState()
+  } = useAppStore.getState()
 
   for (const [index, note] of Object.entries(noteState)) {
     // IGDev: Fix the lack of index here, it should live on the list
@@ -104,7 +103,7 @@ export const updateListItem = async (
 export const deleteList = async (): Promise<void> => {
   const {
     settings: { webId },
-  } = store.getState()
+  } = useAppStore.getState()
 
   if (!webId) return
 

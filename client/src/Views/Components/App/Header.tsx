@@ -5,18 +5,21 @@ import clsx from 'clsx'
 import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
 
-import { setModalState } from '../../../Services/Reducers/modalSlice'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { useAppStore } from '../../../Services/Store'
 import { useStyles } from '../../Main.Styles'
 import { CreateNoteButton } from '../ActionButtons'
 import { SyncStatus } from './SyncStatus'
 
-export const AppHeader: FC<{
+interface IAppHeader {
   open: boolean
   handleDrawerState(): void
-}> = ({ open, handleDrawerState }) => {
-  const { darkMode } = useAppSelector(({ settings }) => settings)
-  const dispatch = useAppDispatch()
+}
+
+export const AppHeader: FC<IAppHeader> = ({ open, handleDrawerState }) => {
+  const { darkMode, setModalState } = useAppStore(state => ({
+    setModalState: state.setModalState,
+    darkMode: state.settings.darkMode,
+  }))
 
   const classes = useStyles(darkMode)({})
 
@@ -49,13 +52,7 @@ export const AppHeader: FC<{
         <CreateNoteButton
           testId="create"
           label="Create New Note"
-          onClick={() =>
-            dispatch(
-              setModalState({
-                modalState: { open: true, editingNoteId: null },
-              }),
-            )
-          }
+          onClick={() => setModalState({ open: true, editingNoteId: null })}
           ActionButton={
             <AddCircleOutlineIcon
               style={isMobile ? {} : { fontSize: '2.5rem' }}
