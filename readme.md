@@ -183,7 +183,7 @@ http://localhost:8080
 
 The React front end is happy to run standalone from it's root `./client`.
 
-You have two options, the recommended approach is to use Docker, but you can always bail out if needed and simply call npm as you would usually for a React project.
+You have two options, the recommended approach is to use Docker, but you can always bail out if needed and simply use pnpm as you would usually for a React project.
 
 #### Using Docker
 
@@ -201,19 +201,19 @@ Access the front end at http://localhost
 cd client
 
 # Install the project dependencies
-npm i
+pnpm --filter client i
 
 # Start the App 🚀
-npm start
+pnpm --filter client start
 ```
 
 You can access the front end at http://localhost:3000/
 
-**NOTE:** When using `npm` the project runs as it would usually on port 3000
+**NOTE:** When using `pnpm` the project runs as it would usually on port 3000
 
 ### Running API standalone
 
-Whether using Docker or npm, you can access the API on http://localhost:9000
+Whether using Docker or pnpm, you can access the API on http://localhost:9000
 
 #### Using Docker
 
@@ -229,10 +229,10 @@ docker-compose up node-mysql -d && docker-compose up server-app
 cd server
 
 # Install the project dependencies
-npm i
+pnpm --filter server i
 
 # Start the App 🚀
-npm run serve:dev
+pnpm --filter server serve:dev
 ```
 
 ### Docker: Commands you can use
@@ -270,13 +270,13 @@ The deployment of this project is automated using GitHub Actions.
 
 When pushing to master, and changes are made to the paths defined in [the action](/.github/workflows/pushtoftp.yaml), the code will be built, tested & pushed to the live environment all in less than 2 minutes!
 
-End to end, the process takes approximately 1m30s, though there are still some improvements that could be implemented in the future, including caching of the more stable npm assets, which would help reduce this time (but more importantly save some wasted compute cycles and trees!!)
+End to end, the process takes approximately 1m30s, though there are still some improvements that could be implemented in the future, which would help reduce this time (but more importantly save some wasted compute cycles and trees!!)
 
 The pipeline is driven by three simple steps:
 
 ### Build
 
-For the front end, we `npm ci` before our `npm run build` to ensure better efficiency in the pipeline, and better dependency stability
+For the front end, we `pnpm i --frozen-lockfile` before our `pnpm --filter client build` to ensure better efficiency in the pipeline, and better dependency stability
 
 ~~Long term, it would be desirable to implement caching of the npm modules too~~
 
@@ -284,7 +284,7 @@ UPDATE: We're now using caching 😎
 
 ### Test
 
-Here we will run `npm run test` with verbose output
+Here we will run `pnpm --filter client test` with verbose output
 
 Unit Testing is driven by the CRA provided unit testing packages
 
@@ -292,7 +292,7 @@ If the pipeline fails at this stage, we don't push the code live
 
 ### Lint
 
-We now run a lint check against the code base using `npm run lint`
+We now run a lint check against the code base using `pnpm --filter client lint`
 
 This will enforce the ESLint config against the codebase, again failing to deploy if anything doesn't check out here.
 

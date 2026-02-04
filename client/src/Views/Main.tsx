@@ -3,13 +3,13 @@ import { FC, useEffect, useState } from 'react'
 import 'typeface-dosis'
 
 import NoteClient from '../Services/Database/NoteClient'
-import { bigLog, groupLog } from '../Services/Utils/ReactUtils'
-import { useAppDispatch, useAppSelector } from '../Services/Store'
 import { setNotes } from '../Services/Reducers/noteSlice'
-import { useStyles } from './Main.Styles'
+import { useAppDispatch, useAppSelector } from '../Services/Store'
+import { bigLog, groupLog } from '../Services/Utils/ReactUtils'
 import { AppHeader } from './Components/App/Header'
 import { AppMenuDrawer } from './Components/App/MenuDrawer'
 import NotesList from './Components/NotesList'
+import { useStyles } from './Main.Styles'
 
 export const noteClient = new NoteClient()
 
@@ -21,7 +21,7 @@ const Main: FC = () => {
 
   const { getNotes } = noteClient
 
-  const classes = useStyles(darkMode)()
+  const classes = useStyles(darkMode)({})
 
   const [open, setOpen] = useState<boolean>(false)
 

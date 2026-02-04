@@ -14,27 +14,28 @@ jobs:
       - name: 📩 Check Out Code
         uses: actions/checkout@v4.1.1
 
+      - name: 🍓 Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+
       - name: 🥷 Use Node.js 20.18.1
         uses: actions/setup-node@v6
         with:
           node-version: '20.18.1'
+          cache: 'pnpm'
 
-      - name: 💥 Install & Cache Deps
-        uses: bahmutov/npm-install@v1.11.2
-        with:
-          working-directory: client
+      - name: 🚧 Install Deps
+        run: pnpm i --frozen-lockfile --prefer-offline
 
       - name: 🧹 Lint Build
-        run: npm run lint
-        working-directory: client
+        run: pnpm --filter client lint
 
       - name: 🧪 Test Build
-        run: npm test
-        working-directory: client
+        run: pnpm --filter client test
 
       - name: 🔨 Build Project
-        run: INLINE_RUNTIME_CHUNK=false npm run build
-        working-directory: client
+        run: INLINE_RUNTIME_CHUNK=false pnpm --filter client build
 
       - name: 📂 Sync files
         uses: FirebaseExtended/action-hosting-deploy@v0

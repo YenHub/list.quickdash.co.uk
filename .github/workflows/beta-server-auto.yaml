@@ -14,25 +14,29 @@ jobs:
       - name: 📩 Check Out Code
         uses: actions/checkout@v4.1.1
 
+      - name: 🍓 Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+
       - name: 🥷 Use Node.js 20.18.1
         uses: actions/setup-node@v6
         with:
           node-version: '20.18.1'
+          cache: 'pnpm'
 
-      - name: 💥 Install & Cache Deps (SERV)
-        uses: bahmutov/npm-install@v1.11.2
-        with:
-          working-directory: server
+      - name: 🚧 Install Deps
+        run: pnpm i --frozen-lockfile --prefer-offline
 
       - name: 🧹 Lint Build  (SERV)
-        run: npm run lint
+        run: pnpm --filter server lint
         working-directory: server
 
       # TODO:                 Add tests
 
       # NOTE:                 Build takes place on the box. This is purely for testing.
       - name: 🔨 Build Project  (SERV)
-        run: npm run build:staging
+        run: pnpm --filter server build:staging
         env:
           DB_PORT: 3306
           DB_USERNAME: ${{ secrets.staging_db_user }}

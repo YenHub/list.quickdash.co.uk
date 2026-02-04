@@ -1,0 +1,41 @@
+{
+  "name": "list.quickdash.co.uk",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">QuickList</h1>",
+  "scripts": {
+    "app:start": "pnpm --filter client start",
+    "app:start:beta": "pnpm --filter client start:beta",
+    "app:build": "pnpm --filter client build",
+    "app:build:beta": "pnpm --filter client build:beta",
+    "app:test": "pnpm --filter client test",
+    "app:lint": "pnpm --filter client lint",
+    "app:lint:fix": "pnpm --filter client lint:fix",
+    "app:prettier": "pnpm --filter client prettier",
+    "server:start": "pnpm --filter server start",
+    "server:dev": "pnpm --filter server dev",
+    "server:lint": "pnpm --filter server lint",
+    "server:lint:fix": "pnpm --filter server lint:fix",
+    "server:prettier": "pnpm --filter server prettier",
+    "server:debug": "pnpm --filter server debug",
+    "server:build:dev": "pnpm --filter server build:dev",
+    "server:build:staging": "pnpm --filter server build:staging",
+    "server:build:production": "pnpm --filter server build:production",
+    "server:serve:dev": "pnpm --filter server serve:dev",
+    "server:serve:production": "pnpm --filter server serve:production"
+  },
+  "resolutions": {
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
+    "@types/react": "17.0.40",
+    "@types/react-dom": "17.0.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YenHub/list.quickdash.co.uk.git"
+  },
+  "author": "Ian Gilkes",
+  "bugs": {
+    "url": "https://github.com/YenHub/list.quickdash.co.uk/issues"
+  },
+  "homepage": "https://list.quickdash.co.uk"
+}

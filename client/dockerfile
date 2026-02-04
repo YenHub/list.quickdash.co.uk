@@ -1,5 +1,5 @@
 # --- Build React App ---
-FROM node:17.9.0-buster-slim as builder
+FROM node:17.9.0-buster-slim AS builder
 
 # Create working directory
 RUN mkdir /app
@@ -9,10 +9,10 @@ WORKDIR /app
 COPY . ./
 
 # Install the modules
-RUN npm ci
+RUN pnpm --filter i --frozen-lockfile
 
 # Run the app
-# CMD ["npm", "start"]
+# CMD ["pnpm", "--filter", "client", "start"]
 
 # docker build -t web-app .
 # WINDOWS (See this: https://stackoverflow.com/questions/41485217/mount-current-directory-as-a-volume-in-docker-on-windows-10)

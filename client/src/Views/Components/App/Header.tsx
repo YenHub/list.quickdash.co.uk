@@ -1,15 +1,14 @@
-import { FC } from 'react'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import SettingsIcon from '@mui/icons-material/Settings'
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import clsx from 'clsx'
-
-import SettingsIcon from '@mui/icons-material/Settings'
-
+import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useStyles } from '../../Main.Styles'
-import { CreateNoteButton } from '../ActionButtons'
+
 import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { useAppDispatch, useAppSelector } from '../../../Services/Store'
+import { useStyles } from '../../Main.Styles'
+import { CreateNoteButton } from '../ActionButtons'
 import { SyncStatus } from './SyncStatus'
 
 export const AppHeader: FC<{
@@ -19,7 +18,7 @@ export const AppHeader: FC<{
   const { darkMode } = useAppSelector(({ settings }) => settings)
   const dispatch = useAppDispatch()
 
-  const classes = useStyles(darkMode)()
+  const classes = useStyles(darkMode)({})
 
   return (
     <AppBar

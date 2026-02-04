@@ -1,18 +1,22 @@
-import { FC, useEffect } from 'react'
-import 'typeface-roboto'
+import './RootCSS.css'
 
+import {
+  createTheme,
+  CssBaseline,
+  StyledEngineProvider,
+  ThemeProvider,
+} from '@mui/material'
+import { FC, useEffect } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isMobile } from 'react-device-detect'
-import { CssBaseline } from '@mui/material'
-import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material'
+import 'typeface-roboto'
 
-import './RootCSS.css'
+import { socketInit } from './Services/Clients/WebSockets'
+import { useAppSelector } from './Services/Store'
 import { sortTable } from './Services/Utils/BrowserUtils'
 import { bigLog, getStringSetting, setBoolSetting } from './Services/Utils/ReactUtils'
-import Main from './Views/Main'
 import CreateNoteModal from './Views/Components/CreateNoteModal'
-import { useAppSelector } from './Services/Store'
-import { socketInit } from './Services/Clients/WebSockets'
+import Main from './Views/Main'
 
 const getTheme = (darkMode: boolean) => {
   const custTheme = getStringSetting('colours') ?? ''
