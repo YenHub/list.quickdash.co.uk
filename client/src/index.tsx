@@ -1,11 +1,10 @@
+import './index.css'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 
 import App from './App'
-import './index.css'
 import reportWebVitals from './reportWebVitals'
-import Store from './Services/Store'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 // Just makes the tab a little easier to find :p
@@ -13,9 +12,7 @@ if (process.env.REACT_APP_ENV === 'development') document.title = 'BETA'
 
 const app = (
   <React.StrictMode>
-    <Provider store={Store}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>
 )
 

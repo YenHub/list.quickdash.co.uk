@@ -8,12 +8,10 @@ import makeStyles from '@mui/styles/makeStyles'
 import { Theme } from '@mui/system'
 
 import { NoteItem } from '../../../Services/Database/NoteClient'
+import { useAppStore } from '../../../Services/Store'
 import { bigLog, shallowCompareIdentical } from '../../../Services/Utils/ReactUtils'
-import MDPreview from '../MDPreview'
-import { useAppDispatch, useAppSelector } from '../../../Services/Store'
-import { setNotes } from '../../../Services/Reducers/noteSlice'
-import { setModalState } from '../../../Services/Reducers/modalSlice'
 import { getUniqueId } from '../../../Services/Utils/UUID'
+import MDPreview from '../MDPreview'
 import { CloseButton, DescInput, SubmitButton, TitleInput } from './CustomInputs'
 
 const useStyles = (wideView: boolean) =>
@@ -48,12 +46,22 @@ const modalStyle = (darkMode: boolean) => ({
 })
 
 const CreateNoteModal: React.FC = () => {
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
-  const { noteState } = useAppSelector(({ notes }) => notes)
-  const {
-    modalState: { editingNoteId, open },
-  } = useAppSelector(({ modal }) => modal)
-  const dispatch = useAppDispatch()
+  const { noteState, setNotes } = useAppStore(state => ({
+    noteState: state.notes.noteState,
+    setNotes: state.setNotes,
+  }))
+
+  const { setModalState, editingNoteId, open } = useAppStore(state => ({
+    setModalState: state.setModalState,
+    editingNoteId: state.modal.editingNoteId,
+    open: state.modal.open,
+  }))
+
+  const { previewMode, darkMode, mdMode } = useAppStore(state => ({
+    previewMode: state.settings.previewMode,
+    darkMode: state.settings.darkMode,
+    mdMode: state.settings.mdMode,
+  }))
 
   const [wideView, toggleWideView] = useState<boolean>(false)
   const [showPreview, togglePreview] = useState<boolean>(previewMode)
@@ -74,9 +82,7 @@ const CreateNoteModal: React.FC = () => {
     setSecondary(editingNote?.secondary ?? '')
   }, [editingNote, open])
 
-  const handleClose = (): void => {
-    dispatch(setModalState({ modalState: { open: false, editingNoteId: null } }))
-  }
+  const handleClose = (): void => setModalState({ open: false, editingNoteId: null })
 
   const titleProps = { setPrimary, primary }
   const descProps = { setSecondary, secondary }
@@ -102,7 +108,7 @@ const CreateNoteModal: React.FC = () => {
       secondary,
     }
     // IGDev: We need to sync here: Edited note
-    dispatch(setNotes(newNotes))
+    setNotes(newNotes)
   }
 
   const createNote = (evt: FormEvent | MouseEvent): void => {
@@ -122,16 +128,7 @@ const CreateNoteModal: React.FC = () => {
         bigLog('Adding new note')
 
         // IGDev: We need to sync here: New Note
-        dispatch(
-          setNotes([
-            {
-              id: getUniqueId(noteState),
-              primary,
-              secondary,
-            },
-            ...noteState,
-          ]),
-        )
+        setNotes([{ id: getUniqueId(noteState), primary, secondary }, ...noteState])
 
         return
       default:
@@ -140,7 +137,7 @@ const CreateNoteModal: React.FC = () => {
         // IGDev: We need to sync here: New Note, no bump
 
         /* FIRST NOTE: Set initial state */
-        dispatch(setNotes([{ id: getUniqueId(), primary, secondary }]))
+        setNotes([{ id: getUniqueId(), primary, secondary }])
 
         return
     }

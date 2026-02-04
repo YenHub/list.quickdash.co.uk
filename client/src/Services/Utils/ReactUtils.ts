@@ -1,4 +1,4 @@
-import { SettingState } from '../Reducers/settingSlice'
+import type { SettingState } from '../Store'
 
 export const showGatedFeatures =
   process.env.REACT_APP_ENV === 'development' || process.env.REACT_APP_BETA === 'true'

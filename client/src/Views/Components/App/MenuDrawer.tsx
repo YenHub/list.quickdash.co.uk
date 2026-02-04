@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Divider, Drawer, IconButton, List, ListItem } from '@mui/material'
 import { isMobile } from 'react-device-detect'
 
-import { useAppSelector } from '../../../Services/Store'
+import { useAppStore } from '../../../Services/Store'
 import { ToggleTypes } from '../../../Services/Types'
 import { showGatedFeatures } from '../../../Services/Utils/ReactUtils'
 import { useStyles } from '../../Main.Styles'
@@ -18,7 +18,12 @@ export const AppMenuDrawer: FC<{
   open: boolean
   handleDrawerState(): void
 }> = ({ open, handleDrawerState }) => {
-  const { darkMode, mdMode, previewMode } = useAppSelector(({ settings }) => settings)
+  const { previewMode, darkMode, mdMode } = useAppStore(state => ({
+    previewMode: state.settings.previewMode,
+    darkMode: state.settings.darkMode,
+    mdMode: state.settings.mdMode,
+  }))
+
   const classes = useStyles(darkMode)({})
 
   const DrawerHeader: FC = () => (
