@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 
-import { NoteItem } from '../Database/NoteClient'
+import { noteClient } from '../../Views/Main'
+import { type NoteItem } from '../Database/NoteClient'
 import {
   getBoolSetting,
   getNumberSetting,
@@ -79,7 +80,7 @@ const initialSettingsState: SettingState = {
   colours: JSON.parse(getStringSetting('colours') ?? '{}'),
 }
 
-export const useAppStore = create<AppStore>()((set, _get) => ({
+export const useAppStore = create<AppStore>()((set, get) => ({
   /* Initial App State */
   modal: { ...initialModalState },
   notes: { ...initialNotesState },
@@ -91,6 +92,7 @@ export const useAppStore = create<AppStore>()((set, _get) => ({
 
   /* Note actions */
   setNotes: notes => {
+    noteClient.setNotes(notes)
     set(state => ({ notes: { ...state.notes, noteState: notes } }))
   },
 
@@ -98,6 +100,7 @@ export const useAppStore = create<AppStore>()((set, _get) => ({
     set(state => {
       const newNotes = [...state.notes.noteState]
       newNotes.splice(index, 1)
+      noteClient.setNotes(newNotes)
 
       return { notes: { ...state.notes, noteState: newNotes } }
     })

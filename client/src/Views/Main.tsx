@@ -43,11 +43,7 @@ const Main: FC = () => {
     <div className={classes.viewsRoot}>
       <AppHeader open={open} handleDrawerState={handleDrawerState} />
       <AppMenuDrawer open={open} handleDrawerState={handleDrawerState} />
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
+      <main className={clsx(classes.content, { [classes.contentShift]: open })}>
         <NotesList />
       </main>
     </div>
