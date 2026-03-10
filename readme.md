@@ -362,9 +362,10 @@ Any contributions you make are **greatly appreciated** 🤗
     - [ ] User Admin
       - http://localhost/Admin/Users
   - [ ] Gubbins
-    - [ ] ~~Redux~~
     - [x] Custom State Management
-      - A custom hooks context/reducer implementation has been added 🎉😎 See [The Store](/client/src/Services/State/Store.tsx)
+      - [x] ~~Redux~~
+        - ~A custom hooks context/reducer implementation has been added 🎉😎 See The Store~
+      - [x] 🐻 Zustand
     - [x] TypeScript
     - [x] Jest tests
     - [x] Service Workers
@@ -380,9 +381,9 @@ Any contributions you make are **greatly appreciated** 🤗
     - [x] List Items
       - [x] Add edit note functionality
       - [x] Add MD Ability for list item text secondary
-    - [ ] Menu Items
+    - [x] Menu Items
       - [x] Delete all notes button
-      - [ ] Add colour picker for UI
+      - [x] Add colour picker for UI
   - [ ] Logic
     - [ ] Add HOC Error Boundary
 - [ ] Back End
