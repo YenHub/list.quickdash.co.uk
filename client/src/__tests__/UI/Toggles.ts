@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
-import { SettingState } from '../../Services/Reducers/settingSlice'
+
+import type { SettingState } from '../../Services/Store'
 import {
   initApp,
   openNoteModal,
