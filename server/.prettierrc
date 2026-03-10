@@ -4,9 +4,6 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "avoid",
-  "printWidth": 90,
-  "bracketSpacing": true,
-  "[yaml]": {
-    "editor.autoIndent": "advanced"
-  }
+  "printWidth": 80,
+  "bracketSpacing": true
 }

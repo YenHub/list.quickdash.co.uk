@@ -5,8 +5,5 @@ module.exports = {
   trailingComma: 'all',
   arrowParens: 'avoid',
   bracketSpacing: true,
-  printWidth: 90,
-  '[yaml]': {
-    'editor.autoIndent': 'advanced',
-  },
+  printWidth: 80,
 }
