@@ -1,5 +1,6 @@
 packages:
   - client
+  - client-next
   - server
 
 catalog:
@@ -14,4 +15,5 @@ onlyBuiltDependencies:
   - core-js
   - core-js-pure
   - es5-ext
+  - esbuild
   - fsevents

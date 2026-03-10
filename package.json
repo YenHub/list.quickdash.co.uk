@@ -23,12 +23,6 @@
     "server:serve:dev": "pnpm --filter server serve:dev",
     "server:serve:production": "pnpm --filter server serve:production"
   },
-  "resolutions": {
-    "react": "17.0.2",
-    "react-dom": "^17.0.2",
-    "@types/react": "17.0.40",
-    "@types/react-dom": "17.0.13"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/YenHub/list.quickdash.co.uk.git"
