@@ -1,1 +1,7 @@
 *.yml
+
+# Production Build
+dist
+
+# Node
+node_modules
