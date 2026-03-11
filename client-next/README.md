@@ -1,73 +1,75 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project has been scaffolded using [Vite](https://vite.dev/guide/)
 
-Currently, two official plugins are available:
+## Available Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+In the project root directory, you can run:
 
-## React Compiler
+### Docker
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Launch docker container
+docker-compose up
 
-## Expanding the ESLint configuration
+# (Optionally): Detached Mode
+docker-compose up -d
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# We can also run services individually (due to docker-compose `container_name: node-mysql`)
+docker start client-app
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Exec commands in the container:
+docker exec -it [container_name] mysql -uroot -p
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Client
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+#### `pnpm -F client-next dev`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Runs the app in the development mode.\
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+#### `pnpm -F client-next build`
+
+Builds the app for production to the `dist` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+#### `pnpm -F client-next test`
+
+Launches the test runner.
+
+Tests can be found at [client-next/src/\_\_tests\_\_](/client-next/src/__tests__)
+
+#### Linting
+
+Lint the codebase using the ESLint config provided.
+
+You can see the rules here [/client-next/eslint.config.js](/client-next/eslint.config.js)
+
+```bash
+# Dry-run
+pnpm -F client-next lint
+
+# Attempt auto-fix
+pnpm -F client-next lint:fix
+```
+
+#### Formatting
+
+Format the codebase using the Prettier config provided.
+
+You can see the rules here [/client-next/prettier.config.cjs](/client-next/prettier.config.cjs)
+
+```bash
+# Dry-run
+pnpm -F client-next format
+
+# Attempt auto-fix
+pnpm -F client-next format:fix
 ```
