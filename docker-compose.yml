@@ -37,7 +37,7 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-    command: 'pnpm --filter client start'
+    command: 'pnpm --F client start'
     stdin_open: true
     networks:
       - client-network
