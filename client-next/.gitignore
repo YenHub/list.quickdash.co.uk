@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# misc
+.DS_Store
+
+# pnpm store
+.pnpm-store
