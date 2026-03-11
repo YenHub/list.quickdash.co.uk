@@ -18,7 +18,11 @@
 
     /* Linting */
     "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
