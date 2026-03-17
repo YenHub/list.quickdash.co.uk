@@ -1,10 +1,11 @@
-import stylistic from '@stylistic/eslint-plugin'
-import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import js from '@eslint/js'
+import stylistic from '@stylistic/eslint-plugin'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import reactDom from 'eslint-plugin-react-dom'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import reactX from 'eslint-plugin-react-x'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -12,6 +13,7 @@ import tseslint from 'typescript-eslint'
 export default defineConfig([
   /** Global Config */
   globalIgnores(['dist', 'node_modules']),
+  eslintConfigPrettier,
 
   /** TypeScript Specific Config */
   {
@@ -64,10 +66,19 @@ export default defineConfig([
       '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
       '@stylistic/new-parens': 'error',
 
+      /** react-hooks rules */
+      'react-hooks/set-state-in-effect': 'warn',
+
       /** typescript-eslint rules */
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/prefer-regexp-exec': 'off',
       'no-empty-function': 'off', // Disable built-in
       '@typescript-eslint/no-empty-function': 'error',
+      '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/no-misused-new': 'error',
       '@typescript-eslint/no-inferrable-types': [
         'error',
