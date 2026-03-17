@@ -7,6 +7,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      // Test SW in development environment
+      // devOptions: { enabled: true },
       registerType: 'autoUpdate',
       workbox: {
         navigateFallback: '/index.html',
