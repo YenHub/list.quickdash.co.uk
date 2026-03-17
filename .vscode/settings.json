@@ -16,5 +16,6 @@
       "source.sortImports": "never"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "cSpell.words": ["animatesuccess"]
 }
