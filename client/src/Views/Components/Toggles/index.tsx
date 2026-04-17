@@ -1,0 +1,67 @@
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import Switch from '@mui/material/Switch'
+import { type FC, Fragment } from 'react'
+
+import { useAppStore } from '../../../Services/Store'
+import { type ToggleType } from '../../../Services/Types'
+
+interface ToggleProps {
+  state: boolean
+  dispatchType: ToggleType
+  label: string
+  qaId: string
+}
+
+export const MenuToggle: FC<ToggleProps> = ({
+  state,
+  dispatchType,
+  label,
+  qaId,
+}) => {
+  let actionType: () => void
+
+  const { togglePreviewMode, toggleDarkMode, toggleMdMode } = useAppStore(
+    state => ({
+      togglePreviewMode: state.togglePreviewMode,
+      toggleDarkMode: state.toggleDarkMode,
+      toggleMdMode: state.toggleMdMode,
+    }),
+  )
+
+  switch (dispatchType) {
+    case 'DarkModeToggle':
+      actionType = toggleDarkMode
+      break
+    case 'MarkDownToggle':
+      actionType = toggleMdMode
+      break
+    case 'PreviewModeToggle':
+      actionType = togglePreviewMode
+      break
+    default:
+      return null
+  }
+
+  const toggleChecked = () => actionType()
+
+  return (
+    <Fragment>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              data-testid={qaId}
+              checked={state}
+              onChange={toggleChecked}
+              color="primary"
+            />
+          }
+          label={label}
+        />
+      </FormGroup>
+    </Fragment>
+  )
+}
+
+export default MenuToggle

@@ -1,0 +1,7 @@
+node_modules
+build
+dist
+.dockerignore
+dockerfile
+dockerfile.prod
+coverage
